@@ -39,29 +39,47 @@
 }
 
 
-- (void)characterFound:(char)character
+- (void)bestMatch:(char)character
 {
     NSString* appendedText = [textView.text stringByAppendingFormat:@"%c", character];
     textView.text = appendedText;
 }
 
-////////////////
-// C Wrappers //
-////////////////
-
-// Alternative is making LLListener a class, and calling [LLListener characterFound] here.
-// Might not be shorter.
-
-void characterFound(char char_found, void* obj)
+- (void)sourceImage:(LImage)src
 {
-    LLDocumentViewController* docView = (__bridge LLDocumentViewController*)obj;
-    [docView characterFound:char_found];
+
 }
 
-- (Listener)c_listener
+- (void)resultSet:(LResultSet)result
 {
-    Listener listener;
-    listener.char_found = characterFound;
+    
+}
+
+
+// C Wrappers for LLListener protocol
+// ----------------------------------
+// Alternative is making LLListener a class, and calling [LLListener characterFound] here.
+// Might not be shorter / prettier.
+
+void bestMatch(char best_char, void* obj)
+{
+    [(__bridge LLDocumentViewController*)obj bestMatch:best_char];
+}
+
+void sourceImage(LImage src, void*obj)
+{
+    [(__bridge LLDocumentViewController*)obj sourceImage:src];
+}
+
+void resultSet(LResultSet result, void*obj)
+{
+    [(__bridge LLDocumentViewController*)obj resultSet:result]; 
+}
+
+- (LListener)C_LListener
+{
+    LListener listener;
+    listener.char_found = bestMatch;
     listener.obj = (__bridge void*)self;
     return listener;
 }

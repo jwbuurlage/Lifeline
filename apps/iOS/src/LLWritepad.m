@@ -11,50 +11,6 @@
 #import "LLWritepad.h"
 #import "LLListenerProtocol.h"
 
-@implementation LLWritepadController
-
-- (id)initWithDelegate:(id <LLListener>)delegate
-{
-    if([super init]) 
-    {
-        // Set up recognizer
-        recognizer.charSet = CharacterSetNumeric;
-        recognizer.listener = [delegate c_listener];
-        recognizer_recognize(&recognizer);
-    }
-    return self;
-}
-
-// LLWritepad Delegate
-- (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event
-{
-    NSLog(@"touchDown:");
-}
-
-
-- (void)touchDragInside:(LLWritepad*)pad event:(UIEvent*)event 
-{
-    NSLog(@"touchDrag:");
-}
-
-- (void)touchUpInside:(LLWritepad*)pad event:(UIEvent*)event
-{
-    NSLog(@"touchUp:");
-    recognizer_recognize(&recognizer);
-}
-
-- (void)strokeFinished:(LLWritepad*)pad
-{
-    Stroke stroke;
-    float points[4] = { 1.0f, 2.0f, 3.0f, 4.0f };
-    stroke.points = points;
-    stroke.length = 4;
-    
-    recognizer_add_stroke(&recognizer, &stroke);
-}
-
-@end
-
 @implementation LLWritepad
 
 - (id)initWithFrame:(CGRect)aFrame delegate:(id <LLListener>)delegate
@@ -67,10 +23,83 @@
         [self addTarget:controller action:@selector(touchDown:event:) forControlEvents:UIControlEventTouchDown];
         [self addTarget:controller action:@selector(touchDragInside:event:) forControlEvents:UIControlEventTouchDragInside];
         [self addTarget:controller action:@selector(touchUpInside:event:) forControlEvents:UIControlEventTouchUpInside];
-        
-
     }
     return self;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [[UIColor grayColor] set];
+    [[UIBezierPath bezierPathWithRect:rect] fill];
+    for(UIBezierPath* path in [controller paths])
+    {
+        [[UIColor blackColor] set];
+        [path stroke];
+    }
+}
+
+@end
+
+
+@implementation LLWritepadController
+
+@synthesize paths;
+
+- (id)initWithDelegate:(id <LLListener>)delegate
+{
+    if([super init]) 
+    {
+        paths = [[NSMutableArray alloc] init];
+        
+        // Set up recognizer
+        recognizer.charSet = CharacterSetNumeric;
+        recognizer.listener = [delegate C_LListener];
+    }
+    return self;
+}
+
+/* LLWritepad Delegate */
+
+- (void)pushPointToData:(CGPoint)point 
+{
+    LPoint lpoint;
+    lpoint.x = point.x;
+    lpoint.y = point.y;
+
+    (++pointData.pixels);
+    pointData.length += 1;
+}
+
+- (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event
+{
+    UITouch* touch = [event touchesForView:pad].anyObject;
+    CGPoint point = [touch locationInView:pad];
+            
+    bp = [[UIBezierPath alloc] init];
+    bp.lineWidth = 5.0;
+    [bp moveToPoint:point];
+    
+    [paths addObject:bp];
+    previousPoint = point;
+}
+
+
+- (void)touchDragInside:(LLWritepad*)pad event:(UIEvent*)event 
+{
+    UITouch* touch = [event touchesForView:pad].anyObject;
+    CGPoint point = [touch locationInView:pad];
+    [bp addLineToPoint:point];    
+    [pad setNeedsDisplay];
+}
+
+- (void)touchUpInside:(LLWritepad*)pad event:(UIEvent*)event
+{
+    previousPoint = CGPointZero;
+}
+
+- (void)recognize:(LLWritepad*)pad
+{
+    
 }
 
 @end

@@ -11,15 +11,15 @@
 		AC4472AA15A3851C006F99ED /* LLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A415A3851C006F99ED /* LLAppDelegate.m */; };
 		AC4472AB15A3851C006F99ED /* LLDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A515A3851C006F99ED /* LLDocumentViewController.m */; };
 		AC4472AC15A3851C006F99ED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A615A3851C006F99ED /* main.m */; };
-		AC4472AF15A385B9006F99ED /* libLifeline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4472AE15A385B9006F99ED /* libLifeline.a */; };
 		AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5B409315A387A200C44F39 /* LLWritepad.m */; };
+		AC817B1915A4BED200F0D3DF /* DataStructures.c in Sources */ = {isa = PBXBuildFile; fileRef = AC817B1815A4BED200F0D3DF /* DataStructures.c */; };
+		AC817B1B15A4C28C00F0D3DF /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC817B1A15A4C28C00F0D3DF /* TODO.txt */; };
 		ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2315A380AC002D57CC /* UIKit.framework */; };
 		ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2515A380AC002D57CC /* Foundation.framework */; };
 		ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AC15DBA115A4463F0090E37B /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
 		AC15DBA615A449C40090E37B /* LLListenerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLListenerProtocol.h; sourceTree = "<group>"; };
 		AC44729D15A38515006F99ED /* LLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLAppDelegate.h; sourceTree = "<group>"; };
 		AC44729E15A38515006F99ED /* LLDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLDocumentViewController.h; sourceTree = "<group>"; };
@@ -29,15 +29,20 @@
 		AC4472A615A3851C006F99ED /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AC4472A815A3851C006F99ED /* Lifeline-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lifeline-Info.plist"; sourceTree = "<group>"; };
 		AC4472A915A3851C006F99ED /* Lifeline-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Lifeline-Prefix.pch"; sourceTree = "<group>"; };
-		AC4472AE15A385B9006F99ED /* libLifeline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLifeline.a; path = ../../build/libLifeline.a; sourceTree = "<group>"; };
 		AC5B409315A387A200C44F39 /* LLWritepad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLWritepad.m; sourceTree = "<group>"; };
 		AC5B409615A387B700C44F39 /* LLWritepad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLWritepad.h; sourceTree = "<group>"; };
+		AC817B1015A4B43400F0D3DF /* LListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LListener.h; sourceTree = "<group>"; };
+		AC817B1115A4B43400F0D3DF /* LMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMatch.h; sourceTree = "<group>"; };
+		AC817B1215A4B43400F0D3DF /* LRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRecognizer.h; sourceTree = "<group>"; };
+		AC817B1315A4B43400F0D3DF /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		AC817B1515A4B43400F0D3DF /* LRecognizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LRecognizer.c; sourceTree = "<group>"; };
+		AC817B1615A4BE9D00F0D3DF /* DataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataStructures.h; sourceTree = "<group>"; };
+		AC817B1815A4BED200F0D3DF /* DataStructures.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataStructures.c; sourceTree = "<group>"; };
+		AC817B1A15A4C28C00F0D3DF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../../TODO.txt; sourceTree = "<group>"; };
 		ACC9EB1F15A380AB002D57CC /* Lifeline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lifeline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACC9EB2315A380AC002D57CC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACC9EB2515A380AC002D57CC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		ACD6DEF415A3A13E00AF8FC3 /* recognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = recognizer.h; sourceTree = "<group>"; };
-		ACD6DEF615A3A13E00AF8FC3 /* recognizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = recognizer.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +50,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC4472AF15A385B9006F99ED /* libLifeline.a in Frameworks */,
 				ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */,
 				ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */,
 				ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */,
@@ -55,16 +59,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AC44728F15A382E3006F99ED /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				ACD6DEF315A3A13E00AF8FC3 /* include */,
-				ACD6DEF515A3A13E00AF8FC3 /* src */,
-				AC4472AE15A385B9006F99ED /* libLifeline.a */,
-			);
-			name = lib;
-			sourceTree = "<group>";
-		};
 		AC44729C15A38515006F99ED /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,14 +98,46 @@
 			path = support;
 			sourceTree = "<group>";
 		};
+		AC817B0E15A4B43400F0D3DF /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				AC817B0F15A4B43400F0D3DF /* include */,
+				AC817B1315A4B43400F0D3DF /* Makefile */,
+				AC817B1415A4B43400F0D3DF /* src */,
+			);
+			name = lib;
+			path = ../../lib;
+			sourceTree = "<group>";
+		};
+		AC817B0F15A4B43400F0D3DF /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AC817B1615A4BE9D00F0D3DF /* DataStructures.h */,
+				AC817B1015A4B43400F0D3DF /* LListener.h */,
+				AC817B1115A4B43400F0D3DF /* LMatch.h */,
+				AC817B1215A4B43400F0D3DF /* LRecognizer.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		AC817B1415A4B43400F0D3DF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				AC817B1815A4BED200F0D3DF /* DataStructures.c */,
+				AC817B1515A4B43400F0D3DF /* LRecognizer.c */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		ACC9EB1415A380AB002D57CC = {
 			isa = PBXGroup;
 			children = (
+				AC817B1A15A4C28C00F0D3DF /* TODO.txt */,
+				AC817B0E15A4B43400F0D3DF /* lib */,
 				AC44729C15A38515006F99ED /* include */,
 				AC4472A315A3851C006F99ED /* src */,
 				AC4472A715A3851C006F99ED /* support */,
 				AC44729F15A38515006F99ED /* resources */,
-				AC44728F15A382E3006F99ED /* lib */,
 				ACC9EB2215A380AB002D57CC /* Frameworks */,
 				ACC9EB2015A380AB002D57CC /* Products */,
 			);
@@ -133,25 +159,6 @@
 				ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		ACD6DEF315A3A13E00AF8FC3 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				AC15DBA115A4463F0090E37B /* listener.h */,
-				ACD6DEF415A3A13E00AF8FC3 /* recognizer.h */,
-			);
-			name = include;
-			path = ../../lib/include;
-			sourceTree = "<group>";
-		};
-		ACD6DEF515A3A13E00AF8FC3 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				ACD6DEF615A3A13E00AF8FC3 /* recognizer.c */,
-			);
-			name = src;
-			path = ../../lib/src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC4472A215A38515006F99ED /* InfoPlist.strings in Resources */,
+				AC817B1B15A4C28C00F0D3DF /* TODO.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +229,7 @@
 				AC4472AB15A3851C006F99ED /* LLDocumentViewController.m in Sources */,
 				AC4472AC15A3851C006F99ED /* main.m in Sources */,
 				AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */,
+				AC817B1915A4BED200F0D3DF /* DataStructures.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

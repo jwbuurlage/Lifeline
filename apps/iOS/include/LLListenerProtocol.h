@@ -8,12 +8,14 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#include <listener.h>
+#include <LListener.h>
 
 @protocol LLListener <NSObject>
 
-void characterFound(char char_found, void* data);
+void bestMatch(char best_char, void* obj);
+void sourceImage(LImage src, void*obj);
+void resultSet(LResultSet result, void*obj);
 
--(Listener)c_listener;
+-(LListener)C_LListener;
 
 @end

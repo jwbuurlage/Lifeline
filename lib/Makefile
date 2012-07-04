@@ -16,9 +16,9 @@ AFLAGS = -Wall
 
 BUILD_DIR = ../build
 
-SRC = src/recognizer.c
-HEAD = include/recognizer.h include/listener.h
-OBJ = $(BUILD_DIR)/recognizer.o
+SRC = src/LRecognizer.c src/DataStructures.c
+HEAD = include/LRecognizer.h include/LListener.h
+OBJ = $(BUILD_DIR)/LRecognizer.o
 
 OUT = libLifeline.a
 

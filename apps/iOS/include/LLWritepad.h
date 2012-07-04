@@ -8,26 +8,42 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#include <recognizer.h>
+#include <LRecognizer.h>
+#include <LMatch.h>
+#include "LLListenerProtocol.h"
 
-@class LLWritepad;
-
-@interface LLWritepadController : NSObject
-{
-    Recognizer recognizer;
-}
-
-- (void)strokeFinished:(LLWritepad*)pad;
-- (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event;
-- (void)touchDragInside:(LLWritepad*)pad event:(UIEvent*)event;
-- (void)touchUpInside:(LLWritepad*)pad event:(UIEvent*)event;
-
-@end
+@class LLWritepadController;
 
 @interface LLWritepad : UIControl {
     LLWritepadController* controller;
 }
 
 - (id)initWithFrame:(CGRect)aFrame delegate:(id)delegate;
+
+@end
+
+@interface LLWritepadController : NSObject
+{
+    LRecognizer recognizer;
+    
+    LPointData pointData;
+    
+    // paths for the view
+    NSMutableArray* paths;
+    UIBezierPath* bp;
+    CGPoint previousPoint;
+}
+
+@property NSMutableArray* paths;
+
+- (id)initWithDelegate:(id <LLListener>)delegate;
+
+- (void)pushPointToData:(CGPoint)point;
+
+- (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event;
+- (void)touchDragInside:(LLWritepad*)pad event:(UIEvent*)event;
+- (void)touchUpInside:(LLWritepad*)pad event:(UIEvent*)event;
+
+- (void)recognize:(LLWritepad*)pad;
 
 @end

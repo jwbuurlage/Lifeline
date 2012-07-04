@@ -1,0 +1,19 @@
+v 0.0.1
+[x] Link the C Library to iPad app
+[x] Make a mock-up for the iPad app
+[x] Roughly layout all components
+[x] Fix the Make-/Rakefile's directories
+[ ] Implement Linked Lists
+[ ] Convenience methods for PointData etc.
+[ ] Populate a PointData structure in LLWritepadController
+[ ] Make a 'GO' butotn which clears the pad, and sends the PointData to the lib
+[ ] Implement a simple algorithm:
+	[ ] Convert the PointData into an Image (source)
+	[ ] Make two 'test' images ( / and \ )
+	[ ] Compare the source to the test images
+	[ ] Gather the results, sort
+	[ ] Callback everything to the app
+[ ] Show the results in LLDocumentViewController 
+	[ ] Show the Image (make a _GridView class)
+	[ ] Append the best char
+	[ ] Show the results
