@@ -15,12 +15,13 @@ require 'motion/project'
 BASE = "/Users/Huis/Projects/C/Lifeline"
 
 Motion::Project::App.setup do |app|  
-  # Use `rake config' to see complete project settings.
   app.name = 'Lifeline'
-  app.vendor_project("#{BASE}", 
+  
+  app.vendor_project("#{BASE}/lifeline/", 
                        :static, 
-                       :products => "#{BASE}/build/", 
-                       :headers_dir => "#{BASE}/include/");
-                       
+                       :products => [], 
+                       :headers_dir => "#{BASE}/lib/include/");       
+                              
+  app.build_dir = "#{BASE}/build"
   app.device_family = [:ipad]
 end

@@ -12,7 +12,12 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     puts return_value(2) # test with c-lib
     
-    UIApplication.mainApplication
+    application.statusBarStyle = UIStatusBarStyleBlackOpaque
+     
+    @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
+    @window.rootViewController = LLDocumentVC.alloc.init
+    @window.makeKeyAndVisible
+    
     true
   end
 end

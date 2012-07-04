@@ -1,0 +1,346 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AC4472A215A38515006F99ED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC4472A015A38515006F99ED /* InfoPlist.strings */; };
+		AC4472AA15A3851C006F99ED /* LLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A415A3851C006F99ED /* LLAppDelegate.m */; };
+		AC4472AB15A3851C006F99ED /* LLDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A515A3851C006F99ED /* LLDocumentViewController.m */; };
+		AC4472AC15A3851C006F99ED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A615A3851C006F99ED /* main.m */; };
+		AC4472AF15A385B9006F99ED /* libLifeline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4472AE15A385B9006F99ED /* libLifeline.a */; };
+		AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5B409315A387A200C44F39 /* LLWritepad.m */; };
+		ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2315A380AC002D57CC /* UIKit.framework */; };
+		ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2515A380AC002D57CC /* Foundation.framework */; };
+		ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AC15DBA115A4463F0090E37B /* listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listener.h; sourceTree = "<group>"; };
+		AC15DBA615A449C40090E37B /* LLListenerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLListenerProtocol.h; sourceTree = "<group>"; };
+		AC44729D15A38515006F99ED /* LLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLAppDelegate.h; sourceTree = "<group>"; };
+		AC44729E15A38515006F99ED /* LLDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLDocumentViewController.h; sourceTree = "<group>"; };
+		AC4472A115A38515006F99ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		AC4472A415A3851C006F99ED /* LLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLAppDelegate.m; sourceTree = "<group>"; };
+		AC4472A515A3851C006F99ED /* LLDocumentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLDocumentViewController.m; sourceTree = "<group>"; };
+		AC4472A615A3851C006F99ED /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		AC4472A815A3851C006F99ED /* Lifeline-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lifeline-Info.plist"; sourceTree = "<group>"; };
+		AC4472A915A3851C006F99ED /* Lifeline-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Lifeline-Prefix.pch"; sourceTree = "<group>"; };
+		AC4472AE15A385B9006F99ED /* libLifeline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLifeline.a; path = ../../build/libLifeline.a; sourceTree = "<group>"; };
+		AC5B409315A387A200C44F39 /* LLWritepad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLWritepad.m; sourceTree = "<group>"; };
+		AC5B409615A387B700C44F39 /* LLWritepad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLWritepad.h; sourceTree = "<group>"; };
+		ACC9EB1F15A380AB002D57CC /* Lifeline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lifeline.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACC9EB2315A380AC002D57CC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		ACC9EB2515A380AC002D57CC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		ACD6DEF415A3A13E00AF8FC3 /* recognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = recognizer.h; sourceTree = "<group>"; };
+		ACD6DEF615A3A13E00AF8FC3 /* recognizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = recognizer.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ACC9EB1C15A380AB002D57CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC4472AF15A385B9006F99ED /* libLifeline.a in Frameworks */,
+				ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */,
+				ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */,
+				ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AC44728F15A382E3006F99ED /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				ACD6DEF315A3A13E00AF8FC3 /* include */,
+				ACD6DEF515A3A13E00AF8FC3 /* src */,
+				AC4472AE15A385B9006F99ED /* libLifeline.a */,
+			);
+			name = lib;
+			sourceTree = "<group>";
+		};
+		AC44729C15A38515006F99ED /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AC44729D15A38515006F99ED /* LLAppDelegate.h */,
+				AC44729E15A38515006F99ED /* LLDocumentViewController.h */,
+				AC5B409615A387B700C44F39 /* LLWritepad.h */,
+				AC15DBA615A449C40090E37B /* LLListenerProtocol.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		AC44729F15A38515006F99ED /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				AC4472A015A38515006F99ED /* InfoPlist.strings */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		AC4472A315A3851C006F99ED /* src */ = {
+			isa = PBXGroup;
+			children = (
+				AC4472A415A3851C006F99ED /* LLAppDelegate.m */,
+				AC4472A515A3851C006F99ED /* LLDocumentViewController.m */,
+				AC5B409315A387A200C44F39 /* LLWritepad.m */,
+				AC4472A615A3851C006F99ED /* main.m */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		AC4472A715A3851C006F99ED /* support */ = {
+			isa = PBXGroup;
+			children = (
+				AC4472A815A3851C006F99ED /* Lifeline-Info.plist */,
+				AC4472A915A3851C006F99ED /* Lifeline-Prefix.pch */,
+			);
+			path = support;
+			sourceTree = "<group>";
+		};
+		ACC9EB1415A380AB002D57CC = {
+			isa = PBXGroup;
+			children = (
+				AC44729C15A38515006F99ED /* include */,
+				AC4472A315A3851C006F99ED /* src */,
+				AC4472A715A3851C006F99ED /* support */,
+				AC44729F15A38515006F99ED /* resources */,
+				AC44728F15A382E3006F99ED /* lib */,
+				ACC9EB2215A380AB002D57CC /* Frameworks */,
+				ACC9EB2015A380AB002D57CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ACC9EB2015A380AB002D57CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ACC9EB1F15A380AB002D57CC /* Lifeline.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ACC9EB2215A380AB002D57CC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ACC9EB2315A380AC002D57CC /* UIKit.framework */,
+				ACC9EB2515A380AC002D57CC /* Foundation.framework */,
+				ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ACD6DEF315A3A13E00AF8FC3 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AC15DBA115A4463F0090E37B /* listener.h */,
+				ACD6DEF415A3A13E00AF8FC3 /* recognizer.h */,
+			);
+			name = include;
+			path = ../../lib/include;
+			sourceTree = "<group>";
+		};
+		ACD6DEF515A3A13E00AF8FC3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				ACD6DEF615A3A13E00AF8FC3 /* recognizer.c */,
+			);
+			name = src;
+			path = ../../lib/src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		ACC9EB1E15A380AB002D57CC /* Lifeline */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACC9EB3715A380AC002D57CC /* Build configuration list for PBXNativeTarget "Lifeline" */;
+			buildPhases = (
+				ACC9EB1B15A380AB002D57CC /* Sources */,
+				ACC9EB1C15A380AB002D57CC /* Frameworks */,
+				ACC9EB1D15A380AB002D57CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lifeline;
+			productName = Lifeline;
+			productReference = ACC9EB1F15A380AB002D57CC /* Lifeline.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ACC9EB1615A380AB002D57CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = LL;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "Utrecht University";
+			};
+			buildConfigurationList = ACC9EB1915A380AB002D57CC /* Build configuration list for PBXProject "Lifeline" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ACC9EB1415A380AB002D57CC;
+			productRefGroup = ACC9EB2015A380AB002D57CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ACC9EB1E15A380AB002D57CC /* Lifeline */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		ACC9EB1D15A380AB002D57CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC4472A215A38515006F99ED /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ACC9EB1B15A380AB002D57CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC4472AA15A3851C006F99ED /* LLAppDelegate.m in Sources */,
+				AC4472AB15A3851C006F99ED /* LLDocumentViewController.m in Sources */,
+				AC4472AC15A3851C006F99ED /* main.m in Sources */,
+				AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		AC4472A015A38515006F99ED /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AC4472A115A38515006F99ED /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		ACC9EB3515A380AC002D57CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		ACC9EB3615A380AC002D57CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		ACC9EB3815A380AC002D57CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "support/Lifeline-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"/Users/Huis/Projects/C/Lifeline/lib/include\"";
+				INFOPLIST_FILE = "support/Lifeline-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../build\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		ACC9EB3915A380AC002D57CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "support/Lifeline-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"/Users/Huis/Projects/C/Lifeline/lib/include\"";
+				INFOPLIST_FILE = "support/Lifeline-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../build\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ACC9EB1915A380AB002D57CC /* Build configuration list for PBXProject "Lifeline" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACC9EB3515A380AC002D57CC /* Debug */,
+				ACC9EB3615A380AC002D57CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACC9EB3715A380AC002D57CC /* Build configuration list for PBXNativeTarget "Lifeline" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACC9EB3815A380AC002D57CC /* Debug */,
+				ACC9EB3915A380AC002D57CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ACC9EB1615A380AB002D57CC /* Project object */;
+}

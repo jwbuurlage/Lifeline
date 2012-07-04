@@ -7,13 +7,13 @@
 // Part of the Lifeline project, handwriting recognition for scientific wr-
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
-		
-int set_input_stream() 
-{
-	return 0;
-}
 
-int return_value(int a) 
-{
-	return a;
+int main() {
+	// File input
+	
+	// Test against C-lib
+	
+	// Print characters returned
+	
+	return 0;
 }

@@ -1,3 +1,4 @@
 *.bridgesupport
 .DS_Store
 build*
+project/*

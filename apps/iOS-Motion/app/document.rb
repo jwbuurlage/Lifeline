@@ -8,6 +8,16 @@
 # iting. Tailored for touchscreens.
 # ----------------------------------------------------------------------------
 
-class LLWorkspaceVC < UIViewController
+class LLDocumentVC < UIViewController
+  def viewDidLoad
+    view.backgroundColor = UIColor.whiteColor
+    
+    # Writepad view
+    @writepad = LLWritepadControl.alloc.initWithFrame([[0, 0], [200, 200]])
+    recognizer_register_listener(defaultRecognizer, self)
+  end
   
+  def finishedStroke(pad)
+    puts "stroke finished"
+  end
 end
