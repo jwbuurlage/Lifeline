@@ -13,8 +13,8 @@
 @protocol LLListener <NSObject>
 
 void bestMatch(char best_char, void* obj);
-void sourceImage(LImage src, void*obj);
-void resultSet(LResultSet result, void*obj);
+void sourceImage(LImage* src, void*obj);
+void resultSet(LResultSet* result, void*obj);
 
 -(LListener)C_LListener;
 

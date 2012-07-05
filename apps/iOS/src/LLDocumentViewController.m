@@ -36,6 +36,10 @@
     
     [self.view addSubview:textView];
     [self.view addSubview:writepad];
+    
+    // DEBUG
+    gridView = [[_LLGridView alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
+    [self.view addSubview:gridView];
 }
 
 
@@ -45,12 +49,24 @@
     textView.text = appendedText;
 }
 
-- (void)sourceImage:(LImage)src
+- (void)sourceImage:(LImage*)src
 {
+    /* int n = src->size;
+    for(int i = 0; i < n; ++i)
+    {
+        for(int j = 0; j < n; ++j)
+        {
+            NSLog(@"%c", src->grid[i*n + j]);
+        }
+    } */
+    
+    NSLog(@"Here");
 
+    [gridView setImage:src];
+    [gridView setNeedsDisplay];
 }
 
-- (void)resultSet:(LResultSet)result
+- (void)resultSet:(LResultSet*)result
 {
     
 }
@@ -66,12 +82,12 @@ void bestMatch(char best_char, void* obj)
     [(__bridge LLDocumentViewController*)obj bestMatch:best_char];
 }
 
-void sourceImage(LImage src, void*obj)
+void sourceImage(LImage* src, void*obj)
 {
     [(__bridge LLDocumentViewController*)obj sourceImage:src];
 }
 
-void resultSet(LResultSet result, void*obj)
+void resultSet(LResultSet* result, void*obj)
 {
     [(__bridge LLDocumentViewController*)obj resultSet:result]; 
 }
@@ -80,6 +96,8 @@ void resultSet(LResultSet result, void*obj)
 {
     LListener listener;
     listener.char_found = bestMatch;
+    listener.source_image = sourceImage;
+    listener.result_set = resultSet;
     listener.obj = (__bridge void*)self;
     return listener;
 }

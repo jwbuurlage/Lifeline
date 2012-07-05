@@ -8,23 +8,29 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
+#ifndef RECOGNIZER_H 
+#define RECOGNIZER_H
+
+#include <stdlib.h>
+#include <string.h>
+
 // Includes Listener, for callback support
 #include "LListener.h"
 #include "LMatch.h"
 
-#ifndef RECOGNIZER_H 
-#define RECOGNIZER_H
 
 // The recognizer struct itself
 typedef struct Recognizer_ {
     LPointData* source_points;
+    LImage* source_image;
+    
 	LListener listener;
     LCharacterSet charSet;
 } LRecognizer;
 
 // RECOGNIZER METHODS
 // Incoming data
-void recognizer_set_data(LRecognizer *recog, LPointData* pixelData);
+void recognizer_set_data(LRecognizer *recog, LPointData* pointData);
 
 // Preprocessing
 void recognizer_normalize_data(LRecognizer *recog);

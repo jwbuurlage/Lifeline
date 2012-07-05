@@ -9,16 +9,13 @@
 // ----------------------------------------------------------------------------
 
 #import <UIKit/UIKit.h>
+#import <LMatch.h>
 
-#import "LLListenerProtocol.h"
-#include "LLGridView_Debug.h"
-
-@interface LLDocumentViewController : UIViewController <LLListener>
+@interface _LLGridView : UIView
 {
-    UITextView* textView;
-    
-    // DEBUG
-    _LLGridView* gridView;
+    LImage* representedImage;
 }
+
+-(void)setImage:(LImage*)image;
 
 @end

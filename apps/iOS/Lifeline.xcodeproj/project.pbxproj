@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC1927BA15A5C46800762F74 /* libLifeline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1927B915A5C46800762F74 /* libLifeline.a */; };
 		AC4472A215A38515006F99ED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AC4472A015A38515006F99ED /* InfoPlist.strings */; };
 		AC4472AA15A3851C006F99ED /* LLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A415A3851C006F99ED /* LLAppDelegate.m */; };
 		AC4472AB15A3851C006F99ED /* LLDocumentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A515A3851C006F99ED /* LLDocumentViewController.m */; };
 		AC4472AC15A3851C006F99ED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4472A615A3851C006F99ED /* main.m */; };
+		AC49F3A615A5DC1D00694CCB /* LLGridView_Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = AC49F3A515A5DC1D00694CCB /* LLGridView_Debug.m */; };
 		AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5B409315A387A200C44F39 /* LLWritepad.m */; };
-		AC817B1915A4BED200F0D3DF /* DataStructures.c in Sources */ = {isa = PBXBuildFile; fileRef = AC817B1815A4BED200F0D3DF /* DataStructures.c */; };
 		AC817B1B15A4C28C00F0D3DF /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC817B1A15A4C28C00F0D3DF /* TODO.txt */; };
 		ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2315A380AC002D57CC /* UIKit.framework */; };
 		ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2515A380AC002D57CC /* Foundation.framework */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		AC15DBA615A449C40090E37B /* LLListenerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLListenerProtocol.h; sourceTree = "<group>"; };
+		AC1927B915A5C46800762F74 /* libLifeline.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libLifeline.a; path = ../build/libLifeline.a; sourceTree = "<group>"; };
 		AC44729D15A38515006F99ED /* LLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLAppDelegate.h; sourceTree = "<group>"; };
 		AC44729E15A38515006F99ED /* LLDocumentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLDocumentViewController.h; sourceTree = "<group>"; };
 		AC4472A115A38515006F99ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -29,6 +31,8 @@
 		AC4472A615A3851C006F99ED /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AC4472A815A3851C006F99ED /* Lifeline-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Lifeline-Info.plist"; sourceTree = "<group>"; };
 		AC4472A915A3851C006F99ED /* Lifeline-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Lifeline-Prefix.pch"; sourceTree = "<group>"; };
+		AC49F3A415A5DC0F00694CCB /* LLGridView_Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLGridView_Debug.h; sourceTree = "<group>"; };
+		AC49F3A515A5DC1D00694CCB /* LLGridView_Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLGridView_Debug.m; sourceTree = "<group>"; };
 		AC5B409315A387A200C44F39 /* LLWritepad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLWritepad.m; sourceTree = "<group>"; };
 		AC5B409615A387B700C44F39 /* LLWritepad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLWritepad.h; sourceTree = "<group>"; };
 		AC817B1015A4B43400F0D3DF /* LListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LListener.h; sourceTree = "<group>"; };
@@ -50,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC1927BA15A5C46800762F74 /* libLifeline.a in Frameworks */,
 				ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */,
 				ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */,
 				ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */,
@@ -66,6 +71,7 @@
 				AC44729E15A38515006F99ED /* LLDocumentViewController.h */,
 				AC5B409615A387B700C44F39 /* LLWritepad.h */,
 				AC15DBA615A449C40090E37B /* LLListenerProtocol.h */,
+				AC49F3A415A5DC0F00694CCB /* LLGridView_Debug.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -84,6 +90,7 @@
 				AC4472A415A3851C006F99ED /* LLAppDelegate.m */,
 				AC4472A515A3851C006F99ED /* LLDocumentViewController.m */,
 				AC5B409315A387A200C44F39 /* LLWritepad.m */,
+				AC49F3A515A5DC1D00694CCB /* LLGridView_Debug.m */,
 				AC4472A615A3851C006F99ED /* main.m */,
 			);
 			path = src;
@@ -101,6 +108,7 @@
 		AC817B0E15A4B43400F0D3DF /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				AC1927B915A5C46800762F74 /* libLifeline.a */,
 				AC817B0F15A4B43400F0D3DF /* include */,
 				AC817B1315A4B43400F0D3DF /* Makefile */,
 				AC817B1415A4B43400F0D3DF /* src */,
@@ -113,8 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				AC817B1615A4BE9D00F0D3DF /* DataStructures.h */,
-				AC817B1015A4B43400F0D3DF /* LListener.h */,
 				AC817B1115A4B43400F0D3DF /* LMatch.h */,
+				AC817B1015A4B43400F0D3DF /* LListener.h */,
 				AC817B1215A4B43400F0D3DF /* LRecognizer.h */,
 			);
 			path = include;
@@ -229,7 +237,7 @@
 				AC4472AB15A3851C006F99ED /* LLDocumentViewController.m in Sources */,
 				AC4472AC15A3851C006F99ED /* main.m in Sources */,
 				AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */,
-				AC817B1915A4BED200F0D3DF /* DataStructures.c in Sources */,
+				AC49F3A615A5DC1D00694CCB /* LLGridView_Debug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,7 +15,7 @@
 
 - (id)initWithFrame:(CGRect)aFrame delegate:(id <LLListener>)delegate
 {
-    if ([super initWithFrame:aFrame]) {
+    if (self = [super initWithFrame:aFrame]) {
         self.backgroundColor = [UIColor grayColor];
         controller = [[LLWritepadController alloc] initWithDelegate:delegate];
         
@@ -23,6 +23,13 @@
         [self addTarget:controller action:@selector(touchDown:event:) forControlEvents:UIControlEventTouchDown];
         [self addTarget:controller action:@selector(touchDragInside:event:) forControlEvents:UIControlEventTouchDragInside];
         [self addTarget:controller action:@selector(touchUpInside:event:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // test button
+        UIButton* _testButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [_testButton setFrame:CGRectMake(20, 20, 120, 45)];
+        [_testButton setTitle:@"Recognize" forState:UIControlStateNormal];
+        [_testButton addTarget:controller action:@selector(recognize:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_testButton];
     }
     return self;
 }
@@ -47,13 +54,15 @@
 
 - (id)initWithDelegate:(id <LLListener>)delegate
 {
-    if([super init]) 
+    if(self = [super init]) 
     {
         paths = [[NSMutableArray alloc] init];
         
         // Set up recognizer
         recognizer.charSet = CharacterSetNumeric;
         recognizer.listener = [delegate C_LListener];
+        
+        list_init(&(pointData.points), free);
     }
     return self;
 }
@@ -62,12 +71,8 @@
 
 - (void)pushPointToData:(CGPoint)point 
 {
-    LPoint lpoint;
-    lpoint.x = point.x;
-    lpoint.y = point.y;
-
-    (++pointData.pixels);
-    pointData.length += 1;
+    LPoint* lpoint = LPointMake(point.x, point.y);
+    list_insert_next(&(pointData.points), 0, lpoint);
 }
 
 - (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event
@@ -75,6 +80,8 @@
     UITouch* touch = [event touchesForView:pad].anyObject;
     CGPoint point = [touch locationInView:pad];
             
+    [self pushPointToData:point];
+    
     bp = [[UIBezierPath alloc] init];
     bp.lineWidth = 5.0;
     [bp moveToPoint:point];
@@ -88,6 +95,9 @@
 {
     UITouch* touch = [event touchesForView:pad].anyObject;
     CGPoint point = [touch locationInView:pad];
+    
+    [self pushPointToData:point];
+
     [bp addLineToPoint:point];    
     [pad setNeedsDisplay];
 }
@@ -99,7 +109,11 @@
 
 - (void)recognize:(LLWritepad*)pad
 {
+    recognizer_set_data(&recognizer, &pointData);
+    recognizer_score_against(&recognizer, CharacterSetSlashes);
     
+    [paths removeAllObjects];
+    [pad setNeedsDisplay];
 }
 
 @end

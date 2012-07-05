@@ -16,8 +16,8 @@
 /* Function typedefs */
 
 typedef void (*callback_best_match)(char character, void* obj);
-typedef void (*callback_result_set)(LResultSet result, void* obj);
-typedef void (*callback_source_image)(LImage src, void* obj);
+typedef void (*callback_result_set)(LResultSet* result, void* obj);
+typedef void (*callback_source_image)(LImage* src, void* obj);
 
 /* The Listener struct itself */
 

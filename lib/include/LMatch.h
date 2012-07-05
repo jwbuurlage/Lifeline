@@ -33,7 +33,7 @@ typedef enum
 typedef struct
 {
     int size;       // n
-    short* grid;    // n x n
+    char* grid;    // n x n
 } LImage;
 
 /* Pixel structs used by the Image */
@@ -43,6 +43,14 @@ typedef struct
     float x;
     float y;
 } LPoint;
+
+typedef struct
+{
+    float x_min;
+    float x_max;
+    float y_min;
+    float y_max;
+} LRect;
 
 typedef struct
 {
@@ -61,5 +69,37 @@ typedef struct
 {
     List matchData;
 } LResultSet;
+
+
+/* Convenience methods for LPoint */
+
+static inline LPoint* LPointMake(float x, float y)
+{
+    LPoint *point = malloc(sizeof(LPoint));
+    point->x = x;
+    point->y = y;
+    return point;
+}
+
+static inline LRect* LRectMake(float x_min, float x_max, float y_min, float y_max)
+{
+    LRect *rect = malloc(sizeof(LRect));
+    rect->x_min = x_min;
+    rect->x_max = x_max;
+    rect->y_min = y_min;
+    rect->y_max = y_max;
+    return rect;   
+}
+
+static inline int LPointInRect(LPoint point, LRect rect)
+{
+    if(point.x >= rect.x_min && point.x <= rect.x_max
+       && point.y >= rect.y_min && point.y <= rect.y_max)
+        return 1;
+    
+    return 0;
+}
+
+
 
 #endif
