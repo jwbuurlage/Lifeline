@@ -27,7 +27,7 @@
 {
     LRecognizer recognizer;
     
-    LPointData pointData;
+    LPointData* pointData;
     
     // paths for the view
     NSMutableArray* paths;

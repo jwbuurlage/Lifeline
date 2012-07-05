@@ -18,7 +18,7 @@
     if (self = [super initWithFrame:aFrame]) {
         self.backgroundColor = [UIColor grayColor];
         controller = [[LLWritepadController alloc] initWithDelegate:delegate];
-        
+            
         // target and actions
         [self addTarget:controller action:@selector(touchDown:event:) forControlEvents:UIControlEventTouchDown];
         [self addTarget:controller action:@selector(touchDragInside:event:) forControlEvents:UIControlEventTouchDragInside];
@@ -62,7 +62,8 @@
         recognizer.charSet = CharacterSetNumeric;
         recognizer.listener = [delegate C_LListener];
         
-        list_init(&(pointData.points), free);
+        pointData = (LPointData *)malloc(sizeof(LPointData));
+        list_init(&(pointData->points), free);
     }
     return self;
 }
@@ -72,7 +73,7 @@
 - (void)pushPointToData:(CGPoint)point 
 {
     LPoint* lpoint = LPointMake(point.x, point.y);
-    list_insert_next(&(pointData.points), 0, lpoint);
+    list_insert_next(&(pointData->points), 0, lpoint);
 }
 
 - (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event
@@ -109,9 +110,13 @@
 
 - (void)recognize:(LLWritepad*)pad
 {
-    recognizer_set_data(&recognizer, &pointData);
+    // MARK MEMLEAK -- GIVING AWAY POINTER AND ALLOCING NEW DATA   
+    recognizer_set_data(&recognizer, pointData);
     recognizer_score_against(&recognizer, CharacterSetSlashes);
     
+    pointData = malloc(sizeof(LPointData));
+    list_init(&(pointData->points), free);
+
     [paths removeAllObjects];
     [pad setNeedsDisplay];
 }

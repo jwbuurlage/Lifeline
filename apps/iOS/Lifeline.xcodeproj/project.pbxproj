@@ -47,6 +47,7 @@
 		ACC9EB2315A380AC002D57CC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACC9EB2515A380AC002D57CC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		ACF69BA315A60230003E2978 /* LTestCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTestCharacters.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +125,7 @@
 				AC817B1115A4B43400F0D3DF /* LMatch.h */,
 				AC817B1015A4B43400F0D3DF /* LListener.h */,
 				AC817B1215A4B43400F0D3DF /* LRecognizer.h */,
+				ACF69BA315A60230003E2978 /* LTestCharacters.h */,
 			);
 			path = include;
 			sourceTree = "<group>";

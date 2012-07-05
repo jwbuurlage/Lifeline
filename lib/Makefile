@@ -28,7 +28,7 @@ libLifeline.a : $(OBJ) Lifeline.o
 Lifeline.o : $(OBJ)
 	ld -r $(OBJ) -o $(BUILD_DIR)/Lifeline.o
 
-$(BUILD_DIR)/LRecognizer.o : include/LRecognizer.h include/LListener.h src/LRecognizer.c
+$(BUILD_DIR)/LRecognizer.o : include/LRecognizer.h include/LListener.h src/LRecognizer.c include/LTestCharacters.h
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/LRecognizer.o src/LRecognizer.c
     
 $(BUILD_DIR)/DataStructures.o : include/DataStructures.h src/DataStructures.c

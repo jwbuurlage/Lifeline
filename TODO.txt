@@ -17,3 +17,4 @@ v 0.0.1
 	[x] Show the Image (make a _GridView class)
 	[ ] Append the best char
 	[ ] Show the results
+[!] Clean up code, remove all memleaks and document it some

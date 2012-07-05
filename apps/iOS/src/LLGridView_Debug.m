@@ -14,6 +14,9 @@
 
 -(void)setImage:(LImage*)image
 {
+    // free previous image since its our responsibility
+    free(representedImage); // MEMLEAK: NOT ENOUGH..
+    
     representedImage = image;
 }
 
@@ -36,7 +39,7 @@
     {
         for(int j = 0; j < n; ++j)
         {
-            CGRect rect = CGRectMake(pixelsPerRect * i, pixelsPerRect * j, pixelsPerRect, pixelsPerRect);
+            CGRect rect = CGRectMake(pixelsPerRect * j, pixelsPerRect * i, pixelsPerRect, pixelsPerRect);
             
             if(representedImage->grid[i*n + j] == '1')
             {

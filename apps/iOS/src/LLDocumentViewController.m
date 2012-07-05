@@ -38,7 +38,7 @@
     [self.view addSubview:writepad];
     
     // DEBUG
-    gridView = [[_LLGridView alloc] initWithFrame:CGRectMake(50, 50, 200, 200)];
+    gridView = [[_LLGridView alloc] initWithFrame:CGRectMake(300, 200, 200, 200)];
     [self.view addSubview:gridView];
 }
 
@@ -51,17 +51,6 @@
 
 - (void)sourceImage:(LImage*)src
 {
-    /* int n = src->size;
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < n; ++j)
-        {
-            NSLog(@"%c", src->grid[i*n + j]);
-        }
-    } */
-    
-    NSLog(@"Here");
-
     [gridView setImage:src];
     [gridView setNeedsDisplay];
 }
