@@ -40,6 +40,13 @@
     // DEBUG
     gridView = [[_LLGridView alloc] initWithFrame:CGRectMake(300, 200, 200, 200)];
     [self.view addSubview:gridView];
+    
+    
+    CGRect resultFrame = CGRectMake(500, 300, 200, 200);
+    results = [[UITextView alloc] initWithFrame:resultFrame];
+    results.text = @"HAHAHAHA";
+    results.font = [UIFont boldSystemFontOfSize:12.0f];
+    [self.view addSubview:results];
 }
 
 
@@ -57,7 +64,15 @@
 
 - (void)resultSet:(LResultSet*)result
 {
-    
+    results.text = @"";
+    ListElement* element = result->matchData.head;
+    do
+    {
+        LMatchData* matchData = (LMatchData *)element->data;
+        
+        results.text = [results.text stringByAppendingFormat:@"%c; %f \n", matchData->character, matchData->score];
+        element = element->next;
+    } while(element);
 }
 
 

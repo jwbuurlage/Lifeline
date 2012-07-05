@@ -22,6 +22,7 @@
 typedef struct Recognizer_ {
     LPointData* source_points;
     LImage* source_image;
+    LResultSet* results;
     
 	LListener listener;
     LCharacterSet charSet;

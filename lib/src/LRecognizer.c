@@ -112,33 +112,70 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
 {
     if(charSet == CharacterSetSlashes)
     {
+        LImageSet* imageSet = malloc(sizeof(LImageSet));
+        list_init(&(imageSet->images), free);
+        
         LImage* image_A = malloc(sizeof(LImage));
         image_A->size = 25;
         image_A->grid = (char*)A_char;
+       
+        LCharacterImage *A = malloc(sizeof(LCharacterImage));
+        A->character = 'A';
+        A->image = image_A;
         
         LImage* image_B = malloc(sizeof(LImage));
         image_B->size = 25;
         image_B->grid = (char*)B_char;
+        
+        LCharacterImage *B = malloc(sizeof(LCharacterImage));
+        B->character = 'B';
+        B->image = image_B;
 
         LImage* image_L = malloc(sizeof(LImage));
         image_L->size = 25;
         image_L->grid = (char*)L_char;
+        
+        LCharacterImage *L = malloc(sizeof(LCharacterImage));
+        L->character = 'L';
+        L->image = image_L;
+        
+        LImage* image_H = malloc(sizeof(LImage));
+        image_H->size = 25;
+        image_H->grid = (char*)H_char;
+        
+        LCharacterImage *H = malloc(sizeof(LCharacterImage));
+        H->character = 'H';
+        H->image = image_H;
+        
+        list_insert_next(&(imageSet->images), imageSet->images.tail, A);
+        list_insert_next(&(imageSet->images), imageSet->images.tail, B);
+        list_insert_next(&(imageSet->images), imageSet->images.tail, L);
+        list_insert_next(&(imageSet->images), imageSet->images.tail, H);
 
-        float A, L, B;
+        // now loop through list and make proper result set
+        LResultSet* result = malloc(sizeof(LResultSet));
+        list_init(&(result->matchData), free);
         
-        A = recognizer_compare(recog, recog->source_image, image_A);
-        B = recognizer_compare(recog, recog->source_image, image_B);
-        L = recognizer_compare(recog, recog->source_image, image_L);
+        ListElement* element = imageSet->images.head;
+        do
+        {
+                        
+            LCharacterImage* charImage = (LCharacterImage *)element->data;
+            float score = recognizer_compare(recog, recog->source_image, charImage->image);
+            float character = charImage->character;
+            
+            LMatchData* matchData = malloc(sizeof(LMatchData));
+            matchData->score = score;
+            matchData->character = character;
+            
+            list_insert_next(&(result->matchData), result->matchData.tail, matchData);
+            
+            element = element->next;
+        } while(element);
         
-        char match;
-        if(A > L && A > B)
-            match = 'A';
-        else if (B > A && B > L)
-            match = 'B';
-        else if (L > A && L > B)
-            match = 'L';
-                
-        recog->listener.char_found(match, recog->listener.obj);
+        recog->results = result;
+        
+        recognizer_gather_results(recog);
     }
 }
 
@@ -168,10 +205,28 @@ float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test)
 // Postprocessing & reporting
 void recognizer_gather_results(LRecognizer *recog)
 {
+    float best_score = 0.0;
+    char best_char = '0';
     
+    ListElement* element = recog->results->matchData.head;
+    do
+    {
+        LMatchData *matchData = element->data;
+        
+        if(matchData->score > best_score)
+        {
+            best_score = matchData->score;
+            best_char = matchData->character;
+        }
+                
+        element = element->next;
+    } while(element);
+    
+    recog->listener.char_found(best_char, recog->listener.obj); 
+    recognizer_report(recog);
 }
 
 void recognizer_report(LRecognizer *recog)
 {
-    
+    recog->listener.result_set(recog->results, recog->listener.obj);
 }

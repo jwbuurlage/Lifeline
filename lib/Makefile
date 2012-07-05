@@ -8,10 +8,14 @@
 # iting. Tailored for touchscreens.
 # ----------------------------------------------------------------------------
 
-CC = gcc
 AR = lipo -create
 
+CC = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/llvm-gcc-4.2
+SDKDIR = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk
+
+# CFLAGS = -std=c99 -Wall -c -arch armv7 -isysroot $(SDKDIR) 
 CFLAGS = -std=c99 -Wall -c -arch i386
+
 AFLAGS = -Wall
 
 BUILD_DIR = ../build
@@ -22,8 +26,8 @@ OBJ = $(BUILD_DIR)/LRecognizer.o $(BUILD_DIR)/DataStructures.o
 
 OUT = libLifeline.a
 
-libLifeline.a : $(OBJ) Lifeline.o	
-	$(AR) $(BUILD_DIR)/Lifeline.o -output $(BUILD_DIR)/$(OUT)
+libLifeline.a : Lifeline.o	
+	lipo -create $(BUILD_DIR)/Lifeline.o -output $(BUILD_DIR)/$(OUT)
 
 Lifeline.o : $(OBJ)
 	ld -r $(OBJ) -o $(BUILD_DIR)/Lifeline.o
@@ -33,3 +37,6 @@ $(BUILD_DIR)/LRecognizer.o : include/LRecognizer.h include/LListener.h src/LReco
     
 $(BUILD_DIR)/DataStructures.o : include/DataStructures.h src/DataStructures.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/DataStructures.o src/DataStructures.c
+    
+clean :
+	rm $(BUILD_DIR)/*

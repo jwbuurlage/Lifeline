@@ -19,6 +19,7 @@
     
     // DEBUG
     _LLGridView* gridView;
+    UITextView* results;
 }
 
 @end

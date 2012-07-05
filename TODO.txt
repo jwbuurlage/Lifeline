@@ -7,14 +7,15 @@ v 0.0.1
 [x] Convenience methods for PointData etc.
 [x] Populate a PointData structure in LLWritepadController
 [x] Make a 'GO' butotn which clears the pad, and sends the PointData to the lib
-[ ] Implement a simple algorithm:
+[x] Implement a simple algorithm:
 	[x] Convert the PointData into an Image (source)
-	[ ] Make two 'test' images ( / and \ )
-	[ ] Compare the source to the test images
-	[ ] Gather the results, sort
-	[ ] Callback everything to the app
-[ ] Show the results in LLDocumentViewController 
+	[x] Make two 'test' images ( / and \ )
+	[x] Compare the source to the test images
+	[x] Gather the results, sort
+	[x] Callback everything to the app
+[x] Show the results in LLDocumentViewController 
 	[x] Show the Image (make a _GridView class)
-	[ ] Append the best char
-	[ ] Show the results
+	[x] Append the best char
+	[x] Show the results
 [!] Clean up code, remove all memleaks and document it some
+BUG [ ] Recognizing with no points crashes the app

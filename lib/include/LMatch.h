@@ -32,9 +32,14 @@ typedef enum
 
 typedef struct
 {
-    int size;       // n
+    int size;      // n
     char* grid;    // n x n
 } LImage;
+
+typedef struct
+{
+    List images;
+} LImageSet;
 
 /* Pixel structs used by the Image */
 
@@ -59,6 +64,12 @@ typedef struct
 
 /* Structs that define the matches */
 
+typedef struct
+{
+    char character;
+    LImage* image;
+} LCharacterImage;
+
 typedef struct 
 {
     float score;
@@ -69,7 +80,6 @@ typedef struct
 {
     List matchData;
 } LResultSet;
-
 
 /* Convenience methods for LPoint */
 
@@ -99,7 +109,5 @@ static inline int LPointInRect(LPoint point, LRect rect)
     
     return 0;
 }
-
-
 
 #endif
