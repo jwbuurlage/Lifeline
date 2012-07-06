@@ -41,7 +41,7 @@
         {
             CGRect rect = CGRectMake(pixelsPerRect * j, pixelsPerRect * i, pixelsPerRect, pixelsPerRect);
             
-            if(representedImage->grid[i*n + j] == '1')
+            if(representedImage->grid[i*n + j] == 1)
             {
                 [[UIColor blackColor] set];
                 [[UIBezierPath bezierPathWithRect:rect] fill];

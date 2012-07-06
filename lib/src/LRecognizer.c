@@ -12,6 +12,21 @@
 #include "../include/LRecognizer.h"
 #include "../include/LTestCharacters.h"
 
+/* Convenience methods */
+void insert_char_into_list(List* list, char character, unsigned int* grid)
+{
+    LImage* image = malloc(sizeof(LImage));
+    image->size = 25;
+    image->grid = grid;
+    
+    LCharacterImage *cimage = malloc(sizeof(LCharacterImage));
+    cimage->character = character;
+    cimage->image = image;
+    
+    list_insert_next(list, list->tail, cimage);
+}
+
+
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 {
@@ -66,16 +81,15 @@ void recognizer_normalize_data(LRecognizer *recog)
 void recognizer_create_image(LRecognizer *recog)
 {    
     // DEBUG: arbitrary number for now
-    // NOTE:  Make _gridView (100, 100) 
     int n = 25;
     
-    int stroke_width = 2;
+    int stroke_width = 1;
 
     LImage* image = malloc(sizeof(LImage));
     
     image->size = n;
-    image->grid = malloc(sizeof(char) * n * n);
-    memset(image->grid, '0', sizeof(char) * n * n);
+    image->grid = malloc(sizeof(unsigned int) * n * n);
+    memset(image->grid, 0, sizeof(unsigned int) * n * n);
     
     float interval = 1 / (float)n;
 
@@ -92,7 +106,7 @@ void recognizer_create_image(LRecognizer *recog)
                                         interval*(i - stroke_width), 
                                         interval*(i+1+stroke_width));
                 if(LPointInRect(*point, *rect))
-                    image->grid[i*n + j] = '1';
+                    image->grid[i*n + j] = 1;
                 
                 element = element->next;
             } while (element);
@@ -101,9 +115,9 @@ void recognizer_create_image(LRecognizer *recog)
     
     recog->source_image = image;
         
+    
     // need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
-    //recog->listener.source_image(image_A, recog->listener.obj);
 
 }
 
@@ -115,42 +129,13 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
         LImageSet* imageSet = malloc(sizeof(LImageSet));
         list_init(&(imageSet->images), free);
         
-        LImage* image_A = malloc(sizeof(LImage));
-        image_A->size = 25;
-        image_A->grid = (char*)A_char;
-       
-        LCharacterImage *A = malloc(sizeof(LCharacterImage));
-        A->character = 'A';
-        A->image = image_A;
-        
-        LImage* image_B = malloc(sizeof(LImage));
-        image_B->size = 25;
-        image_B->grid = (char*)B_char;
-        
-        LCharacterImage *B = malloc(sizeof(LCharacterImage));
-        B->character = 'B';
-        B->image = image_B;
-
-        LImage* image_L = malloc(sizeof(LImage));
-        image_L->size = 25;
-        image_L->grid = (char*)L_char;
-        
-        LCharacterImage *L = malloc(sizeof(LCharacterImage));
-        L->character = 'L';
-        L->image = image_L;
-        
-        LImage* image_H = malloc(sizeof(LImage));
-        image_H->size = 25;
-        image_H->grid = (char*)H_char;
-        
-        LCharacterImage *H = malloc(sizeof(LCharacterImage));
-        H->character = 'H';
-        H->image = image_H;
-        
-        list_insert_next(&(imageSet->images), imageSet->images.tail, A);
-        list_insert_next(&(imageSet->images), imageSet->images.tail, B);
-        list_insert_next(&(imageSet->images), imageSet->images.tail, L);
-        list_insert_next(&(imageSet->images), imageSet->images.tail, H);
+        insert_char_into_list(&(imageSet->images), 'A', (unsigned int*)A_char);
+        insert_char_into_list(&(imageSet->images), 'B', (unsigned int*)B_char);
+        insert_char_into_list(&(imageSet->images), 'H', (unsigned int*)H_char);
+        insert_char_into_list(&(imageSet->images), 'L', (unsigned int*)L_char);
+        insert_char_into_list(&(imageSet->images), 'O', (unsigned int*)O_char);
+        insert_char_into_list(&(imageSet->images), 'Q', (unsigned int*)Q_char);
+        insert_char_into_list(&(imageSet->images), 'Z', (unsigned int*)Z_char);
 
         // now loop through list and make proper result set
         LResultSet* result = malloc(sizeof(LResultSet));
@@ -191,11 +176,11 @@ float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test)
     
     for(int i = 0; i < n * n; ++i)
     {
-        if((test->grid)[i] == '0')
+        if((test->grid)[i] == 0)
             continue;
         
         ++test_count;
-        if((source->grid)[i] == '1')
+        if((source->grid)[i] == 1)
             ++matches;
     }
     
@@ -206,7 +191,7 @@ float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test)
 void recognizer_gather_results(LRecognizer *recog)
 {
     float best_score = 0.0;
-    char best_char = '0';
+    char best_char = '?';
     
     ListElement* element = recog->results->matchData.head;
     do

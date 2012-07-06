@@ -16,7 +16,6 @@
 - (id)initWithFrame:(CGRect)aFrame delegate:(id <LLListener>)delegate
 {
     if (self = [super initWithFrame:aFrame]) {
-        self.backgroundColor = [UIColor grayColor];
         controller = [[LLWritepadController alloc] initWithDelegate:delegate];
             
         // target and actions
@@ -36,7 +35,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [[UIColor grayColor] set];
+    [[UIColor lightGrayColor] set];
     [[UIBezierPath bezierPathWithRect:rect] fill];
     for(UIBezierPath* path in [controller paths])
     {

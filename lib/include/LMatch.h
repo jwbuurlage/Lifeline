@@ -33,7 +33,7 @@ typedef enum
 typedef struct
 {
     int size;      // n
-    char* grid;    // n x n
+    unsigned int* grid;    // n x n
 } LImage;
 
 typedef struct

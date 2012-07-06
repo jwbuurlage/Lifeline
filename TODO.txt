@@ -17,5 +17,5 @@ v 0.0.1
 	[x] Show the Image (make a _GridView class)
 	[x] Append the best char
 	[x] Show the results
-[!] Clean up code, remove all memleaks and document it some
+!!! [ ] Clean up code, remove all memleaks and document it some
 BUG [ ] Recognizing with no points crashes the app
