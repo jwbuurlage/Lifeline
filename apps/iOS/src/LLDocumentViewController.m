@@ -73,6 +73,9 @@
         results.text = [results.text stringByAppendingFormat:@"%c; %f \n", matchData->character, matchData->score];
         element = element->next;
     } while(element);
+    
+    list_destroy(&(result->matchData));
+    free(result);
 }
 
 

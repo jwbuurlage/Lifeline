@@ -109,6 +109,9 @@
 
 - (void)recognize:(LLWritepad*)pad
 {
+    if(pointData->points.size == 0)
+        return;
+    
     // MARK MEMLEAK -- GIVING AWAY POINTER AND ALLOCING NEW DATA   
     recognizer_set_data(&recognizer, pointData);
     recognizer_score_against(&recognizer, CharacterSetSlashes);

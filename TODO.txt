@@ -18,4 +18,9 @@ v 0.0.1
 	[x] Append the best char
 	[x] Show the results
 !!! [ ] Clean up code, remove all memleaks and document it some
-BUG [ ] Recognizing with no points crashes the app
+!!! [ ] Look for more memory leaks (trace malloc's)
+!!! [ ] Document every function, at least for it's arguments and returns values.
+BUG [x] Recognizing with no points crashes the app
+[ ] Implement support for different algorithms, in LRecognizeAlgorithm.h/c
+[ ] Implement support for contour tracing and feature extraction
+[ ] Make the app prettier

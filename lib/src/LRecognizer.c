@@ -83,7 +83,7 @@ void recognizer_create_image(LRecognizer *recog)
     // DEBUG: arbitrary number for now
     int n = 25;
     
-    int stroke_width = 1;
+    float stroke_width = 1.5;
 
     LImage* image = malloc(sizeof(LImage));
     
@@ -124,17 +124,21 @@ void recognizer_create_image(LRecognizer *recog)
 // Matching
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
 {
+    LImageSet* imageSet = malloc(sizeof(LImageSet));
+
     if(charSet == CharacterSetSlashes)
     {
-        LImageSet* imageSet = malloc(sizeof(LImageSet));
         list_init(&(imageSet->images), free);
         
         insert_char_into_list(&(imageSet->images), 'A', (unsigned int*)A_char);
         insert_char_into_list(&(imageSet->images), 'B', (unsigned int*)B_char);
         insert_char_into_list(&(imageSet->images), 'H', (unsigned int*)H_char);
+        insert_char_into_list(&(imageSet->images), 'I', (unsigned int*)I_char);
+        insert_char_into_list(&(imageSet->images), 'J', (unsigned int*)J_char);
         insert_char_into_list(&(imageSet->images), 'L', (unsigned int*)L_char);
         insert_char_into_list(&(imageSet->images), 'O', (unsigned int*)O_char);
         insert_char_into_list(&(imageSet->images), 'Q', (unsigned int*)Q_char);
+        insert_char_into_list(&(imageSet->images), 'T', (unsigned int*)T_char);
         insert_char_into_list(&(imageSet->images), 'Z', (unsigned int*)Z_char);
 
         // now loop through list and make proper result set
@@ -144,7 +148,6 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
         ListElement* element = imageSet->images.head;
         do
         {
-                        
             LCharacterImage* charImage = (LCharacterImage *)element->data;
             float score = recognizer_compare(recog, recog->source_image, charImage->image);
             float character = charImage->character;
@@ -159,6 +162,7 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
         } while(element);
         
         recog->results = result;
+        list_destroy(&(imageSet->images));
         
         recognizer_gather_results(recog);
     }
