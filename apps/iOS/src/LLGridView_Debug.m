@@ -14,8 +14,12 @@
 
 -(void)setImage:(LImage*)image
 {
-    // free previous image since its our responsibility
-    free(representedImage); // MEMLEAK: NOT ENOUGH..
+    // free previous image
+    if(representedImage != 0) {
+        if(representedImage->grid != 0)
+            free(representedImage->grid);
+        free(representedImage);
+    }
     
     representedImage = image;
 }
@@ -51,6 +55,17 @@
             [[UIBezierPath bezierPathWithRect:rect] stroke];
         }
     }
+}
+
+-(void)finalize
+{    
+    if(representedImage != 0) {
+        if(representedImage->grid != 0)
+            free(representedImage->grid);
+        free(representedImage);
+    }
+    
+    [super finalize];
 }
 
 @end

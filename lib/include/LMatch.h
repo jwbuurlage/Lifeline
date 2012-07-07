@@ -101,6 +101,15 @@ static inline LRect* LRectMake(float x_min, float x_max, float y_min, float y_ma
     return rect;   
 }
 
+static inline void LRectSet(LRect* rect, float x_min, float x_max, float y_min, float y_max)
+{
+    rect->x_min = x_min;
+    rect->x_max = x_max;
+    rect->y_min = y_min;
+    rect->y_max = y_max;
+}
+
+
 static inline int LPointInRect(LPoint point, LRect rect)
 {
     if(point.x >= rect.x_min && point.x <= rect.x_max

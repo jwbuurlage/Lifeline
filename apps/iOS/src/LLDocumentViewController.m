@@ -44,7 +44,7 @@
     
     CGRect resultFrame = CGRectMake(500, 300, 200, 200);
     results = [[UITextView alloc] initWithFrame:resultFrame];
-    results.text = @"HAHAHAHA";
+    results.text = @"";
     results.font = [UIFont boldSystemFontOfSize:12.0f];
     [self.view addSubview:results];
 }

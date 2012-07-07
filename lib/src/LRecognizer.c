@@ -82,7 +82,6 @@ void recognizer_create_image(LRecognizer *recog)
 {    
     // DEBUG: arbitrary number for now
     int n = 25;
-    
     float stroke_width = 1.5;
 
     LImage* image = malloc(sizeof(LImage));
@@ -93,6 +92,9 @@ void recognizer_create_image(LRecognizer *recog)
     
     float interval = 1 / (float)n;
 
+    
+    LRect* rect = LRectMake(0.0, 0.0, 0.0, 0.0);
+    
     for(int i = 0; i < n; ++i)
     {
         for(int j = 0; j < n; ++j)
@@ -101,10 +103,12 @@ void recognizer_create_image(LRecognizer *recog)
             do
             {
                 LPoint* point = (LPoint *)element->data;
-                LRect* rect = LRectMake(interval*(j - stroke_width), 
-                                        interval*(j+1+stroke_width), 
-                                        interval*(i - stroke_width), 
-                                        interval*(i+1+stroke_width));
+                
+                LRectSet(rect,  interval*(j - stroke_width), 
+                                interval*(j+1+stroke_width), 
+                                interval*(i - stroke_width), 
+                                interval*(i+1+stroke_width));
+                
                 if(LPointInRect(*point, *rect))
                     image->grid[i*n + j] = 1;
                 
@@ -139,6 +143,7 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
         insert_char_into_list(&(imageSet->images), 'O', (unsigned int*)O_char);
         insert_char_into_list(&(imageSet->images), 'Q', (unsigned int*)Q_char);
         insert_char_into_list(&(imageSet->images), 'T', (unsigned int*)T_char);
+        insert_char_into_list(&(imageSet->images), 'W', (unsigned int*)W_char);
         insert_char_into_list(&(imageSet->images), 'Z', (unsigned int*)Z_char);
 
         // now loop through list and make proper result set
@@ -166,6 +171,8 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
         
         recognizer_gather_results(recog);
     }
+    
+    free(imageSet);
 }
 
 float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test)
@@ -188,7 +195,7 @@ float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test)
             ++matches;
     }
     
-    return matches / (float)test_count;
+    return (matches*matches) / (float)test_count;
 }
 
 // Postprocessing & reporting

@@ -17,8 +17,8 @@ v 0.0.1
 	[x] Show the Image (make a _GridView class)
 	[x] Append the best char
 	[x] Show the results
-!!! [ ] Clean up code, remove all memleaks and document it some
-!!! [ ] Look for more memory leaks (trace malloc's)
+!!! [x] Clean up code, remove all memleaks and document it some
+!!! [x] Look for more memory leaks (trace malloc's)
 !!! [ ] Document every function, at least for it's arguments and returns values.
 BUG [x] Recognizing with no points crashes the app
 [ ] Implement support for different algorithms, in LRecognizeAlgorithm.h/c
