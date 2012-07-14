@@ -22,5 +22,6 @@ v 0.0.1
 !!! [ ] Document every function, at least for it's arguments and returns values.
 BUG [x] Recognizing with no points crashes the app
 [ ] Implement support for different algorithms, in LRecognizeAlgorithm.h/c
-[ ] Implement support for contour tracing and feature extraction
-[ ] Make the app prettier
+[ ] Implement support for contour tracing and thinning
+[ ] The core next step; feature extraction
+[ ] Decide on a name and start working on the design of the app

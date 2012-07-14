@@ -8,10 +8,7 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-// Defines many of the structures and types used extensively in the library for
-// - matching characters
-// - providing results
-// - pre- and postprocessing
+/* Defines structures and types used for matching */
  
 #ifndef LMATCH_H
 #define LMATCH_H
@@ -81,7 +78,7 @@ typedef struct
     List matchData;
 } LResultSet;
 
-/* Convenience methods for LPoint */
+///////////////////////////////////////////////////////////////////////////////
 
 static inline LPoint* LPointMake(float x, float y)
 {
@@ -91,7 +88,8 @@ static inline LPoint* LPointMake(float x, float y)
     return point;
 }
 
-static inline LRect* LRectMake(float x_min, float x_max, float y_min, float y_max)
+static inline LRect* LRectMake(float x_min, float x_max, 
+                               float y_min, float y_max)
 {
     LRect *rect = malloc(sizeof(LRect));
     rect->x_min = x_min;
@@ -101,14 +99,14 @@ static inline LRect* LRectMake(float x_min, float x_max, float y_min, float y_ma
     return rect;   
 }
 
-static inline void LRectSet(LRect* rect, float x_min, float x_max, float y_min, float y_max)
+static inline void LRectSet(LRect* rect, float x_min, float x_max, 
+                            float y_min, float y_max)
 {
     rect->x_min = x_min;
     rect->x_max = x_max;
     rect->y_min = y_min;
     rect->y_max = y_max;
 }
-
 
 static inline int LPointInRect(LPoint point, LRect rect)
 {
@@ -118,5 +116,13 @@ static inline int LPointInRect(LPoint point, LRect rect)
     
     return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+LImage* image_contour(LImage *image);
+
+LImage* image_thin(LImage *image);
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif

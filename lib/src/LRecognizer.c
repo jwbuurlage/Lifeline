@@ -44,7 +44,6 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 // Preprocessing
 void recognizer_normalize_data(LRecognizer *recog)
 {
-    
     // ugly
     float x_min = 10000.0, x_max = 0.0, y_min = 10000.0, y_max = 0.0;
     

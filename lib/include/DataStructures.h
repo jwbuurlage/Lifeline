@@ -8,9 +8,7 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-// Common data structures
-// For details see: Mastering Algorithms in C (O'Reilly). Although the code is
-// not strictly the same everywhere.
+/* Common data structures */
 
 #ifndef DATASTRUCTURES_H
 #define DATASTRUCTURES_H
@@ -42,12 +40,8 @@ typedef struct
 /* INTERFACE: Linked List */
 
 void list_init(List *list, void (*destroy)(void *data));
-
 void list_destroy(List *list);
-
 int list_insert_next(List *list, ListElement *element, const void *data);
-
-/* data will point to the data that has been removed */
 int list_remove_next(List *list, ListElement *element, void** data);
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -8,17 +8,14 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#ifndef L_RECOGNIZE_ALGORITHM_H
-#define L_RECOGNIZE_ALGORITHM_H
+#include "../include/LMatch.h"
 
-#include "LMatch.h"
-
-typedef void (*alg_set_data)(LRecognizeAlgorithm* alg, PointData* data);
-
-typedef struct
+LImage* image_contour(LImage *image)
 {
-    alg_set_data set_data;
-    PointData* data;
-} LRecognizeAlgorithm;
+    return image;   
+}
 
-#endif
+LImage* image_thin(LImage *image) 
+{
+    return image;
+}

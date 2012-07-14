@@ -8,17 +8,15 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#ifndef L_RECOGNIZE_ALGORITHM_H
-#define L_RECOGNIZE_ALGORITHM_H
+#ifndef LFEATURES_H
+#define LFEATURES_H
 
-#include "LMatch.h"
+///////////////////////////////////////////////////////////////////////////////
 
-typedef void (*alg_set_data)(LRecognizeAlgorithm* alg, PointData* data);
+void image_histogram(LImage* image);
+float image_moment(LImage* image);
+float image_zernike_moment(LImage* image);
 
-typedef struct
-{
-    alg_set_data set_data;
-    PointData* data;
-} LRecognizeAlgorithm;
+///////////////////////////////////////////////////////////////////////////////
 
 #endif

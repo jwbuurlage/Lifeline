@@ -19,25 +19,24 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    CGRect padFrame = CGRectMake(0, 
-                                 self.view.frame.size.height / 2, 
-                                 self.view.frame.size.width, 
-                                 self.view.frame.size.height / 2);
-    
+        
+    // TextView
     CGRect textFrame = CGRectMake(20, 20, 500, 200);
     textView = [[UITextView alloc] initWithFrame:textFrame];
     textView.text = @"";
     textView.font = [UIFont boldSystemFontOfSize:24.0f];
-    
+    [self.view addSubview:textView];
+
+    // WritePad
+    CGRect padFrame = CGRectMake(0, 
+                                 self.view.frame.size.height / 2, 
+                                 self.view.frame.size.width, 
+                                 self.view.frame.size.height / 2);
     LLWritepad* writepad = [[LLWritepad alloc] initWithFrame:padFrame
                                                     delegate:self];
-    
-    
-    [self.view addSubview:textView];
     [self.view addSubview:writepad];
     
-    // DEBUG
+    // DEBUG, should make this a seperate view I think
     gridView = [[_LLGridView alloc] initWithFrame:CGRectMake(300, 200, 200, 200)];
     [self.view addSubview:gridView];
     

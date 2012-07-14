@@ -15,7 +15,6 @@
 		AC49F3A615A5DC1D00694CCB /* LLGridView_Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = AC49F3A515A5DC1D00694CCB /* LLGridView_Debug.m */; };
 		AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5B409315A387A200C44F39 /* LLWritepad.m */; };
 		AC817B1B15A4C28C00F0D3DF /* TODO.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC817B1A15A4C28C00F0D3DF /* TODO.txt */; };
-		AC93B6FE15A7286800EE953D /* LRecognizeAlgorithm.c in Sources */ = {isa = PBXBuildFile; fileRef = AC93B6FD15A7286800EE953D /* LRecognizeAlgorithm.c */; };
 		ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2315A380AC002D57CC /* UIKit.framework */; };
 		ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2515A380AC002D57CC /* Foundation.framework */; };
 		ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */; };
@@ -50,6 +49,8 @@
 		ACC9EB2315A380AC002D57CC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACC9EB2515A380AC002D57CC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		ACF39C0115AEFC6F00909185 /* LMatch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LMatch.c; sourceTree = "<group>"; };
+		ACF39C0415AEFF8B00909185 /* LFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFeatures.h; sourceTree = "<group>"; };
 		ACF69BA315A60230003E2978 /* LTestCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTestCharacters.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,11 +126,12 @@
 			isa = PBXGroup;
 			children = (
 				AC817B1615A4BE9D00F0D3DF /* DataStructures.h */,
+				ACF69BA315A60230003E2978 /* LTestCharacters.h */,
 				AC817B1115A4B43400F0D3DF /* LMatch.h */,
 				AC817B1015A4B43400F0D3DF /* LListener.h */,
 				AC817B1215A4B43400F0D3DF /* LRecognizer.h */,
-				ACF69BA315A60230003E2978 /* LTestCharacters.h */,
 				AC93B6FB15A7286100EE953D /* LRecognizeAlgorithm.h */,
+				ACF39C0415AEFF8B00909185 /* LFeatures.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -140,6 +142,7 @@
 				AC817B1815A4BED200F0D3DF /* DataStructures.c */,
 				AC817B1515A4B43400F0D3DF /* LRecognizer.c */,
 				AC93B6FD15A7286800EE953D /* LRecognizeAlgorithm.c */,
+				ACF39C0115AEFC6F00909185 /* LMatch.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -245,7 +248,6 @@
 				AC4472AC15A3851C006F99ED /* main.m in Sources */,
 				AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */,
 				AC49F3A615A5DC1D00694CCB /* LLGridView_Debug.m in Sources */,
-				AC93B6FE15A7286800EE953D /* LRecognizeAlgorithm.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
