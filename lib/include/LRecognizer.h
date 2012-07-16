@@ -42,6 +42,7 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData);
 
 // Preprocessing
 void recognizer_normalize_data(LRecognizer *recog);
+void recognizer_connect_data(LRecognizer *recog);
 void recognizer_create_image(LRecognizer *recog);
 
 // Matching

@@ -20,11 +20,9 @@ v 0.0.1
 !!! [x] Clean up code, remove all memleaks and document it some
 !!! [x] Look for more memory leaks (trace malloc's)
 BUG [x] Recognizing with no points crashes the app
-[ ] Implement support for different algorithms, in LRecognizeAlgorithm.h/c
-[ ] Think of a way to create a 1px skeleton from (x_i, t_i) data
-[ ] The core next step; feature extraction
 [ ] Decide on a name and start working on the design of the app
     [x] Aa and Bb 
     [ ] ...
-[ ] Normalize method needs to retain ratio
+[x] Normalize method needs to retain ratio
 [ ] Create image need lines between points
+[ ] The core next step; feature extraction

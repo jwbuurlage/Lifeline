@@ -50,6 +50,7 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
     recog->source_points = pointData;
     
     recognizer_normalize_data(recog);
+    recognizer_connect_data(recog);
     recognizer_create_image(recog);
     recognizer_score_against(recog, recog->charSet);
 }
@@ -98,6 +99,13 @@ void recognizer_normalize_data(LRecognizer *recog)
     } while((element = element->next));
             
     free(center);
+}
+
+void recognizer_connect_data(LRecognizer *recog)
+{
+    // if the distance between two subsequent points is greater
+    // than the interval (width of rects in grid) then we need
+    // to add points between the two points till it isn't.
 }
 
 void recognizer_create_image(LRecognizer *recog)
@@ -154,7 +162,8 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
     charFeatures* feat = malloc(sizeof(List));
     list_init(&feat, free);
     
-    switch (charSet) {
+    switch (charSet) 
+    {
         case CharacterSetSlashes:
             // fill features with certain characterFeature
             break;
@@ -169,7 +178,7 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
     {
         charFeature= (LCharacterFeature *)element->data;
         
-        LFeatureSet* featureSet = image_feature_set(LImage* image);
+        LFeatureSet* featureSet = image_feature_set_make(LImage* image);
         float score = recognizer_compare(recog, featureSet, charFeature->features)
 
         LMatchData* matchData = malloc(sizeof(LMatchData));
@@ -183,7 +192,7 @@ void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
     recog->results = result;
     recognizer_gather_results(recog);
     
-    free(imageSet);
+    free(feat);
 }
 
 float recognizer_compare(LRecognizer *recog, LFeatureSet* source, LFeatureSet* test)
