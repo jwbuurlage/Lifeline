@@ -12,11 +12,12 @@
 #define LFEATURES_H
 
 #include "DataStructures.h"
+#include "LMatch.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void image_histogram(LImage* image);
-float image_moment(LImage* image);
+float image_moment(LImage* image, int orderX, int orderY);
 float image_zernike_moment(LImage* image);
 List* image_branch_points(LImage* image);
 List* image_end_points(LImage* image);
