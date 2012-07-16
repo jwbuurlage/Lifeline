@@ -20,13 +20,20 @@
 
 // The Recognizer struct itself
 typedef struct {
+    int image_size; // has to be odd
+
     LPointData* source_points;
     LImage* source_image;
     LResultSet* results;
     
-	LListener listener;
+    LListener listener;
     LCharacterSet charSet;
 } LRecognizer;
+
+///////////////////////////////////////////////////////////////////////////////
+
+void insert_char_into_list(List* list, char character, unsigned int* grid);
+LPoint* points_center(LPointData* pointData);
 
 ///////////////////////////////////////////////////////////////////////////////
 

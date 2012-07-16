@@ -26,3 +26,5 @@ BUG [x] Recognizing with no points crashes the app
 [ ] Decide on a name and start working on the design of the app
     [x] Aa and Bb 
     [ ] ...
+[ ] Normalize method needs to retain ratio
+[ ] Create image need lines between points
