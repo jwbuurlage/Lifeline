@@ -43,8 +43,6 @@
 		AC817B1615A4BE9D00F0D3DF /* DataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataStructures.h; sourceTree = "<group>"; };
 		AC817B1815A4BED200F0D3DF /* DataStructures.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataStructures.c; sourceTree = "<group>"; };
 		AC817B1A15A4C28C00F0D3DF /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../../TODO.txt; sourceTree = "<group>"; };
-		AC93B6FB15A7286100EE953D /* LRecognizeAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LRecognizeAlgorithm.h; sourceTree = "<group>"; };
-		AC93B6FD15A7286800EE953D /* LRecognizeAlgorithm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LRecognizeAlgorithm.c; sourceTree = "<group>"; };
 		ACC9EB1F15A380AB002D57CC /* Lifeline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lifeline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACC9EB2315A380AC002D57CC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		ACC9EB2515A380AC002D57CC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -130,7 +128,6 @@
 				AC817B1115A4B43400F0D3DF /* LMatch.h */,
 				AC817B1015A4B43400F0D3DF /* LListener.h */,
 				AC817B1215A4B43400F0D3DF /* LRecognizer.h */,
-				AC93B6FB15A7286100EE953D /* LRecognizeAlgorithm.h */,
 				ACF39C0415AEFF8B00909185 /* LFeatures.h */,
 			);
 			path = include;
@@ -141,7 +138,6 @@
 			children = (
 				AC817B1815A4BED200F0D3DF /* DataStructures.c */,
 				AC817B1515A4B43400F0D3DF /* LRecognizer.c */,
-				AC93B6FD15A7286800EE953D /* LRecognizeAlgorithm.c */,
 				ACF39C0115AEFC6F00909185 /* LMatch.c */,
 			);
 			path = src;

@@ -11,11 +11,16 @@
 #ifndef LFEATURES_H
 #define LFEATURES_H
 
+#include "DataStructures.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void image_histogram(LImage* image);
 float image_moment(LImage* image);
 float image_zernike_moment(LImage* image);
+List* image_branch_points(LImage* image);
+List* image_end_points(LImage* image);
+List* image_cross_points(LImage* image);
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -91,7 +91,6 @@ void recognizer_create_image(LRecognizer *recog)
     
     float interval = 1 / (float)n;
 
-    
     LRect* rect = LRectMake(0.0, 0.0, 0.0, 0.0);
     
     for(int i = 0; i < n; ++i)
@@ -104,24 +103,22 @@ void recognizer_create_image(LRecognizer *recog)
                 LPoint* point = (LPoint *)element->data;
                 
                 LRectSet(rect,  interval*(j - stroke_width), 
-                                interval*(j+1+stroke_width), 
+                                interval*(j + 1 + stroke_width), 
                                 interval*(i - stroke_width), 
-                                interval*(i+1+stroke_width));
+                                interval*(i + 1 + stroke_width));
                 
                 if(LPointInRect(*point, *rect))
                     image->grid[i*n + j] = 1;
                 
                 element = element->next;
-            } while (element);
+            } while(element);
         }
     }
     
     recog->source_image = image;
-        
     
-    // need to copy data and delete original stuff
+    // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
-
 }
 
 // Matching

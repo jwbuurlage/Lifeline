@@ -19,9 +19,10 @@ v 0.0.1
 	[x] Show the results
 !!! [x] Clean up code, remove all memleaks and document it some
 !!! [x] Look for more memory leaks (trace malloc's)
-!!! [ ] Document every function, at least for it's arguments and returns values.
 BUG [x] Recognizing with no points crashes the app
 [ ] Implement support for different algorithms, in LRecognizeAlgorithm.h/c
-[ ] Implement support for contour tracing and thinning
+[ ] Think of a way to create a 1px skeleton from (x_i, t_i) data
 [ ] The core next step; feature extraction
 [ ] Decide on a name and start working on the design of the app
+    [x] Aa and Bb 
+    [ ] ...

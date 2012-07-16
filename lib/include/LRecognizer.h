@@ -18,8 +18,8 @@
 #include "LListener.h"
 #include "LMatch.h"
 
-// The recognizer struct itself
-typedef struct Recognizer_ {
+// The Recognizer struct itself
+typedef struct {
     LPointData* source_points;
     LImage* source_image;
     LResultSet* results;
@@ -28,7 +28,8 @@ typedef struct Recognizer_ {
     LCharacterSet charSet;
 } LRecognizer;
 
-// RECOGNIZER METHODS
+///////////////////////////////////////////////////////////////////////////////
+
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData);
 
@@ -43,5 +44,7 @@ float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test);
 // Postprocessing & reporting
 void recognizer_gather_results(LRecognizer *recog);
 void recognizer_report(LRecognizer *recog);
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif
