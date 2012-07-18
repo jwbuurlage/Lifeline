@@ -80,7 +80,7 @@ typedef struct
     float value;
 } LFeature;
 
-typedef List LFeatureSet;
+// typedef List LFeatureSet;
 
 typedef struct 
 {

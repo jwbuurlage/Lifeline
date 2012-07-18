@@ -16,6 +16,7 @@
 
 #include "LListener.h"
 #include "LMatch.h"
+#include "LFeatures.h"
 
 typedef struct {
     int image_size; // has to be odd

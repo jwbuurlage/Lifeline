@@ -188,6 +188,7 @@ void recognizer_create_image(LRecognizer *recog)
     }
     
     recog->source_image = image;
+    image_end_points(recog->source_image);
     
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
