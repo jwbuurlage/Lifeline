@@ -73,6 +73,24 @@ typedef struct
 
 typedef List LResultSet;
 
+
+#define MAX_GEOMETRIC_ORDER	5
+#define MAX_ZERNIKE_N		5
+
+typedef struct
+{
+	float geometricMoments[MAX_GEOMETRIC_ORDER][MAX_GEOMETRIC_ORDER]; //[p-1][q-1]
+
+	//
+	// Pseudo zernike moments have two integers, n and m with the condition |m| <= n
+	// So m = -n,..,0,..,n
+	// Since we can not have negative array indices, zernikeMoments[n][0] corresponds to m=-n
+	// and zernikeMoments[n][1] to m=-n+1, and m=n corresponds with zernikeMoments[n][2n]
+	//
+	float zernikeMoments[MAX_ZERNIKE_N][2*MAX_ZERNIKE_N+1][2]; //Complex numbers so 2 components
+
+} LFeatureSet;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 static inline LPoint* LPointMake(float x, float y)
