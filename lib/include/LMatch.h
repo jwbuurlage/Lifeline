@@ -14,6 +14,7 @@
 #define LMATCH_H
 
 #include "DataStructures.h"
+#include <math.h>
 
 /* The different charsets to test against */
 
@@ -54,10 +55,7 @@ typedef struct
     float y_max;
 } LRect;
 
-typedef struct
-{
-    List points;
-} LPointData;
+typedef List LPointData;
 
 /* Structs that define the matches */
 
@@ -73,10 +71,7 @@ typedef struct
     char character;
 } LMatchData;
 
-typedef struct 
-{
-    List matchData;
-} LResultSet;
+typedef List LResultSet;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -115,6 +110,14 @@ static inline int LPointInRect(LPoint point, LRect rect)
         return 1;
     
     return 0;
+}
+
+static inline float LPointDistance(LPoint* point, LPoint* next_point)
+{
+    // Euclidian distance
+    float distance = sqrtf(powf(point->x - next_point->x, 2) + 
+                           powf(point->y - next_point->y, 2));
+    return distance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
