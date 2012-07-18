@@ -45,11 +45,14 @@
         {
             CGRect rect = CGRectMake(pixelsPerRect * j, pixelsPerRect * i, pixelsPerRect, pixelsPerRect);
             
-            if(representedImage->grid[i*n + j] == 1)
-            {
-                [[UIColor blackColor] set];
-                [[UIBezierPath bezierPathWithRect:rect] fill];
+            switch (representedImage->grid[i*n + j]) {
+                case 1: [[UIColor blackColor] set]; break;
+                case 2: [[UIColor redColor] set]; break;
+                case 3: [[UIColor yellowColor] set]; break;
+                default: [[UIColor whiteColor] set]; break;
             }
+                
+            [[UIBezierPath bezierPathWithRect:rect] fill];
             
             [[UIColor grayColor] set];
             [[UIBezierPath bezierPathWithRect:rect] stroke];
