@@ -14,8 +14,9 @@
 #define LMATCH_H
 
 #include "DataStructures.h"
+#include <math.h>
 
-/* The different charsets to test against */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef enum
 {
@@ -25,7 +26,7 @@ typedef enum
     CharacterSetAlphanumeric
 } LCharacterSet;
 
-/* An image is n x n-grid with values 0, 1 */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct
 {
@@ -38,12 +39,13 @@ typedef struct
     List images;
 } LImageSet;
 
-/* Pixel structs used by the Image */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct
 {
     float x;
     float y;
+    float t;
 } LPoint;
 
 typedef struct
@@ -54,12 +56,9 @@ typedef struct
     float y_max;
 } LRect;
 
-typedef struct
-{
-    List points;
-} LPointData;
+typedef List LPointData;
 
-/* Structs that define the matches */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct
 {
@@ -67,16 +66,29 @@ typedef struct
     LImage* image;
 } LCharacterImage;
 
+typedef struct
+{
+    char* feature_name;
+    float value;
+} LCharacterFeature;
+
+typedef List LCharacterFeatures;
+
+typedef struct
+{
+    char* feature_name;
+    float value;
+} LFeature;
+
+// typedef List LFeatureSet;
+
 typedef struct 
 {
     float score;
     char character;
 } LMatchData;
 
-typedef struct 
-{
-    List matchData;
-} LResultSet;
+typedef List LResultSet;
 
 
 #define MAX_GEOMETRIC_ORDER	5
@@ -98,11 +110,12 @@ typedef struct
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static inline LPoint* LPointMake(float x, float y)
+static inline LPoint* LPointMake(float x, float y, float t)
 {
     LPoint *point = malloc(sizeof(LPoint));
     point->x = x;
     point->y = y;
+    point->t = t;
     return point;
 }
 
@@ -135,11 +148,13 @@ static inline int LPointInRect(LPoint point, LRect rect)
     return 0;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-LImage* image_contour(LImage *image);
-
-LImage* image_thin(LImage *image);
+static inline float LPointDistance(LPoint* point, LPoint* next_point)
+{
+    // Euclidian distance
+    float distance = sqrtf(powf(point->x - next_point->x, 2) + 
+                           powf(point->y - next_point->y, 2));
+    return distance;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

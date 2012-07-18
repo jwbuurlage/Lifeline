@@ -22,7 +22,7 @@ BUILD_DIR = ../build
 
 SRC = src/LRecognizer.c src/DataStructures.c
 HEAD = include/LRecognizer.h include/LListener.h
-OBJ = $(BUILD_DIR)/LRecognizer.o $(BUILD_DIR)/DataStructures.o
+OBJ = $(BUILD_DIR)/LRecognizer.o $(BUILD_DIR)/DataStructures.o $(BUILD_DIR)/LFeatures.o
 
 OUT = libLifeline.a
 
@@ -37,6 +37,9 @@ $(BUILD_DIR)/LRecognizer.o : include/LRecognizer.h include/LListener.h src/LReco
     
 $(BUILD_DIR)/DataStructures.o : include/DataStructures.h src/DataStructures.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)/DataStructures.o src/DataStructures.c
+    
+$(BUILD_DIR)/LFeatures.o : include/LFeatures.h src/LFeatures.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)/LFeatures.o src/LFeatures.c
     
 clean :
 	rm $(BUILD_DIR)/*

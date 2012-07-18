@@ -62,21 +62,36 @@
         recognizer.listener = [delegate C_LListener];
         
         pointData = (LPointData *)malloc(sizeof(LPointData));
-        list_init(&(pointData->points), free);
+        list_init(pointData, free);
+        
+        time_ref = 0.0;
     }
     return self;
 }
 
 /* LLWritepad Delegate */
 
+- (void)timer_reset
+{
+    time_ref = [NSDate timeIntervalSinceReferenceDate];
+}
+
+- (float)time
+{
+    return (float)([NSDate timeIntervalSinceReferenceDate] - time_ref);
+}
+
 - (void)pushPointToData:(CGPoint)point 
 {
-    LPoint* lpoint = LPointMake(point.x, point.y);
-    list_insert_next(&(pointData->points), 0, lpoint);
+    LPoint* lpoint = LPointMake(point.x, point.y, [self time]);
+    list_insert_next(pointData, pointData->tail, lpoint);
 }
 
 - (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event
 {
+    if (time_ref == 0.0)
+        [self timer_reset];
+    
     UITouch* touch = [event touchesForView:pad].anyObject;
     CGPoint point = [touch locationInView:pad];
             
@@ -109,15 +124,17 @@
 
 - (void)recognize:(LLWritepad*)pad
 {
-    if(pointData->points.size == 0)
+    if(pointData->size == 0)
         return;
+    
+    time_ref = 0.0;
     
     // MARK MEMLEAK -- GIVING AWAY POINTER AND ALLOCING NEW DATA   
     recognizer_set_data(&recognizer, pointData);
     recognizer_score_against(&recognizer, CharacterSetSlashes);
     
     pointData = malloc(sizeof(LPointData));
-    list_init(&(pointData->points), free);
+    list_init(pointData, free);
 
     [paths removeAllObjects];
     [pad setNeedsDisplay];
