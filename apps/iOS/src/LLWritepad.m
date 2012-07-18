@@ -62,7 +62,7 @@
         recognizer.listener = [delegate C_LListener];
         
         pointData = (LPointData *)malloc(sizeof(LPointData));
-        list_init(&(pointData->points), free);
+        list_init(pointData, free);
     }
     return self;
 }
@@ -72,7 +72,7 @@
 - (void)pushPointToData:(CGPoint)point 
 {
     LPoint* lpoint = LPointMake(point.x, point.y);
-    list_insert_next(&(pointData->points), 0, lpoint);
+    list_insert_next(pointData, 0, lpoint);
 }
 
 - (void)touchDown:(LLWritepad*)pad event:(UIEvent*)event
@@ -109,7 +109,7 @@
 
 - (void)recognize:(LLWritepad*)pad
 {
-    if(pointData->points.size == 0)
+    if(pointData->size == 0)
         return;
     
     // MARK MEMLEAK -- GIVING AWAY POINTER AND ALLOCING NEW DATA   
@@ -117,7 +117,7 @@
     recognizer_score_against(&recognizer, CharacterSetSlashes);
     
     pointData = malloc(sizeof(LPointData));
-    list_init(&(pointData->points), free);
+    list_init(pointData, free);
 
     [paths removeAllObjects];
     [pad setNeedsDisplay];

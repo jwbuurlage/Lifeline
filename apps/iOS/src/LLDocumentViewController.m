@@ -64,7 +64,7 @@
 - (void)resultSet:(LResultSet*)result
 {
     results.text = @"";
-    ListElement* element = result->matchData.head;
+    ListElement* element = result->head;
     do
     {
         LMatchData* matchData = (LMatchData *)element->data;
@@ -73,7 +73,7 @@
         element = element->next;
     } while(element);
     
-    list_destroy(&(result->matchData));
+    list_destroy(result);
     free(result);
 }
 
