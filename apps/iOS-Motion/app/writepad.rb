@@ -1,59 +1,95 @@
-# ----------------------------------------------------------------------------
-# BYN SOFTWARE, COPYRIGHT 2012
-# 
-# Author: Jan-Willem Buurlage et al.
-# Contact: j.buurlage@students.uu.nl
-# 
-# Part of the Lifeline project, handwriting recognition for scientific wr-
-# iting. Tailored for touchscreens.
-# ----------------------------------------------------------------------------
-
-class LLHandwritingController
-  attr_accessor :delegate
+class WritepadController < NSObject
+  attr_reader :paths
   
   def init
-    @touches ||= []
+    super
+    
+    @recog = Recognizer.new
+    
+    @paths ||= []
+    @data ||= []
+    
+    @bp = nil
+    
+    self
+  end
+  
+  def send 
+    @recog.set_data @data
+    
+    @data = []
+    @paths = []
     
   end
   
-  def finishedStroke(pad)
-    # fix up the strokes // normalize
-    stroke = [1, 2, 3, 4]
+  def touchDown(pad, event:event)
+    touch = event.touchesForView(pad).anyObject
+    point = touch.locationInView pad 
     
-    # send to lib
-    recognizer_send_stroke(defaultRecognizer, stroke)
+    @data << [point.x, point.y]
     
-    #empty touches
-    touches.replace []
+    @bp = UIBezierPath.alloc.init
+    @bp.lineWidth = 5.0
+    @bp.moveToPoint point
+    
+    @paths << @bp
+        
+    @prevPoint = point
+  end
+  
+  def touchDragInside(pad, event:event)
+    touch = event.touchesForView(pad).anyObject;
+    point = touch.locationInView pad;
+    
+    @data << [point.x, point.y]
+    @bp.addLineToPoint point
+    
+    pad.setNeedsDisplay
+  end
+  
+  def touchUpInside(pad, event:event)
+    previousPoint = CGPointZero
+  end
+  
+  def delegate=(delegate)
+    @recog.set_delegate delegate
   end
 end
 
-class LLWritepadControl < UIControl
+class Writepad < UIControl
   def initWithFrame(frame)
     super
     
-    @controller = LLHandwritingController.alloc.init
-    self.addTarget(@contorller, 
-                    action:"finishedStroke:", 
-                    forControlState:UIControlStateTouchFinished)
-    
     self.backgroundColor = UIColor.grayColor
+    
+    @controller = WritepadController.alloc.init
+    
+    self.addTarget(@controller, action:"touchDown:event:", forControlEvents:UIControlEventTouchDown);
+    self.addTarget(@controller, action:"touchDragInside:event:", forControlEvents:UIControlEventTouchDragInside);
+    self.addTarget(@controller, action:"touchUpInside:event:", forControlEvents:UIControlEventTouchUpInside);
+      
+    button = UIButton.buttonWithType(UIButtonTypeRoundedRect)
+    button.frame = [[10, 10], [100, 40]]
+    button.setTitle("Send", forState:UIControlStateNormal)
+    button.addTarget(self, action:'buttonClicked', forControlEvents:UIControlEventTouchUpInside)
+    self.addSubview button
   end
   
-  def setDelegate(delegate)
+  def delegate=(delegate)
     @controller.delegate = delegate
-    
   end
   
-  def beginTrackingWithTouch(touch, withEvent:event)
-    
+  def buttonClicked
+    @controller.send
   end
   
-  def continueTrackingWithTouch(touch, withEvent:event)
+  def drawRect(rect)
+    UIColor.lightGrayColor.set
+    UIBezierPath.bezierPathWithRect(rect).fill;
     
-  end
-  
-  def endTrackingWithTouch(touch, withEvent:event)
-    
+    @controller.paths.each do |path|
+      UIColor.blackColor.set
+      path.stroke
+    end
   end
 end

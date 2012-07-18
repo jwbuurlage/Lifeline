@@ -16,7 +16,7 @@
 #include "DataStructures.h"
 #include <math.h>
 
-/* The different charsets to test against */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef enum
 {
@@ -26,7 +26,7 @@ typedef enum
     CharacterSetAlphanumeric
 } LCharacterSet;
 
-/* An image is n x n-grid with values 0, 1 */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct
 {
@@ -39,12 +39,13 @@ typedef struct
     List images;
 } LImageSet;
 
-/* Pixel structs used by the Image */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct
 {
     float x;
     float y;
+    float t;
 } LPoint;
 
 typedef struct
@@ -57,13 +58,29 @@ typedef struct
 
 typedef List LPointData;
 
-/* Structs that define the matches */
+///////////////////////////////////////////////////////////////////////////////
 
 typedef struct
 {
     char character;
     LImage* image;
 } LCharacterImage;
+
+typedef struct
+{
+    char* feature_name;
+    float value;
+} LCharacterFeature;
+
+typedef List LCharacterFeatures;
+
+typedef struct
+{
+    char* feature_name;
+    float value;
+} LFeature;
+
+typedef List LFeatureSet;
 
 typedef struct 
 {
@@ -75,11 +92,12 @@ typedef List LResultSet;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static inline LPoint* LPointMake(float x, float y)
+static inline LPoint* LPointMake(float x, float y, float t)
 {
     LPoint *point = malloc(sizeof(LPoint));
     point->x = x;
     point->y = y;
+    point->t = t;
     return point;
 }
 
@@ -119,12 +137,6 @@ static inline float LPointDistance(LPoint* point, LPoint* next_point)
                            powf(point->y - next_point->y, 2));
     return distance;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-
-LImage* image_contour(LImage *image);
-
-LImage* image_thin(LImage *image);
 
 ///////////////////////////////////////////////////////////////////////////////
 
