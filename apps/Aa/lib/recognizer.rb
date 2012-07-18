@@ -8,20 +8,31 @@ class Image
       @size
     end
     
-    def pixel(i,j)
-      @data[i*size + j]
+    def set_pixel(i, j, value)
+      @data[i * size + j] = value
     end
     
-    def set_pixel(i, j, value)
-      @data[i*size + j] = value
+    def pixel(i, j)
+      @data[i * size + j]
     end
     
     def inspect
-      @data.inspect
+      str = ""
+      for i in 0...@size
+        for j in 0...@size
+          str += @data[i * @size + j].to_s
+        end
+      str += "\n"
+      end
+      str
     end
 end
 
 class Recognizer
+  def initialize
+    @delegate = nil
+  end
+  
   def set_delegate(delegate)
     @delegate = delegate
   end
@@ -34,6 +45,8 @@ class Recognizer
   end
 
   def normalize()
+  
+  # Taking the average of all the points as the center of the image.
     x_center = 0
     y_center = 0
     
@@ -62,16 +75,22 @@ class Recognizer
        if y < y_min; y_min = y; end       
     end
     
+    
     x_norm = x_max.abs
     y_norm = y_max.abs
     if x_min.abs > x_max.abs; x_norm = x_min.abs; end
     if y_min.abs > y_max.abs; y_norm = y_min.abs; end
     
+   
+    
+    norm = x_norm
+    if y_norm > x_norm; norm = y_norm; end
+    
     @data.each_with_index do |(x,y), i|
-      @data[i] = [x/x_norm, y/y_norm]
+      @data[i] = [x/norm, y/norm]
     end
     
-    p @data
+   p @data
   end
   
   def connect()
@@ -79,19 +98,25 @@ class Recognizer
   end
   
   def make_image()
-    imag = Image.new(13)
+    imag = Image.new(5)
       
       iv = 2.0/imag.size
       for i in 0...imag.size
         for j in 0...imag.size
           @data.each do |(x,y)|
-            if ((-1 + i * iv < x and -1 + (i + 1) * iv > x) and
-                (-1 + j * iv < y and -1 + (j + 1) * iv > y))
+            if ((-1 + i * iv <= y and -1 + (i + 1) * iv >= y) and
+                (-1 + j * iv <= x and -1 + (j + 1) * iv >= x))
               imag.set_pixel(i,j,1) 
             end
           end
         end
-      end
-    @delegate.image_ready imag
+      end 
+    @delegate.image_ready imag if @delegate
+    p imag
   end
 end
+data = [[1.0,0.0],[0.0,1.0]]
+#data = [[2.0, 0.0], [0.0, 2.0],[0.0,-2.0]]
+#data = [[1.0,4.0],[8.0,5.0],[7.0,13.0],[12.0,1.0],[19.0,3.0]]
+recog = Recognizer.new
+recog.set_data data
