@@ -10,7 +10,6 @@
 
 #include <stdio.h>
 #include "../include/LRecognizer.h"
-#include "../include/LTestCharacters.h"
 
 /* Convenience methods */
 
@@ -43,7 +42,7 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
     
     if(recog->source_points != 0)
     {
-        list_destroy(&(recog->source_points->points));
+        list_destroy(&(recog->source_points));
         free(recog->source_points);
     }
     
@@ -61,7 +60,7 @@ void recognizer_normalize_data(LRecognizer *recog)
     // calculate the center of the data
     LPoint* center = points_center(recog->source_points);
         
-    ListElement* element = recog->source_points->points.head;
+    ListElement* element = recog->source_points.head;
     do
     {
         LPoint* point = (LPoint *)element->data;
@@ -71,7 +70,7 @@ void recognizer_normalize_data(LRecognizer *recog)
     
     float x_min = 1.0, x_max = -1.0, y_min = 1.0, y_max = -1.0;
 
-    element = recog->source_points->points.head;
+    element = recog->source_points.head;
     do
     {
         LPoint* point = (LPoint *)element->data;
@@ -90,7 +89,7 @@ void recognizer_normalize_data(LRecognizer *recog)
     if (x_max > y_max) { max = x_max; } 
     else { max = y_max; }
     
-    element = recog->source_points->points.head;
+    element = recog->source_points.head;
     do
     {
         LPoint* point = (LPoint *)element->data;
@@ -106,7 +105,33 @@ void recognizer_connect_data(LRecognizer *recog)
     // if the distance between two subsequent points is greater
     // than the interval (width of rects in grid) then we need
     // to add points between the two points till it isn't.
+    float b = 2.0f / (recog->image_size);
+    
+    ListElement* element = recog->source_points.head;
+    do
+    {
+        ListElement* point_element = element
+        LPoint* point = (LPoint *)element->data;
+        LPoint* next_point = (LPoint *)element->next->data;
+        
+        d = LPointDistance(point, next_point);
+        
+        while (d > b)
+        {
+            // better to malloc in chunks
+            LPoint* point_new = malloc(sizeof(LPoint));
+            LPoint* old_point = (LPoint *)element->data;
+            point->x = old_point->x;
+            point->y = old_point->y;
+            
+            list_insert_next(recog->source_points, point_element, point_new);
+            point_element = point_element->next;
+            d -= b;
+        }
+    } while((element = element->next));
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 void recognizer_create_image(LRecognizer *recog)
 {    
@@ -127,13 +152,11 @@ void recognizer_create_image(LRecognizer *recog)
     {
         for(int j = 0; j < n; ++j)
         {
-            ListElement* element = recog->source_points->points.head;
+            ListElement* element = recog->source_points.head;
             do
             {
                 LPoint* point = (LPoint *)element->data;
-                
-                // printf("(%f, %f)\n", point->x, point->y);
-                
+                                
                 LRectSet(rect,  -1 + interval * j, 
                                 -1 + interval * (j + 1), 
                                 -1 + interval * i, 
@@ -201,13 +224,14 @@ float recognizer_compare(LRecognizer *recog, LFeatureSet* source, LFeatureSet* t
     return 0;
 }
 
-// Postprocessing & reporting
+///////////////////////////////////////////////////////////////////////////////
+
 void recognizer_gather_results(LRecognizer *recog)
 {
     float best_score = 0.0;
     char best_char = '?';
     
-    ListElement* element = recog->results->matchData.head;
+    ListElement* element = recog->results->head;
     do
     {
         LMatchData *matchData = element->data;
