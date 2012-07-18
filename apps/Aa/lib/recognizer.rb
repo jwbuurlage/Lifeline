@@ -60,7 +60,10 @@ class Recognizer
     
     @data.each_with_index do |(x, y), i|
       @data[i] = [x - x_center, y - y_center]
+      puts @data[i]
     end
+    
+    
     
     # We want to normalize the dataset, so this means taking the taking the maximum absolute value of the x and y points respectively and then dividing each component of a point by that number.
     x_max = -1000
@@ -75,16 +78,20 @@ class Recognizer
        if y < y_min; y_min = y; end       
     end
     
+    puts "x_min #{x_min}, x_max #{x_max}, y_min #{y_min}, y_max #{y_max}"
+    
     
     x_norm = x_max.abs
     y_norm = y_max.abs
     if x_min.abs > x_max.abs; x_norm = x_min.abs; end
     if y_min.abs > y_max.abs; y_norm = y_min.abs; end
     
-   
+   puts "x_norm #{x_norm}, y_norm #{y_norm}"
     
     norm = x_norm
     if y_norm > x_norm; norm = y_norm; end
+    
+    puts "norm #{norm}"
     
     @data.each_with_index do |(x,y), i|
       @data[i] = [x/norm, y/norm]
@@ -98,7 +105,7 @@ class Recognizer
   end
   
   def make_image()
-    imag = Image.new(5)
+    imag = Image.new(17)
       
       iv = 2.0/imag.size
       for i in 0...imag.size
@@ -115,8 +122,8 @@ class Recognizer
     p imag
   end
 end
-data = [[1.0,0.0],[0.0,1.0]]
-#data = [[2.0, 0.0], [0.0, 2.0],[0.0,-2.0]]
+#data = [[1.0,0.0],[0.0,1.0]]
+data = [[2.0, 0.0], [0.0, 2.0],[0.0,-2.0],[-2.0,0.0],[3.0,4.0],[3.0,-4.0]]
 #data = [[1.0,4.0],[8.0,5.0],[7.0,13.0],[12.0,1.0],[19.0,3.0]]
 recog = Recognizer.new
 recog.set_data data
