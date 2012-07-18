@@ -1,27 +1,10 @@
-# ----------------------------------------------------------------------------
-# BYN SOFTWARE, COPYRIGHT 2012
-# 
-# Author: Jan-Willem Buurlage et al.
-# Contact: j.buurlage@students.uu.nl
-# 
-# Part of the Lifeline project, handwriting recognition for scientific wr-
-# iting. Tailored for touchscreens.
-# ----------------------------------------------------------------------------
-
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project'
 
-BASE = "/Users/Huis/Projects/C/Lifeline"
-
-Motion::Project::App.setup do |app|  
-  app.name = 'Lifeline'
-  
-  app.vendor_project("#{BASE}/lifeline/", 
-                       :static, 
-                       :products => [], 
-                       :headers_dir => "#{BASE}/lib/include/");       
-                              
-  app.build_dir = "#{BASE}/build"
-  app.device_family = [:ipad]
+Motion::Project::App.setup do |app|
+  # Use `rake config' to see complete project settings.
+  app.name = 'Aa'
+  app.device_family = [:ipad, :iphone]
+  app.files += ["lib/recognizer.rb"]
 end

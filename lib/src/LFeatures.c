@@ -82,16 +82,98 @@ float image_zernike_moment(LImage* image)
 	return 10.0f;
 }
 
-List* image_branch_points(LImage* image)
+int image_branch_points(LImage* image)
 {
 	return 0;
 }
 
-List* image_end_points(LImage* image)
-{
+int image_end_points(LImage* image)
+{	
+    int n = image->size;
+    for(int i = 0; i < n; ++i)
+    {
+        for(int j = 0; j < n; ++j)
+        {
+            if(image->grid[i*n+j])
+            {
+                int count = 0;
+                if( i!=0 && i!=(n-1) && j!=0 && j!=(n-1) )
+                {					
+                    if(image->grid[i*n+j+1]) count++;	
+                    if(image->grid[i*n+j-1]) count++;
+                    if(image->grid[(i-1)*n+j+1]) count++;
+                    if(image->grid[(i-1)*n+j]) count++;
+                    if(image->grid[(i-1)*n+j-1]) count++;
+                    if(image->grid[(i+1)*n+j+1]) count++;
+                    if(image->grid[(i+1)*n+j]) count++;
+                    if(image->grid[(i+1)*n+j-1]) count++;							
+                }	
+                else if(i!=0 && i!=(n-1) && j!=0 && j==(n-1))
+                {	
+                    if(image->grid[i*n+j-1]) count++;
+                    if(image->grid[(i-1)*n+j]) count++;
+                    if(image->grid[(i-1)*n+j-1]) count++;
+                    if(image->grid[(i+1)*n+j]) count++;
+                    if(image->grid[(i+1)*n+j-1]) count++;	
+                }
+                else if( i!=0 && i!=(n-1) && j==0 && j!=(n-1) )
+                {
+                    if(image->grid[i*n+j+1]) count++;	
+                    if(image->grid[(i-1)*n+j+1]) count++;
+                    if(image->grid[(i-1)*n+j]) count++;
+                    if(image->grid[(i+1)*n+j+1]) count++;
+                    if(image->grid[(i+1)*n+j]) count++;	
+                }
+                else if( i!=0 && i==(n-1) && j!=0 && j!=(n-1) )
+                {
+                    if(image->grid[i*n+j+1]) count++;	
+                    if(image->grid[i*n+j-1]) count++;
+                    if(image->grid[(i-1)*n+j+1]) count++;
+                    if(image->grid[(i-1)*n+j]) count++;
+                    if(image->grid[(i-1)*n+j-1]) count++;
+                }
+                else if( i==0 && i!=(n-1) && j!=0 && j!=(n-1) )
+                {					
+                    if(image->grid[i*n+j+1]) count++;	
+                    if(image->grid[i*n+j-1]) count++;
+                    if(image->grid[(i+1)*n+j+1]) count++;
+                    if(image->grid[(i+1)*n+j]) count++;
+                    if(image->grid[(i+1)*n+j-1]) count++;							
+                }
+                else if( i==0 && i!=(n-1) && j==0 && j!=(n-1) )
+                {					
+                    if(image->grid[i*n+j+1]) count++;	
+                    if(image->grid[(i+1)*n+j+1]) count++;
+                    if(image->grid[(i+1)*n+j]) count++;							
+                }	
+                else if( i==0 && i!=(n-1) && j!=0 && j==(n-1) )
+                {						
+                    if(image->grid[i*n+j-1]) count++;;
+                    if(image->grid[(i+1)*n+j]) count++;
+                    if(image->grid[(i+1)*n+j-1]) count++;							
+                }	
+                else if( i!=0 && i==(n-1) && j==0 && j!=(n-1) )
+                {					
+                    if(image->grid[i*n+j+1]) count++;	;
+                    if(image->grid[(i-1)*n+j+1]) count++;
+                    if(image->grid[(i-1)*n+j]) count++;							
+                }	
+                else if( i!=0 && i==(n-1) && j!=0 && j==(n-1) )
+                {						
+                    if(image->grid[i*n+j-1]) count++;
+                    if(image->grid[(i-1)*n+j]) count++;
+                    if(image->grid[(i-1)*n+j-1]) count++;							
+                }
+                if(count == 1)
+                {
+                    image->grid[i*n+j] = 2;
+                }	
+            }
+		}
+	}
 	return 0;
 }
 
-List* image_cross_points(LImage* image){
+int image_cross_points(LImage* image){
 	return 0;
 }
