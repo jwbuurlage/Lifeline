@@ -150,6 +150,41 @@ void recognizer_connect_data(LRecognizer *recog)
 
 ///////////////////////////////////////////////////////////////////////////////
 
+typedef LFeatureSet* PLFeatureSet;
+PLFeatureSet featuresetList[20];
+int currentSample = 0;
+
+void recognizer_showMoments(LRecognizer *recog)
+{
+	featuresetList[currentSample] = (PLFeatureSet)malloc(sizeof(LFeatureSet));
+	image_moments(recog->source_image, featuresetList[currentSample]);
+	++currentSample;
+	if( currentSample == 20 ){
+		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
+	}
+	
+	printf("------------------GEOMETRIC MOMENTS-----------------\n");
+	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+			float average = 0.0f;
+			for(int i = 0; i < currentSample; ++i){
+				average += featuresetList[i]->geometricMoments[p-1][q-1];
+			}
+			average /= (float)currentSample;
+			float standardDeviation = 0.0f;
+			for(int i = 0; i < currentSample; ++i){
+				standardDeviation += (featuresetList[i]->geometricMoments[p-1][q-1] - average)*(featuresetList[i]->geometricMoments[p-1][q-1] - average);
+			}
+			standardDeviation /= (float)currentSample;
+			standardDeviation = sqrt(standardDeviation);
+			printf("order (p,q)=(%d,%d) has average value %f with standard deviation %f\n", p, q, average, standardDeviation);
+		}
+	}
+	printf("----------------------------------------------------\n");
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 void recognizer_create_image(LRecognizer *recog)
 {    
     // DEBUG: arbitrary number for now
@@ -190,7 +225,7 @@ void recognizer_create_image(LRecognizer *recog)
     recog->source_image = image;
     image_thin(recog->source_image);
     image_end_points(recog->source_image);
-
+    recognizer_showMoments(recog);
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
 }
