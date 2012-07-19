@@ -236,6 +236,7 @@ int image_thin(LImage* image)
 						{
 							if(image->grid[get_neighbour(i, j, k, n)] && k%2 == 1) image->grid[i*n+j] = 0;
 						}
+					}
 				}
 				if(count >= 3 && count <= 5)
 				{
