@@ -14,11 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Includes Listener, for callback support
 #include "LListener.h"
 #include "LMatch.h"
+#include "LFeatures.h"
 
-// The Recognizer struct itself
 typedef struct {
     int image_size; // has to be odd
 
@@ -47,7 +46,7 @@ void recognizer_create_image(LRecognizer *recog);
 
 // Matching
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet);
-float recognizer_compare(LRecognizer *recog, LImage* source, LImage* test);
+float recognizer_compare(LRecognizer *recog, LFeatureSet* source, LFeatureSet* test);
 
 // Postprocessing & reporting
 void recognizer_gather_results(LRecognizer *recog);

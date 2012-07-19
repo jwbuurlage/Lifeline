@@ -29,6 +29,8 @@
     
     LPointData* pointData;
     
+    NSTimeInterval time_ref;
+    
     // paths for the view
     NSMutableArray* paths;
     UIBezierPath* bp;
