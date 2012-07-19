@@ -21,7 +21,7 @@ void image_moments(LImage* image, LFeatureSet* output);
 int image_branch_points(LImage* image);
 int image_end_points(LImage* image);
 int image_cross_points(LImage* image);
-int image_point_remover(LImage* image);
+int image_thin(LImage* image);
 
 ///////////////////////////////////////////////////////////////////////////////
 
