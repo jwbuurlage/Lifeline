@@ -41,7 +41,7 @@ LPoint* points_center(LPointData* pointData)
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 {
-    recog->image_size = 65;
+    recog->image_size = 33;
     
     if(recog->source_points != 0)
     {
@@ -188,8 +188,9 @@ void recognizer_create_image(LRecognizer *recog)
     }
     
     recog->source_image = image;
+    image_point_remover(recog->source_image);
     image_end_points(recog->source_image);
-    
+
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
 }

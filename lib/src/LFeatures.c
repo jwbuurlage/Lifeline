@@ -200,7 +200,7 @@ int image_counter(LImage* image, int i, int j, int n)
 	return count;
 }
 
-List* image_point_remover(LImage* image)
+int image_point_remover(LImage* image)
 {
 	int n = image->size;
     for(int i = 0; i < n; ++i)
@@ -267,6 +267,7 @@ List* image_point_remover(LImage* image)
 	}
 	return 0;	
 }
+
 int image_end_points(LImage* image)
 {
 	int n = image->size;
@@ -286,6 +287,7 @@ int image_end_points(LImage* image)
 	}
 	return 0;	
 }
+
 int image_cross_points(LImage* image){
 	return 0;
 }

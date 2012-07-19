@@ -11,6 +11,9 @@
 #import "LLWritepad.h"
 #import "LLListenerProtocol.h"
 
+///////////////////////////////////////////////////////////////////////////////
+
+
 @implementation LLWritepad
 
 - (id)initWithFrame:(CGRect)aFrame delegate:(id <LLListener>)delegate
@@ -46,6 +49,7 @@
 
 @end
 
+///////////////////////////////////////////////////////////////////////////////
 
 @implementation LLWritepadController
 
@@ -139,5 +143,7 @@
     [paths removeAllObjects];
     [pad setNeedsDisplay];
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 @end
