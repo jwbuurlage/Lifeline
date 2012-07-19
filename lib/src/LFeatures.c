@@ -215,10 +215,10 @@ int image_thin(LImage* image)
 				{
 					image->grid[i*n+j] = 0;
 				}
-				if(count == 2)
+				/*if(count == 2)
 				{
 					int state = 0;
-					for(int k; k < 8; k++)
+					for(int k = 0; k < 8; k++)
 					{
 						if(state == 0)
 						{
@@ -237,8 +237,8 @@ int image_thin(LImage* image)
 							if(image->grid[get_neighbour(i, j, k, n)] && k%2 == 1) image->grid[i*n+j] = 0;
 						}
 					}
-				}
-				if(count >= 3 && count <= 5)
+				}*/
+				if(count >= 2 && count <= 5)
 				{
 					int firstBlack = -1;
 					int state = 0;

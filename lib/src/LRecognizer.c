@@ -54,7 +54,7 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
     recognizer_normalize_data(recog);
     recognizer_connect_data(recog);
     recognizer_create_image(recog);
-    //recognizer_score_against(recog, recog->charSet);
+    recognizer_score_against(recog, recog->charSet);
 }
 
 // Preprocessing
@@ -163,6 +163,9 @@ void recognizer_showMoments(LRecognizer *recog)
 		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
 	}
 	
+	FILE *fp;
+	fp=fopen("geomoments.txt", "w+");
+	
 	printf("------------------GEOMETRIC MOMENTS-----------------\n");
 	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
 		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
@@ -178,9 +181,12 @@ void recognizer_showMoments(LRecognizer *recog)
 			standardDeviation /= (float)currentSample;
 			standardDeviation = sqrt(standardDeviation);
 			printf("order (p,q)=(%d,%d) has average value %f with standard deviation %f\n", p, q, average, standardDeviation);
+			fprintf(fp, "%f %f\n", average, standardDeviation);
 		}
 	}
 	printf("----------------------------------------------------\n");
+	
+	fclose(fp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
