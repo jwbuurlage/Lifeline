@@ -38,7 +38,6 @@
 		AC817B1015A4B43400F0D3DF /* LListener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LListener.h; sourceTree = "<group>"; };
 		AC817B1115A4B43400F0D3DF /* LMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMatch.h; sourceTree = "<group>"; };
 		AC817B1215A4B43400F0D3DF /* LRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LRecognizer.h; sourceTree = "<group>"; };
-		AC817B1315A4B43400F0D3DF /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		AC817B1515A4B43400F0D3DF /* LRecognizer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LRecognizer.c; sourceTree = "<group>"; };
 		AC817B1615A4BE9D00F0D3DF /* DataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataStructures.h; sourceTree = "<group>"; };
 		AC817B1815A4BED200F0D3DF /* DataStructures.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataStructures.c; sourceTree = "<group>"; };
@@ -113,7 +112,6 @@
 			children = (
 				AC1927B915A5C46800762F74 /* libLifeline.a */,
 				AC817B0F15A4B43400F0D3DF /* include */,
-				AC817B1315A4B43400F0D3DF /* Makefile */,
 				AC817B1415A4B43400F0D3DF /* src */,
 			);
 			name = lib;
