@@ -92,7 +92,8 @@ float image_zernike_moment(LImage* image)
 
 int get_neighbour(int i, int j, int neighbour, int n)
 {
-	if(neighbour == 0 || neighbour == 8)
+	neighbour = neighbour % 8;
+	if(neighbour == 0)
 	{
 		return (i-1)*n+j-1;
 	}
@@ -239,14 +240,16 @@ int image_thin(LImage* image)
 				}
 				if(count >= 3 && count <= 5)
 				{
+					int firstBlack = -1;
 					int state = 0;
 					int sec_state = 0;
-					for(int k; k < 8; k++)
+					for(int k = 0; k < 16; k++)
 					{
 						if(state == 0)
 						{
 							if(image->grid[get_neighbour(i, j, k, n)]) 
 							{
+								if( firstBlack == -1 ) firstBlack = k;
 								state = 1;
 							}
 						}
@@ -256,7 +259,6 @@ int image_thin(LImage* image)
 						}
 						else if(state == 2)
 						{
-							
 							if(image->grid[get_neighbour(i, j, k, n)])
 							{
 								if(k%2 == 1) // Als er een enkele whitespace tussen 2 zwarte vakjes zit op een hoekpunt.
@@ -276,8 +278,9 @@ int image_thin(LImage* image)
 								
 							}
 						}
-						
-						
+						if( k >= 8 ){
+							if( (k-8) >= firstBlack ) break;						
+						}
 					}
 					if(sec_state <= 1)
 					{
