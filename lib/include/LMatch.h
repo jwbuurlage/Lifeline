@@ -112,7 +112,7 @@ typedef struct
 
 static inline LPoint* LPointMake(float x, float y, float t)
 {
-    LPoint *point = malloc(sizeof(LPoint));
+    LPoint *point = (LPoint*)malloc(sizeof(LPoint));
     point->x = x;
     point->y = y;
     point->t = t;
@@ -122,12 +122,12 @@ static inline LPoint* LPointMake(float x, float y, float t)
 static inline LRect* LRectMake(float x_min, float x_max, 
                                float y_min, float y_max)
 {
-    LRect *rect = malloc(sizeof(LRect));
+    LRect *rect = (LRect*)malloc(sizeof(LRect));
     rect->x_min = x_min;
     rect->x_max = x_max;
     rect->y_min = y_min;
     rect->y_max = y_max;
-    return rect;   
+    return rect;
 }
 
 static inline void LRectSet(LRect* rect, float x_min, float x_max, 

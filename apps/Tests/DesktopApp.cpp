@@ -2,6 +2,10 @@
 #include <SFML/Window.hpp>
 #include <vector>
 #include <iostream>
+extern "C"{
+#include "LRecognizer.h"
+#include "LListener.h"
+}
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y);
 void mouseMoved(int x, int y);
@@ -23,27 +27,42 @@ struct Touch{
 
 std::vector< std::vector<Touch> > strokeList; //each element contains a list of points which is a stroke
 
+void callbackBest_match(char character, void* obj);
+void callbackResult_set(LResultSet* result, void* obj);
+void callbackSource_image(LImage* src, void* obj);
+
+LRecognizer recognizer;
+
+LImage* result_image;
+
 int main(){
 	std::cout << "---------------------------------\n";
 	std::cout << "----- Lifeline test station -----\n";
 	std::cout << "--- Press ESC to clear screen ---\n";
 	std::cout << "------ Press enter to send ------\n";
 	std::cout << "---------------------------------\n";
+	
+	recognizer.listener.char_found = callbackBest_match;
+	recognizer.listener.result_set = callbackResult_set;
+	recognizer.listener.source_image = callbackSource_image;
 
-	window = new sf::RenderWindow(sf::VideoMode(400, 300, 32), "Testing Station");
+	window = new sf::RenderWindow(sf::VideoMode(800, 600, 32), "Testing Station");
 	timer = new sf::Clock;
 
 	sf::Event Event;
 
 	drawing = false;
 	strokeList.clear();
+	timer->Reset();
 	while( window->IsOpened() ){
 		while(window->GetEvent(Event)) {
 			switch( Event.Type ){
 			case sf::Event::KeyPressed: break;
 			case sf::Event::KeyReleased: 
-				if (Event.Key.Code == sf::Key::Escape) strokeList.clear();
-				else if(Event.Key.Code == sf::Key::Return) sendInput();
+				if (Event.Key.Code == sf::Key::Escape){
+					if( strokeList.empty() ) window->Close();
+					else strokeList.clear();
+				}else if(Event.Key.Code == sf::Key::Return) sendInput();
 				break;
 			case sf::Event::MouseWheelMoved: break;
 			case sf::Event::MouseMoved:
@@ -80,6 +99,24 @@ int main(){
 				}
 			}
 		}
+		
+		if( result_image ){
+			int n = result_image->size;
+			
+			window->Draw(sf::Shape::Rectangle(5,5,4*n+14, 4*n+14, sf::Color(200,200,200, 200)));
+			
+			for(int i = 0; i < n; ++i)
+			{
+				for(int j = 0; j < n; ++j)
+				{
+					int color = result_image->grid[i*n+j];
+					if( color ){
+						window->Draw(sf::Shape::Rectangle(10+4*j,10+4*i, 10+4*j+3, 10+4*i+3, sf::Color(color == 1 ? 0 : 255,0,0)));
+					}
+				}
+			}
+		}
+		
 
 		window->Display();
 		sf::Sleep(0.020f);
@@ -91,7 +128,7 @@ int main(){
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y){
 	if( down == true ){
-		timer->Reset();
+		if( strokeList.empty() ) timer->Reset();
 		previousX = x; 
 		previousY = y;
 		drawing = true;
@@ -113,5 +150,42 @@ void mouseMoved(int x, int y){
 }
 
 void sendInput(){
+	if( strokeList.empty() ) return;
+	
+	LPointData point_data;
+	list_init(&point_data, free);
+	
+	for( std::vector< std::vector<Touch> >::iterator lineIter = strokeList.begin(); lineIter != strokeList.end(); ++lineIter ){
+		for( std::vector<Touch>::iterator touchIter = lineIter->begin(); touchIter != lineIter->end(); ++touchIter ){
+			LPoint* point = (LPoint*)malloc(sizeof(LPoint));
+			point->x = touchIter->x;
+			point->y = touchIter->y;
+			point->t = touchIter->time;
+			list_insert_next( &point_data, point_data.tail, point);
+		}
+	}
+	
+	recognizer.source_points = 0;
+	recognizer_set_data(&recognizer, &point_data);
+	list_destroy(&point_data);
+}
+
+void callbackBest_match(char character, void* obj)
+{
 
 }
+
+void callbackResult_set(LResultSet* result, void* obj)
+{
+
+}
+
+void callbackSource_image(LImage* src, void* obj)
+{
+	if( result_image ){
+		free(result_image->grid);
+		free(result_image);
+	}
+	result_image = src;
+}
+
