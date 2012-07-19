@@ -2,6 +2,9 @@
 #include <SFML/Window.hpp>
 #include <vector>
 #include <iostream>
+extern "C"{
+#include "LRecognizer.h"
+}
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y);
 void mouseMoved(int x, int y);
@@ -113,5 +116,7 @@ void mouseMoved(int x, int y){
 }
 
 void sendInput(){
-
+	LRecognizer recognizer;
+	LPointData point_data;
+	recognizer_set_data(&recognizer, &point_data);
 }
