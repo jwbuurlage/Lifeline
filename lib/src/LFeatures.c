@@ -200,7 +200,7 @@ int image_counter(LImage* image, int i, int j, int n)
 	return count;
 }
 
-List* image_point_remover(LImage* image)
+List* image_thin(LImage* image)
 {
 	int n = image->size;
     for(int i = 0; i < n; ++i)
@@ -214,7 +214,30 @@ List* image_point_remover(LImage* image)
 				{
 					image->grid[i*n+j] = 0;
 				}
-				if(count >= 2 && count <= 5)
+				if(count = 2)
+				{
+					int whiteCount = 0;
+					int state = 0;
+					for(int k; k < 8; k++)
+					{
+						if(state == 0)
+						{
+							if(image->grid[get_neighbour(i, j, k, n)]) 
+							{
+								state = 1;
+							}
+						}
+						else if(state == 1)
+						{
+							if(!image->grid[get_neighbour(i, j, k, n)]) state = 2;	
+							else image->grid[i*n+j] = 0;
+						}
+						else if(state == 2)
+						{
+							if(image->grid[get_neighbour(i, j, k, n)] && k%2 == 1) image->grid[i*n+j] = 0;
+						}
+				}
+				if(count >= 3 && count <= 5)
 				{
 					int whiteCount = 0;
 					int state = 0;
