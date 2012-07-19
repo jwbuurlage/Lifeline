@@ -21,7 +21,7 @@ struct Touch{
 	~Touch(){};
 };
 
-std::vector<std::vector<Touch>> strokeList; //each element contains a list of points which is a stroke
+std::vector< std::vector<Touch> > strokeList; //each element contains a list of points which is a stroke
 
 int main(){
 	std::cout << "---------------------------------\n";
@@ -65,7 +65,7 @@ int main(){
 		window->Clear(sf::Color(150,200, 230));
 
 		if( strokeList.empty() == false ){
-			for( std::vector<std::vector<Touch>>::iterator lineIter = strokeList.begin(); lineIter != strokeList.end(); ++lineIter ){
+			for( std::vector< std::vector<Touch> >::iterator lineIter = strokeList.begin(); lineIter != strokeList.end(); ++lineIter ){
 				if( lineIter->empty() ) continue;
 				float prevX, prevY;
 				std::vector<Touch>::iterator iter = lineIter->begin();
