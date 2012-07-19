@@ -18,6 +18,9 @@ SET(
 SET(
 	PROJECT_LIBRARIES
 	"lifeline"
+	"sfml-graphics"
+	"sfml-window"
+	"sfml-system"
 )
 
 #----------- DO NOT EDIT BELOW --------------
