@@ -41,7 +41,7 @@ LPoint* points_center(LPointData* pointData)
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 {
-    recog->image_size = 33;
+    recog->image_size = 65;
     
     if(recog->source_points != 0)
     {

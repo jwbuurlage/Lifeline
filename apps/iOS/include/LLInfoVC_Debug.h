@@ -8,14 +8,16 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#import <UIKit/UIKit.h>
-#import <LMatch.h>
+#include "LLGridView_Debug.h"
 
-@interface LLGridView : UIView
+@interface LLInfoVC : UIViewController
 {
-    LImage* representedImage;
+    id delegate;
+    LLGridView* gridView;  
 }
 
--(void)setImage:(LImage*)image;
+@property (readwrite) id delegate;
+
+- (void)setImage:(LImage*)image;
 
 @end

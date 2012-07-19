@@ -11,14 +11,16 @@
 #import <UIKit/UIKit.h>
 
 #import "LLListenerProtocol.h"
-#include "LLGridView_Debug.h"
+#include "LLInfoVC_Debug.h"
+
 
 @interface LLDocumentViewController : UIViewController <LLListener>
 {
     UITextView* textView;
     
     // DEBUG
-    _LLGridView* gridView;
+    LLInfoVC* infoDebug;
+    LImage* _image;
     UITextView* results;
 }
 

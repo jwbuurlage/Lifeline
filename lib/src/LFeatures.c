@@ -214,9 +214,8 @@ int image_thin(LImage* image)
 				{
 					image->grid[i*n+j] = 0;
 				}
-				if(count = 2)
+				if(count == 2)
 				{
-					int whiteCount = 0;
 					int state = 0;
 					for(int k; k < 8; k++)
 					{
@@ -240,7 +239,6 @@ int image_thin(LImage* image)
 				}
 				if(count >= 3 && count <= 5)
 				{
-					int whiteCount = 0;
 					int state = 0;
 					int sec_state = 0;
 					for(int k; k < 8; k++)

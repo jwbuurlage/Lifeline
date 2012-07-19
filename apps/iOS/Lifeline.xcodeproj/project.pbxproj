@@ -18,6 +18,7 @@
 		ACC9EB2415A380AC002D57CC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2315A380AC002D57CC /* UIKit.framework */; };
 		ACC9EB2615A380AC002D57CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2515A380AC002D57CC /* Foundation.framework */; };
 		ACC9EB2815A380AC002D57CC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */; };
+		ACD9F45815B7BC24008EE376 /* LLInfoVC_Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD9F45715B7BC24008EE376 /* LLInfoVC_Debug.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,8 @@
 		ACC9EB2515A380AC002D57CC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ACC9EB2715A380AC002D57CC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		ACD9F3E815B75CFD008EE376 /* LFeatures.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LFeatures.c; sourceTree = "<group>"; };
+		ACD9F45715B7BC24008EE376 /* LLInfoVC_Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LLInfoVC_Debug.m; sourceTree = "<group>"; };
+		ACD9F45A15B7BC3B008EE376 /* LLInfoVC_Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LLInfoVC_Debug.h; sourceTree = "<group>"; };
 		ACF39C0415AEFF8B00909185 /* LFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFeatures.h; sourceTree = "<group>"; };
 		ACF69BA315A60230003E2978 /* LTestCharacters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTestCharacters.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,6 +77,7 @@
 				AC5B409615A387B700C44F39 /* LLWritepad.h */,
 				AC15DBA615A449C40090E37B /* LLListenerProtocol.h */,
 				AC49F3A415A5DC0F00694CCB /* LLGridView_Debug.h */,
+				ACD9F45A15B7BC3B008EE376 /* LLInfoVC_Debug.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -93,6 +97,7 @@
 				AC4472A515A3851C006F99ED /* LLDocumentViewController.m */,
 				AC5B409315A387A200C44F39 /* LLWritepad.m */,
 				AC49F3A515A5DC1D00694CCB /* LLGridView_Debug.m */,
+				ACD9F45715B7BC24008EE376 /* LLInfoVC_Debug.m */,
 				AC4472A615A3851C006F99ED /* main.m */,
 			);
 			path = src;
@@ -242,6 +247,7 @@
 				AC4472AC15A3851C006F99ED /* main.m in Sources */,
 				AC5B409415A387A200C44F39 /* LLWritepad.m in Sources */,
 				AC49F3A615A5DC1D00694CCB /* LLGridView_Debug.m in Sources */,
+				ACD9F45815B7BC24008EE376 /* LLInfoVC_Debug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
