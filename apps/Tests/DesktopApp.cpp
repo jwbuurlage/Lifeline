@@ -107,7 +107,8 @@ int main(){
 		if( result_image ){
 			int n = result_image->size;
 			
-			window->Draw(sf::Shape::Rectangle(5,5,4*n+14, 4*n+14, sf::Color(200,200,200, 200)));
+			const int px = 5;
+			window->Draw(sf::Shape::Rectangle(5,5,px*n+15, px*n+15, sf::Color(255,255,255, 200)));
 			sf::Color pixelColor;
 			for(int i = 0; i < n; ++i)
 			{
@@ -119,7 +120,7 @@ int main(){
 						else if( color == 2 ) pixelColor = sf::Color(255,0,0);
 						else if( color == 3 ) pixelColor = sf::Color(0,0,255);
 						else if( color == 4 ) pixelColor = sf::Color(0,255,0);
-						window->Draw(sf::Shape::Rectangle(10+4*j,10+4*i, 10+4*j+3, 10+4*i+3, pixelColor));
+						window->Draw(sf::Shape::Rectangle(10+px*j,10+px*i, 10+px*j+px-1, 10+px*i+px-1, pixelColor));
 					}
 				}
 			}
