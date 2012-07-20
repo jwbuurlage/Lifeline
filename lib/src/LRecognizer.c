@@ -38,6 +38,39 @@ LPoint* points_center(LPointData* pointData)
                       y_min + (y_max - y_min) / 2, 0);
 }
 
+// Loading data from files
+void recognizer_load_data(LRecognizer *recog)
+{
+/*
+	float average, standardDeviation;
+	FILE *fp;
+	fp=fopen("geomomentsO.txt", "r");
+	if( fp ){
+		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+				fscanf(fp, "%f %f\n", &average, &standardDeviation);
+				recog->loadedCharacters['O'].geometricMoments[p-1][q-1] = average;
+				recog->loadedCharacters['O'].geometricDeviations[p-1][q-1] = standardDeviation;
+				printf("O: p,q,avg,sigma = %d,%d,%f,%f\n",p,q,average,standardDeviation);
+			}
+		}
+		fclose(fp);
+	}
+	fp=fopen("geomomentsL.txt", "r");
+	if( fp ){
+		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+				fscanf(fp, "%f %f\n", &average, &standardDeviation);
+				recog->loadedCharacters['L'].geometricMoments[p-1][q-1] = average;
+				recog->loadedCharacters['L'].geometricDeviations[p-1][q-1] = standardDeviation;
+				printf("L: p,q,avg,sigma = %d,%d,%f,%f\n",p,q,average,standardDeviation);
+			}
+		}
+		fclose(fp);
+	}
+*/
+}
+
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 {
@@ -54,7 +87,7 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
     recognizer_normalize_data(recog);
     recognizer_connect_data(recog);
     recognizer_create_image(recog);
-    //recognizer_score_against(recog, recog->charSet);
+    recognizer_score_against(recog, recog->charSet);
 }
 
 // Preprocessing
@@ -156,14 +189,18 @@ int currentSample = 0;
 
 void recognizer_showMoments(LRecognizer *recog)
 {
+	if( currentSample == 20 ){
+		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
+		currentSample = 0;
+	}
 	featuresetList[currentSample] = (PLFeatureSet)malloc(sizeof(LFeatureSet));
 	image_moments(recog->source_image, featuresetList[currentSample]);
 	++currentSample;
-	if( currentSample == 20 ){
-		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
-	}
+
 	
-	printf("------------------GEOMETRIC MOMENTS-----------------\n");
+	FILE *fp;
+	fp=fopen("geomoments.txt", "w+");
+	
 	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
 		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
 			float average = 0.0f;
@@ -177,10 +214,11 @@ void recognizer_showMoments(LRecognizer *recog)
 			}
 			standardDeviation /= (float)currentSample;
 			standardDeviation = sqrt(standardDeviation);
-			printf("order (p,q)=(%d,%d) has average value %f with standard deviation %f\n", p, q, average, standardDeviation);
+			fprintf(fp, "%f %f\n", average, standardDeviation);
 		}
 	}
-	printf("----------------------------------------------------\n");
+	
+	fclose(fp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -193,8 +231,8 @@ void recognizer_create_image(LRecognizer *recog)
     LImage* image = malloc(sizeof(LImage));
     
     image->size = n;
-    image->grid = malloc(sizeof(unsigned int) * n * n);
-    memset(image->grid, 0, sizeof(unsigned int) * n * n);
+    image->grid = malloc(sizeof(unsigned int) * (n * n + 1));
+    memset(image->grid, 0, sizeof(unsigned int) * (n * n + 1));
     
     float interval = 2 / (float)n;
 
@@ -232,7 +270,28 @@ void recognizer_create_image(LRecognizer *recog)
 
 // Matching
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
-{    
+{
+/*
+	float scoreO = 0.0f;
+	float scoreL = 0.0f;
+	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+			float avgO = recog->loadedCharacters['O'].geometricMoments[p-1][q-1];
+			float SDO = recog->loadedCharacters['O'].geometricDeviations[p-1][q-1];
+			float avgL = recog->loadedCharacters['L'].geometricMoments[p-1][q-1];
+			float SDL = recog->loadedCharacters['L'].geometricDeviations[p-1][q-1];
+			float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
+			scoreO += (measure - avgO)*(measure - avgO) / (SDO*SDO);
+			scoreL += (measure - avgL)*(measure - avgL) / (SDL*SDL);
+		}
+	}
+	
+	//printf("Score O = %f \t Score L = %f\n", scoreO, scoreL);
+	if( scoreO > scoreL ) printf("L");
+	else printf("O");
+	fflush(stdout);
+*/
+
 //    LResultSet* result = malloc(sizeof(LResultSet));
 //    list_init(result, free);
 //

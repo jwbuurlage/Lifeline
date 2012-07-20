@@ -45,6 +45,7 @@ int main(){
 	recognizer.listener.char_found = callbackBest_match;
 	recognizer.listener.result_set = callbackResult_set;
 	recognizer.listener.source_image = callbackSource_image;
+	recognizer_load_data(&recognizer);
 
 	window = new sf::RenderWindow(sf::VideoMode(800, 600, 32), "Testing Station");
 	timer = new sf::Clock;
@@ -62,7 +63,10 @@ int main(){
 				if (Event.Key.Code == sf::Key::Escape){
 					if( strokeList.empty() ) window->Close();
 					else strokeList.clear();
-				}else if(Event.Key.Code == sf::Key::Return) sendInput();
+				}else if(Event.Key.Code == sf::Key::Return){
+					sendInput();
+					strokeList.clear();
+				}
 				break;
 			case sf::Event::MouseWheelMoved: break;
 			case sf::Event::MouseMoved:

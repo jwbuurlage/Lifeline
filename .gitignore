@@ -14,3 +14,4 @@ CMakeCache.txt
 cmake_install.cmake
 apps/Tests/cmake_install.cmake
 lib/cmake_install.cmake
+geomoments.txt
