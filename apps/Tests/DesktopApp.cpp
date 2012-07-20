@@ -117,7 +117,7 @@ int main(){
 					if( color ){
 						if( color == 1 ) pixelColor = sf::Color(0,0,0);
 						else if( color == 2 ) pixelColor = sf::Color(255,0,0);
-						else if( color == 2 ) pixelColor = sf::Color(0,0,255);
+						else if( color == 3 ) pixelColor = sf::Color(0,0,255);
 						else if( color == 4 ) pixelColor = sf::Color(0,255,0);
 						window->Draw(sf::Shape::Rectangle(10+4*j,10+4*i, 10+4*j+3, 10+4*i+3, pixelColor));
 					}

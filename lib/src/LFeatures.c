@@ -325,6 +325,150 @@ int image_end_points(LImage* image)
 	return 0;	
 }
 
+int image_counter_branch(LImage* image, int i, int j, int n)
+{
+	int count = 0;
+	if( i!=0 && i!=(n-1) && j!=0 && j!=(n-1) )
+	{
+		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;	
+		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;	
+		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;										
+	}	
+	else if(i!=0 && i!=(n-1) && j!=0 && j==(n-1))
+	{	
+		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;	
+	}
+	else if( i!=0 && i!=(n-1) && j==0 && j!=(n-1) )
+	{
+		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
+	}
+	else if( i!=0 && i==(n-1) && j!=0 && j!=(n-1) )
+	{
+		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;
+	}
+	else if( i==0 && i!=(n-1) && j!=0 && j!=(n-1) )
+	{					
+		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;						
+	}
+	else if( i==0 && i!=(n-1) && j==0 && j!=(n-1) )
+	{	
+		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;										
+	}	
+	else if( i==0 && i!=(n-1) && j!=0 && j==(n-1) )
+	{						
+		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;							
+	}	
+	else if( i!=0 && i==(n-1) && j==0 && j!=(n-1) )
+	{					
+		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;						
+	}	
+	else if( i!=0 && i==(n-1) && j!=0 && j==(n-1) )
+	{						
+		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
+		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;							
+	}					
+	return count;
+}
+
+int image_branch_points(LImage* image)
+{
+	int n = image->size;
+	for(int i = 0; i < n; ++i)
+    {
+    	for(int j = 0; j < n; ++j)
+      	{
+			int count = image_counter(image, i, j, n);
+			if(image->grid[i*n+j] && count > 2)
+			{
+				image->grid[i*n+j] = 3;
+			}
+		}
+	}
+	for(int i = 0; i < n; ++i)
+    {
+    	for(int j = 0; j < n; ++j)
+      	{
+      		int countBr = image_counter_branch(image, i, j, n);
+      		if(image->grid[i*n+j] == 3 && countBr > 1)
+      		{
+				int state = 0;
+				for(int k = 0; k < 16; k++)
+				{
+					if(state == 0)
+					{
+						if(image->grid[get_neighbour(i, j, k, n)] == 3) 
+						{
+							state = 1;
+						}
+					}
+					else if(state == 1)
+					{
+						if(image->grid[get_neighbour(i, j, k, n)] == 0) state = 2;	
+					}
+					else if(state == 2)
+					{
+						if(image->grid[get_neighbour(i, j, k, n)] == 3)
+						{
+							image->grid[get_neighbour(i, j, k - 1, n)] = 4;
+							image->grid[get_neighbour(i, j, k - 2, n)] = 1;
+							image->grid[get_neighbour(i, j, k, n)] = 1;
+							image->grid[i*n+j] = 1;
+						}
+						else
+						{
+							state = 0;							
+						}
+					}
+				}
+      		}
+      		if(image->grid[i*n+j] == 4 && countBr == 1)
+      		{
+      			int state = 0;
+				for(int k = 0; k < 16; k++)
+				{
+					if(state == 0)
+					{
+						if(image->grid[get_neighbour(i, j, k, n)] == 3) 
+						{
+							image->grid[get_neighbour(i, j, k, n)] = 1;
+							image->grid[i*n+j] = 3;
+						}
+					}
+				}	
+      		}
+      	}
+    }
+	return 0;
+}
+
 int image_cross_points(LImage* image){
 	return 0;
 }
