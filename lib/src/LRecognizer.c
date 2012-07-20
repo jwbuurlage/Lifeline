@@ -187,7 +187,7 @@ typedef LFeatureSet* PLFeatureSet;
 PLFeatureSet featuresetList[20];
 int currentSample = 0;
 
-void recognizer_showMoments(LRecognizer *recog)
+void recognizer_show_moments(LRecognizer *recog)
 {
 	if( currentSample == 20 ){
 		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
@@ -264,7 +264,7 @@ void recognizer_create_image(LRecognizer *recog)
     image_thin(recog->source_image);
     image_branch_points(recog->source_image);
     image_end_points(recog->source_image);
-    recognizer_showMoments(recog);
+    //recognizer_show_moments(recog);
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
 }

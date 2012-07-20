@@ -49,6 +49,8 @@ void recognizer_normalize_data(LRecognizer *recog);
 void recognizer_connect_data(LRecognizer *recog);
 void recognizer_create_image(LRecognizer *recog);
 
+void recognizer_show_moments(LRecognizer *recog);
+
 // Matching
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet);
 float recognizer_compare(LRecognizer *recog, LFeatureSet* source, LFeatureSet* test);
