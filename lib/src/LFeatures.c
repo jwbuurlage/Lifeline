@@ -93,6 +93,18 @@ float image_zernike_moment(LImage* image)
 int get_neighbour(int i, int j, int neighbour, int n)
 {
 	neighbour = neighbour % 8;
+	
+	if( i == 0 ){
+		if( neighbour <= 2 ) return n*n;
+	}else if( i == n-1 ){
+		if( neighbour >= 4 && neighbour <= 6 ) return n*n;
+	}
+	if( j == 0 ){
+		if( neighbour >= 6 || neighbour == 0 ) return n*n;
+	}else if( j == n-1 ){
+		if( neighbour >= 2 && neighbour <= 4 ) return n*n;
+	}
+	
 	if(neighbour == 0)
 	{
 		return (i-1)*n+j-1;
