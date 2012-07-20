@@ -451,19 +451,22 @@ int image_branch_points(LImage* image)
       		}
       		if(image->grid[i*n+j] == 4 && countBr == 1)
       		{
-      			int state = 0;
-				for(int k = 0; k < 16; k++)
+				for(int k = 0; k < 8; k++)
 				{
-					if(state == 0)
+					if(image->grid[get_neighbour(i, j, k, n)] == 3) 
 					{
-						if(image->grid[get_neighbour(i, j, k, n)] == 3) 
-						{
-							image->grid[get_neighbour(i, j, k, n)] = 1;
-							image->grid[i*n+j] = 3;
-						}
+						image->grid[get_neighbour(i, j, k, n)] = 1;
+						image->grid[i*n+j] = 3;
 					}
 				}	
       		}
+      	}
+    }
+    for(int i = 0; i < n; ++i)
+    {
+    	for(int j = 0; j < n; ++j)
+      	{
+     		if(image->grid[i*n+j] == 4) image->grid[i*n+j] = 3;
       	}
     }
 	return 0;
