@@ -230,9 +230,13 @@ void recognizer_create_image(LRecognizer *recog)
     
     LImage* image = malloc(sizeof(LImage));
     
+    //Note that we allocate n*n + 1 gridpoints because we use the extra grid point
+    //at get_neighbour at the edges: when requesting a neighbour that it outside
+    //the field, it returns this extra dummy square which is not enabled so we
+    //get exactly the right result.
     image->size = n;
-    image->grid = malloc(sizeof(unsigned int) * (n * n + 1));
-    memset(image->grid, 0, sizeof(unsigned int) * (n * n + 1));
+    image->grid = malloc(sizeof(LGridPoint) * (n * n + 1));
+    memset(image->grid, 0, sizeof(LGridPoint) * (n * n + 1));
     
     float interval = 2 / (float)n;
 
@@ -253,7 +257,7 @@ void recognizer_create_image(LRecognizer *recog)
                                 -1 + interval * (i + 1));
                 
                 if(LPointInRect(*point, *rect))
-                    image->grid[i*n + j] = 1;
+                    image->grid[i*n + j].enabled = 1;
                 
                         element = element->next; 
             } while(element);

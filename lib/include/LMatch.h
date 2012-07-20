@@ -30,8 +30,16 @@ typedef enum
 
 typedef struct
 {
+	unsigned char enabled; //if it is drawn
+	unsigned char type; //0=normal;1=endpoint;2=branch
+	unsigned char componentNum; //when counting connected components, we give each component a number
+	unsigned char dummy; //used internally in algorithms, has no output meaning
+} LGridPoint;
+
+typedef struct
+{
     int size;      // n
-    unsigned int* grid;    // n x n
+    LGridPoint* grid;    // n x n
 } LImage;
 
 typedef struct

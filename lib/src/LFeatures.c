@@ -57,7 +57,7 @@ void image_moments(LImage* image, LFeatureSet* output)
     {
         for(int j = 0; j < n; ++j)
         {
-			if(image->grid[i*n+j])
+			if(image->grid[i*n+j].enabled)
 			{
 				//We need to add this pixels coordinate to the sum
 				//But the coordinates are first mapped to [-1,1]
@@ -94,6 +94,7 @@ int get_neighbour(int i, int j, int neighbour, int n)
 {
 	neighbour = neighbour % 8;
 	
+	//Check edges
 	if( i == 0 ){
 		if( neighbour <= 2 ) return n*n;
 	}else if( i == n-1 ){
@@ -104,112 +105,24 @@ int get_neighbour(int i, int j, int neighbour, int n)
 	}else if( j == n-1 ){
 		if( neighbour >= 2 && neighbour <= 4 ) return n*n;
 	}
-	
-	if(neighbour == 0)
+	switch(neighbour)
 	{
-		return (i-1)*n+j-1;
+		case 0: return (i-1)*n+j-1;
+		case 1: return (i-1)*n+j;
+		case 2: return (i-1)*n+j+1;
+		case 3: return (i)*n+j+1;
+		case 4: return (i+1)*n+j+1;
+		case 5: return (i+1)*n+j;
+		case 6: return (i+1)*n+j-1;
+		case 7: return (i)*n+j-1;
+		default: return n*n;
 	}
-	else if(neighbour == 1)
-	{
-		return (i-1)*n+j;
-	}
-	else if(neighbour == 2)
-	{
-		return (i-1)*n+j+1;
-	}
-	else if(neighbour == 3)
-	{
-		return (i)*n+j+1;
-	}
-	else if(neighbour == 4)
-	{
-		return (i+1)*n+j+1;
-	}
-	else if(neighbour == 5)
-	{
-		return (i+1)*n+j;
-	}
-	else if(neighbour == 6)
-	{
-		return (i+1)*n+j-1;
-	}
-	else if(neighbour == 7)
-	{
-		return (i)*n+j-1;
-	}
-	return 0;
 }
 
 int image_counter(LImage* image, int i, int j, int n)
 {
 	int count = 0;
-	if( i!=0 && i!=(n-1) && j!=0 && j!=(n-1) )
-	{
-		if(image->grid[get_neighbour(i,j,0,n)]) count++;	
-		if(image->grid[get_neighbour(i,j,1,n)]) count++;
-		if(image->grid[get_neighbour(i,j,2,n)]) count++;
-		if(image->grid[get_neighbour(i,j,3,n)]) count++;	
-		if(image->grid[get_neighbour(i,j,4,n)]) count++;
-		if(image->grid[get_neighbour(i,j,5,n)]) count++;
-		if(image->grid[get_neighbour(i,j,6,n)]) count++;
-		if(image->grid[get_neighbour(i,j,7,n)]) count++;										
-	}	
-	else if(i!=0 && i!=(n-1) && j!=0 && j==(n-1))
-	{	
-		if(image->grid[get_neighbour(i,j,0,n)]) count++;
-		if(image->grid[get_neighbour(i,j,1,n)]) count++;
-		if(image->grid[get_neighbour(i,j,5,n)]) count++;
-		if(image->grid[get_neighbour(i,j,6,n)]) count++;
-		if(image->grid[get_neighbour(i,j,7,n)]) count++;	
-	}
-	else if( i!=0 && i!=(n-1) && j==0 && j!=(n-1) )
-	{
-		if(image->grid[get_neighbour(i,j,1,n)]) count++;
-		if(image->grid[get_neighbour(i,j,2,n)]) count++;
-		if(image->grid[get_neighbour(i,j,3,n)]) count++;
-		if(image->grid[get_neighbour(i,j,4,n)]) count++;
-		if(image->grid[get_neighbour(i,j,5,n)]) count++;
-	}
-	else if( i!=0 && i==(n-1) && j!=0 && j!=(n-1) )
-	{
-		if(image->grid[get_neighbour(i,j,0,n)]) count++;
-		if(image->grid[get_neighbour(i,j,1,n)]) count++;
-		if(image->grid[get_neighbour(i,j,2,n)]) count++;
-		if(image->grid[get_neighbour(i,j,3,n)]) count++;
-		if(image->grid[get_neighbour(i,j,7,n)]) count++;
-	}
-	else if( i==0 && i!=(n-1) && j!=0 && j!=(n-1) )
-	{					
-		if(image->grid[get_neighbour(i,j,3,n)]) count++;
-		if(image->grid[get_neighbour(i,j,4,n)]) count++;
-		if(image->grid[get_neighbour(i,j,5,n)]) count++;
-		if(image->grid[get_neighbour(i,j,6,n)]) count++;
-		if(image->grid[get_neighbour(i,j,7,n)]) count++;						
-	}
-	else if( i==0 && i!=(n-1) && j==0 && j!=(n-1) )
-	{	
-		if(image->grid[get_neighbour(i,j,3,n)]) count++;
-		if(image->grid[get_neighbour(i,j,4,n)]) count++;
-		if(image->grid[get_neighbour(i,j,5,n)]) count++;										
-	}	
-	else if( i==0 && i!=(n-1) && j!=0 && j==(n-1) )
-	{						
-		if(image->grid[get_neighbour(i,j,5,n)]) count++;
-		if(image->grid[get_neighbour(i,j,6,n)]) count++;
-		if(image->grid[get_neighbour(i,j,7,n)]) count++;							
-	}	
-	else if( i!=0 && i==(n-1) && j==0 && j!=(n-1) )
-	{					
-		if(image->grid[get_neighbour(i,j,1,n)]) count++;
-		if(image->grid[get_neighbour(i,j,2,n)]) count++;
-		if(image->grid[get_neighbour(i,j,3,n)]) count++;						
-	}	
-	else if( i!=0 && i==(n-1) && j!=0 && j==(n-1) )
-	{						
-		if(image->grid[get_neighbour(i,j,0,n)]) count++;
-		if(image->grid[get_neighbour(i,j,1,n)]) count++;
-		if(image->grid[get_neighbour(i,j,7,n)]) count++;							
-	}					
+	for(int k = 0; k < 8; ++k) if(image->grid[get_neighbour(i,j,k,n)].enabled) count++;
 	return count;
 }
 
@@ -220,83 +133,73 @@ int image_thin(LImage* image)
     {
     	for(int j = 0; j < n; ++j)
       	{
-			if(image->grid[i*n+j])
+			if(image->grid[i*n+j].enabled)
 			{
+				//We want to check if we can remove this pixel
+				//We have to check it the surrounding 8 pixels are
+				//still connected when we remove this pixel			
+					
 				int count = image_counter(image, i, j, n);
-				if(count >= 6)
+				if(count >= 7) //With 7 or more surrounding pixels they will always be connected
 				{
-					image->grid[i*n+j] = 0;
+					image->grid[i*n+j].enabled = 0; //So we can remove the center pixel
 				}
-				/*if(count == 2)
+				else if(count >= 2)
 				{
-					int state = 0;
-					for(int k = 0; k < 8; k++)
-					{
-						if(state == 0)
-						{
-							if(image->grid[get_neighbour(i, j, k, n)]) 
-							{
-								state = 1;
-							}
-						}
-						else if(state == 1)
-						{
-							if(!image->grid[get_neighbour(i, j, k, n)]) state = 2;	
-							else image->grid[i*n+j] = 0;
-						}
-						else if(state == 2)
-						{
-							if(image->grid[get_neighbour(i, j, k, n)] && k%2 == 1) image->grid[i*n+j] = 0;
-						}
-					}
-				}*/
-				if(count >= 2 && count <= 5)
-				{
+					//Now we want to check if the surrounding pixels are connected
+					//We find the first black pixel, then from there search for the
+					//first white pixel that might disconnect it
 					int firstBlack = -1;
 					int state = 0;
-					int sec_state = 0;
+					int disconnections = 0;
 					for(int k = 0; k < 16; k++)
 					{
-						if(state == 0)
+						if(state == 0) //Searching for black pixel
 						{
-							if(image->grid[get_neighbour(i, j, k, n)]) 
+							if(image->grid[get_neighbour(i, j, k, n)].enabled) 
 							{
 								if( firstBlack == -1 ) firstBlack = k;
 								state = 1;
 							}
 						}
-						else if(state == 1)
+						else if(state == 1) //Black pixel was found, keep following untill white
 						{
-							if(!image->grid[get_neighbour(i, j, k, n)]) state = 2;	
+							if(!image->grid[get_neighbour(i, j, k, n)].enabled) state = 2;	
 						}
-						else if(state == 2)
+						else if(state == 2) //White pixel found. Did this white pixel disconnect the black pixels?
 						{
-							if(image->grid[get_neighbour(i, j, k, n)])
+							//Check the pixel after the white pixel
+							if(image->grid[get_neighbour(i, j, k, n)].enabled)
 							{
-								if(k%2 == 1) // Als er een enkele whitespace tussen 2 zwarte vakjes zit op een hoekpunt.
-								{
+								//There was a black pixel after the white pixel
+								//If the white pixel was at a corner, then it
+								//is not disconnected. If the white pixel is in the middle
+								//then it is disconnected
+								if(k%2 == 1)
 									state = 1;
-								}
 								else 
 								{
 									state = 0;
-									sec_state++;
+									disconnections++;
 								}
 							}
-							else
+							else //A second white pixel. Then yes this was a disconnection
 							{
 								state = 0;
-								sec_state++;
+								disconnections++;
 								
 							}
 						}
+						//Check if we already went a full round
 						if( k >= 8 ){
 							if( (k-8) >= firstBlack ) break;						
 						}
 					}
-					if(sec_state <= 1)
+					//If the 8 pixels have one disconnection or less
+					//Then they are still connected so we can remove this pixel
+					if(disconnections <= 1)
 					{
-						image->grid[i*n+j] = 0;
+						image->grid[i*n+j].enabled = 0;
 					}
 				}
 			}
@@ -312,12 +215,12 @@ int image_end_points(LImage* image)
     {
     	for(int j = 0; j < n; ++j)
       	{
-			if(image->grid[i*n+j])
+			if(image->grid[i*n+j].enabled)
 			{
 				int count = image_counter(image, i, j, n);
 				if(count == 1)
 				{
-					image->grid[i*n+j] = 2;
+					image->grid[i*n+j].type = 1;
 				}
 			}
 		}
@@ -328,145 +231,99 @@ int image_end_points(LImage* image)
 int image_counter_branch(LImage* image, int i, int j, int n)
 {
 	int count = 0;
-	if( i!=0 && i!=(n-1) && j!=0 && j!=(n-1) )
-	{
-		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;	
-		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;	
-		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;										
-	}	
-	else if(i!=0 && i!=(n-1) && j!=0 && j==(n-1))
-	{	
-		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;	
-	}
-	else if( i!=0 && i!=(n-1) && j==0 && j!=(n-1) )
-	{
-		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
-	}
-	else if( i!=0 && i==(n-1) && j!=0 && j!=(n-1) )
-	{
-		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;
-	}
-	else if( i==0 && i!=(n-1) && j!=0 && j!=(n-1) )
-	{					
-		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;						
-	}
-	else if( i==0 && i!=(n-1) && j==0 && j!=(n-1) )
-	{	
-		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,4,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;										
-	}	
-	else if( i==0 && i!=(n-1) && j!=0 && j==(n-1) )
-	{						
-		if(image->grid[get_neighbour(i,j,5,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,6,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;							
-	}	
-	else if( i!=0 && i==(n-1) && j==0 && j!=(n-1) )
-	{					
-		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,2,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,3,n)] == 3) count++;						
-	}	
-	else if( i!=0 && i==(n-1) && j!=0 && j==(n-1) )
-	{						
-		if(image->grid[get_neighbour(i,j,0,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,1,n)] == 3) count++;
-		if(image->grid[get_neighbour(i,j,7,n)] == 3) count++;							
-	}					
+	for(int k = 0; k < 8; ++k) if(image->grid[get_neighbour(i,j,k,n)].dummy == 1) count++;
 	return count;
 }
 
 int image_branch_points(LImage* image)
 {
 	int n = image->size;
+	//First mark all pixels with more than 2 neighbors with a dummy variable
 	for(int i = 0; i < n; ++i)
     {
     	for(int j = 0; j < n; ++j)
       	{
 			int count = image_counter(image, i, j, n);
-			if(image->grid[i*n+j] && count > 2)
+			if(image->grid[i*n+j].enabled && count > 2)
 			{
-				image->grid[i*n+j] = 3;
+				image->grid[i*n+j].dummy = 1;
+			}else{
+				image->grid[i*n+j].dummy = 0;
 			}
 		}
 	}
+	//Now we check which marked pixels are grouped together, since they are a single branch point
 	for(int i = 0; i < n; ++i)
     {
     	for(int j = 0; j < n; ++j)
       	{
-      		int countBr = image_counter_branch(image, i, j, n);
-      		if(image->grid[i*n+j] == 3 && countBr > 1)
-      		{
-				int state = 0;
-				for(int k = 0; k < 16; k++)
-				{
-					if(state == 0)
+      		if(image->grid[i*n+j].dummy == 1){
+      			//Count the neighbours that are also marked
+		  		int countBr = image_counter_branch(image, i, j, n);
+		  		
+		  		if(countBr > 1) //Multiple branch points in neighbourhood
+		  		{
+		  			//So there are several marked pixels. We must take one of them as real branch point
+		  			//and unmark the others.
+		  			//In the case of a plus sign, where the middle pixel was removed by thinning
+		  			//we want to add this middle pixel again and make it the branch point
+					int state = 0;
+					for(int k = 0; k < 16; k++)
 					{
-						if(image->grid[get_neighbour(i, j, k, n)] == 3) 
+						if(state == 0)
 						{
-							state = 1;
+							if(image->grid[get_neighbour(i, j, k, n)].dummy == 1) 
+							{
+								state = 1;
+							}
+						}
+						else if(state == 1)
+						{
+							if(image->grid[get_neighbour(i, j, k, n)].enabled == 0) state = 2;	
+						}
+						else if(state == 2)
+						{
+							if(image->grid[get_neighbour(i, j, k, n)].dummy == 1)
+							{
+								image->grid[get_neighbour(i, j, k - 1, n)].dummy = 2;
+								image->grid[get_neighbour(i, j, k - 2, n)].dummy = 0;
+								image->grid[get_neighbour(i, j, k, n)].dummy = 0;
+								image->grid[i*n+j].dummy = 0;
+							}
+							else
+							{
+								state = 0;							
+							}
 						}
 					}
-					else if(state == 1)
-					{
-						if(image->grid[get_neighbour(i, j, k, n)] == 0) state = 2;	
-					}
-					else if(state == 2)
-					{
-						if(image->grid[get_neighbour(i, j, k, n)] == 3)
-						{
-							image->grid[get_neighbour(i, j, k - 1, n)] = 4;
-							image->grid[get_neighbour(i, j, k - 2, n)] = 1;
-							image->grid[get_neighbour(i, j, k, n)] = 1;
-							image->grid[i*n+j] = 1;
-						}
-						else
-						{
-							state = 0;							
-						}
-					}
-				}
-      		}
-      		if(image->grid[i*n+j] == 4 && countBr == 1)
-      		{
-				for(int k = 0; k < 8; k++)
-				{
-					if(image->grid[get_neighbour(i, j, k, n)] == 3) 
-					{
-						image->grid[get_neighbour(i, j, k, n)] = 1;
-						image->grid[i*n+j] = 3;
-					}
-				}	
-      		}
+		  		}
+		  	}
       	}
     }
     for(int i = 0; i < n; ++i)
     {
     	for(int j = 0; j < n; ++j)
       	{
-     		if(image->grid[i*n+j] == 4) image->grid[i*n+j] = 3;
+      		//The marked points that were isolated have not been
+      		//handled yet. Here we set them as a branch point
+     		if(image->grid[i*n+j].dummy == 1){
+     			image->grid[i*n+j].type = 2;
+     		}
+     		//The previous procedure can set a pixels dummy value to 2
+     		//In this case we do ?????
+     		if(image->grid[i*n+j].dummy == 2){
+     			int countBr = image_counter_branch(image, i, j, n);
+     			if(countBr == 1){
+					for(int k = 0; k < 8; k++)
+					{
+						if(image->grid[get_neighbour(i, j, k, n)].dummy == 1) 
+						{
+							image->grid[get_neighbour(i, j, k, n)].dummy = 0;
+							image->grid[i*n+j].type = 2;
+						}
+					}
+     			}
+     		}
       	}
     }
 	return 0;
