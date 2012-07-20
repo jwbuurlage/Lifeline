@@ -96,6 +96,12 @@ typedef List LResultSet;
 
 typedef struct
 {
+	float geometricMoments[MAX_GEOMETRIC_ORDER][MAX_GEOMETRIC_ORDER];
+	float geometricDeviations[MAX_GEOMETRIC_ORDER][MAX_GEOMETRIC_ORDER];
+} LCalibratedFeatureSet;
+
+typedef struct
+{
 	float geometricMoments[MAX_GEOMETRIC_ORDER][MAX_GEOMETRIC_ORDER]; //[p-1][q-1]
 
 	//

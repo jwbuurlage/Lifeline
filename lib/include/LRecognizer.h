@@ -27,6 +27,8 @@ typedef struct {
     
     LListener listener;
     LCharacterSet charSet;
+    
+    LCalibratedFeatureSet loadedCharacters[256];
 } LRecognizer;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -35,6 +37,9 @@ void insert_char_into_list(List* list, char character, unsigned int* grid);
 LPoint* points_center(LPointData* pointData);
 
 ///////////////////////////////////////////////////////////////////////////////
+
+// Initialize character data from files
+void recognizer_load_data(LRecognizer *recog);
 
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData);

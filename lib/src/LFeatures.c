@@ -93,6 +93,18 @@ float image_zernike_moment(LImage* image)
 int get_neighbour(int i, int j, int neighbour, int n)
 {
 	neighbour = neighbour % 8;
+	
+	if( i == 0 ){
+		if( neighbour <= 2 ) return n*n;
+	}else if( i == n-1 ){
+		if( neighbour >= 4 && neighbour <= 6 ) return n*n;
+	}
+	if( j == 0 ){
+		if( neighbour >= 6 || neighbour == 0 ) return n*n;
+	}else if( j == n-1 ){
+		if( neighbour >= 2 && neighbour <= 4 ) return n*n;
+	}
+	
 	if(neighbour == 0)
 	{
 		return (i-1)*n+j-1;
@@ -215,10 +227,10 @@ int image_thin(LImage* image)
 				{
 					image->grid[i*n+j] = 0;
 				}
-				if(count == 2)
+				/*if(count == 2)
 				{
 					int state = 0;
-					for(int k; k < 8; k++)
+					for(int k = 0; k < 8; k++)
 					{
 						if(state == 0)
 						{
@@ -237,8 +249,8 @@ int image_thin(LImage* image)
 							if(image->grid[get_neighbour(i, j, k, n)] && k%2 == 1) image->grid[i*n+j] = 0;
 						}
 					}
-				}
-				if(count >= 3 && count <= 5)
+				}*/
+				if(count >= 2 && count <= 5)
 				{
 					int firstBlack = -1;
 					int state = 0;
