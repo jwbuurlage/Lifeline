@@ -16,15 +16,16 @@ void image_histogram(LImage* image)
 }
 
 int factorial(int num){
-	switch(num){
-	case 0: return 1;
-	case 1: return 1;
-	case 2: return 2;
-	case 3: return 6;
-	case 4: return 24;
-	case 5: return 120;
-	case 6: return 720;
-	default: return num*factorial(num-1);
+	switch(num)
+    {
+        case 0: return 1;
+        case 1: return 1;
+        case 2: return 2;
+        case 3: return 6;
+        case 4: return 24;
+        case 5: return 120;
+        case 6: return 720;
+        default: return num*factorial(num-1);
 	}
 }
 
@@ -94,56 +95,28 @@ int get_neighbour(int i, int j, int neighbour, int n)
 {
 	neighbour = neighbour % 8;
 	
-	if( i == 0 ){
-		if( neighbour <= 2 ) return n*n;
-	}else if( i == n-1 ){
-		if( neighbour >= 4 && neighbour <= 6 ) return n*n;
-	}
-	if( j == 0 ){
-		if( neighbour >= 6 || neighbour == 0 ) return n*n;
-	}else if( j == n-1 ){
-		if( neighbour >= 2 && neighbour <= 4 ) return n*n;
-	}
+	if(i == 0){ if(neighbour <= 2) return n*n; }
+    else if(i == n-1){ if(neighbour >= 4 && neighbour <= 6) return n*n; }
 	
-	if(neighbour == 0)
-	{
-		return (i-1)*n+j-1;
-	}
-	else if(neighbour == 1)
-	{
-		return (i-1)*n+j;
-	}
-	else if(neighbour == 2)
-	{
-		return (i-1)*n+j+1;
-	}
-	else if(neighbour == 3)
-	{
-		return (i)*n+j+1;
-	}
-	else if(neighbour == 4)
-	{
-		return (i+1)*n+j+1;
-	}
-	else if(neighbour == 5)
-	{
-		return (i+1)*n+j;
-	}
-	else if(neighbour == 6)
-	{
-		return (i+1)*n+j-1;
-	}
-	else if(neighbour == 7)
-	{
-		return (i)*n+j-1;
-	}
+    if(j == 0) { if(neighbour >= 6 || neighbour == 0) return n*n; }
+    else if(j == n-1) { if( neighbour >= 2 && neighbour <= 4 ) return n*n; }
+	
+	if(neighbour == 0) { return (i-1)*n+j-1; }
+	else if(neighbour == 1) { return (i-1)*n+j; }
+	else if(neighbour == 2) { return (i-1)*n+j+1; }
+	else if(neighbour == 3) { return (i)*n+j+1; }
+	else if(neighbour == 4) { return (i+1)*n+j+1; }
+	else if(neighbour == 5) { return (i+1)*n+j; }
+	else if(neighbour == 6) { return (i+1)*n+j-1; }
+	else if(neighbour == 7) { return (i)*n+j-1; }
+    
 	return 0;
 }
 
 int image_counter(LImage* image, int i, int j, int n)
 {
 	int count = 0;
-	if( i!=0 && i!=(n-1) && j!=0 && j!=(n-1) )
+	if(i!=0 && i!=(n-1) && j!=0 && j!=(n-1))
 	{
 		if(image->grid[get_neighbour(i,j,0,n)]) count++;	
 		if(image->grid[get_neighbour(i,j,1,n)]) count++;
