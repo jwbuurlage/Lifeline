@@ -117,12 +117,16 @@ int main(){
 					LGridPoint gridPoint = result_image->grid[i*n+j];
 					if( gridPoint.enabled ){
 						int color = gridPoint.type;
-						if( color == 0 ) pixelColor = sf::Color(120,120,120);
-						else if( color == 1 ) pixelColor = sf::Color(255,0,0);
-						else if( color == 2 ) pixelColor = sf::Color(0,0,255);
-						else if( color == 3 ) pixelColor = sf::Color(0,255,0);
+						if( color == 0 && gridPoint.dummy == 0) pixelColor = sf::Color(120,120,120);
+						else if( color == 1 && gridPoint.dummy == 0) pixelColor = sf::Color(255,0,0);
+						else if( color == 2 && gridPoint.dummy == 0) pixelColor = sf::Color(0,0,255);
+						else if( color == 3 && gridPoint.dummy == 0) pixelColor = sf::Color(0,255,0);
+						else if(color == 0 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 1 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 2 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 3 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
 						window->Draw(sf::Shape::Rectangle(20+px*j,20+px*i, 20+px*j+px-1, 20+px*i+px-1, pixelColor));
-					}
+					} 
 				}
 			}
 		}
