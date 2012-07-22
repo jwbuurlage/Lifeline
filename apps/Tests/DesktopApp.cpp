@@ -125,6 +125,14 @@ int main(){
 						else if(color == 1 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
 						else if(color == 2 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
 						else if(color == 3 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 0 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 1 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 2 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 3 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 0 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						else if(color == 1 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						else if(color == 2 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						else if(color == 3 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						window->Draw(sf::Shape::Rectangle(20+px*j,20+px*i, 20+px*j+px-1, 20+px*i+px-1, pixelColor));
 					} 
 				}

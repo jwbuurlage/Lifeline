@@ -343,6 +343,47 @@ int image_end_points_count(LImage* image)
 	return number_end_points;
 }
 
+int image_connected_components(LImage* image)
+{
+	int n = image->size;
+	int number_connected_components = 0;
+	for(int i = 0; i < n; ++i)
+	{
+		for(int j = 0; j < n; ++j)
+  		{
+  			if(image->grid[i*n+j].type == 1 && image->grid[i*n+j].dummy == 0)
+  			{
+  				number_connected_components++;
+  				image->grid[i*n+j].dummy = number_connected_components;
+  				for(int x = 0; x < n * n / 4; ++x)
+  				{
+	  				for(int i = 0; i < n; ++i)
+					{
+						for(int j = 0; j < n; ++j)
+	  					{
+	  						if(image->grid[i*n+j].enabled && image->grid[i*n+j].dummy == 0)
+	  						{
+	  							for(int k = 0; k < 8; k++)
+	  							{
+	  								if(image->grid[get_neighbour(i, j, k, n)].dummy == number_connected_components) image->grid[i*n+j].dummy = number_connected_components;
+	  							}
+	  						}
+	  					}
+	  				}
+	  			}
+  			}
+  		}
+	}
+	for(int i = 0; i < n; ++i)
+	{
+		for(int j = 0; j < n; ++j)
+  		{
+  			if(image->grid[i*n+j].enabled) image->grid[i*n+j].dummy = 0;
+  		}
+  	}
+	return number_connected_components;
+}
+
 int image_cross_points(LImage* image){
 	return 0;
 }
