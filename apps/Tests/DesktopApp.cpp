@@ -117,7 +117,10 @@ int main(){
 					LGridPoint gridPoint = result_image->grid[i*n+j];
 					if( gridPoint.enabled ){
 						int color = gridPoint.type;
-						if( color == 0 && gridPoint.dummy == 0) pixelColor = sf::Color(120,120,120);
+						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 0) pixelColor = sf::Color(120,120,120);
+						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 1) pixelColor = sf::Color(255, 255, 0);
+						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 2) pixelColor = sf::Color(255, 165, 0);
+						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 3) pixelColor = sf::Color(255, 69, 0);
 						else if( color == 1 && gridPoint.dummy == 0) pixelColor = sf::Color(255,0,0);
 						else if( color == 2 && gridPoint.dummy == 0) pixelColor = sf::Color(0,0,255);
 						else if( color == 3 && gridPoint.dummy == 0) pixelColor = sf::Color(0,255,0);

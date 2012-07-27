@@ -1,6 +1,7 @@
 #include "../include/LFeatures.h"
 
 #include <math.h>
+#include <stdio.h>
 
 typedef enum 
 {
@@ -351,21 +352,21 @@ int image_connected_components(LImage* image)
 	{
 		for(int j = 0; j < n; ++j)
   		{
-  			if(image->grid[i*n+j].type == 1 && image->grid[i*n+j].dummy == 0)
+  			if(image->grid[i*n+j].type == 1 && image->grid[i*n+j].componentNum == 0)
   			{
   				number_connected_components++;
-  				image->grid[i*n+j].dummy = number_connected_components;
+  				image->grid[i*n+j].componentNum = number_connected_components;
   				for(int x = 0; x < n * n / 4; ++x)
   				{
 	  				for(int i = 0; i < n; ++i)
 					{
 						for(int j = 0; j < n; ++j)
 	  					{
-	  						if(image->grid[i*n+j].enabled && image->grid[i*n+j].dummy == 0)
+	  						if(image->grid[i*n+j].enabled && image->grid[i*n+j].componentNum == 0)
 	  						{
 	  							for(int k = 0; k < 8; k++)
 	  							{
-	  								if(image->grid[get_neighbour(i, j, k, n)].dummy == number_connected_components) image->grid[i*n+j].dummy = number_connected_components;
+	  								if(image->grid[get_neighbour(i, j, k, n)].componentNum == number_connected_components) image->grid[i*n+j].componentNum = number_connected_components;
 	  							}
 	  						}
 	  					}
@@ -374,15 +375,39 @@ int image_connected_components(LImage* image)
   			}
   		}
 	}
+	return number_connected_components;
+	
+}
+
+int image_points_curvature(LImage* image)
+{
+	int n = image->size;
 	for(int i = 0; i < n; ++i)
 	{
 		for(int j = 0; j < n; ++j)
-  		{
-  			if(image->grid[i*n+j].enabled) image->grid[i*n+j].dummy = 0;
-  		}
-  	}
-	return number_connected_components;
+		{
+			int count = image_counter(image, i, j, n);
+			if(image->grid[i*n+j].enabled && count == 2)
+			{
+				for(int k = 0; k < 8; k++)
+	  			{
+	  				if(image->grid[get_neighbour(i, j, k, n)].enabled)
+	  				{
+	  					if(image->grid[get_neighbour(i, j, (k + 3) % 8, n)].enabled) image->grid[i*n+j].curvature = 1;
+	  					if(image->grid[get_neighbour(i, j, (k - 3) % 8, n)].enabled) image->grid[i*n+j].curvature = 1;
+	  					if(image->grid[get_neighbour(i, j, (k + 2) % 8, n)].enabled) image->grid[i*n+j].curvature = 2;
+	  					if(image->grid[get_neighbour(i, j, (k - 2) % 8, n)].enabled) image->grid[i*n+j].curvature = 2;
+	  					if(image->grid[get_neighbour(i, j, (k + 1) % 8, n)].enabled) image->grid[i*n+j].curvature = 3;
+	  					if(image->grid[get_neighbour(i, j, (k - 1) % 8, n)].enabled) image->grid[i*n+j].curvature = 3;
+	  				}
+	  			}
+			}
+		}
+	}
+	return 0;
 }
+
+
 
 int image_cross_points(LImage* image){
 	return 0;
