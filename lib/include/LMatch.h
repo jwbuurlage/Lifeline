@@ -33,6 +33,7 @@ typedef struct
 	unsigned char enabled; //if it is drawn
 	unsigned char type; //0=normal;1=endpoint;2=branch
 	unsigned char componentNum; //when counting connected components, we give each component a number
+	unsigned char diagonalNum; // each diagonal gets a number, we can use this for moments
 	unsigned char curvature; //measure of how big the curvature in a point is
 	unsigned char dummy; //used internally in algorithms, has no output meaning
 } LGridPoint;

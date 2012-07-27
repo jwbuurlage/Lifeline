@@ -407,7 +407,66 @@ int image_points_curvature(LImage* image)
 	return 0;
 }
 
-
+int image_line_type(LImage* image)
+{
+	int n = image->size;
+	int diagonal_number = 0;
+	for(int i = 0; i < n; ++i)
+	{
+		for(int j = 0; j < n; ++j)
+		{
+			int count = image_counter(image, i, j, n);
+			if(image->grid[i*n+j].enabled && count == 2)
+			{
+				if(image->grid[get_neighbour(i, j, 0, n)].enabled && image->grid[get_neighbour(i, j, 4, n)].enabled)
+				{
+					diagonal_number++;
+					image->grid[i*n+j].diagonalNum = diagonal_number;
+					for(int x = 0; x < sqrt(2) * n; ++x)
+	  				{
+		  				for(int i = 0; i < n; ++i)
+						{
+							for(int j = 0; j < n; ++j)
+		  					{
+		  						int countt = image_counter(image, i, j, n);
+		  						if(image->grid[i*n+j].enabled && image->grid[i*n+j].diagonalNum == 0 && countt == 2)
+		  						{
+		  							for(int k = 0; k < 8; k++)
+		  							{
+		  								if(image->grid[get_neighbour(i, j, k, n)].diagonalNum == diagonal_number && image->grid[get_neighbour(i, j, (k + 4) % 8, n)].enabled) image->grid[i*n+j].diagonalNum = diagonal_number;
+		  							}
+		  						}
+		  					}
+		  				}
+		  			}
+				}
+				if(image->grid[get_neighbour(i, j, 2, n)].enabled && image->grid[get_neighbour(i, j, 6, n)].enabled)
+				{
+					diagonal_number++;
+					image->grid[i*n+j].diagonalNum = diagonal_number;
+					for(int x = 0; x < sqrt(2) * n; ++x)
+	  				{
+		  				for(int i = 0; i < n; ++i)
+						{
+							for(int j = 0; j < n; ++j)
+		  					{
+		  						int countt = image_counter(image, i, j, n);
+		  						if(image->grid[i*n+j].enabled && image->grid[i*n+j].diagonalNum == 0 && countt == 2)
+		  						{
+		  							for(int k = 0; k < 8; k++)
+		  							{
+		  								if(image->grid[get_neighbour(i, j, k, n)].diagonalNum == diagonal_number && image->grid[get_neighbour(i, j, (k + 4) % 8, n)].enabled) image->grid[i*n+j].diagonalNum = diagonal_number;
+		  							}
+		  						}
+		  					}
+		  				}
+		  			}
+				}
+			}
+		}
+	}
+	return 0;
+}
 
 int image_cross_points(LImage* image){
 	return 0;

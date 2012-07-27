@@ -270,6 +270,7 @@ void recognizer_create_image(LRecognizer *recog)
     image_end_points(recog->source_image);
     image_connected_components(recog->source_image);
     image_points_curvature(recog->source_image);
+    image_line_type(recog->source_image);
     recognizer_showMoments(recog);
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
