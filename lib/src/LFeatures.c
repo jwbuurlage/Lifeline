@@ -11,6 +11,10 @@ typedef enum
 	L_BRANCH_POINT,	
 } points;
 
+//Pre-calculated factors of the zernike functions
+char zernikeFactorsCalculated = 0; //this is a bool
+float* zernikeFactors = 0;
+
 void image_histogram(LImage* image)
 {
 	return;
@@ -29,21 +33,76 @@ int factorial(int num){
 	}
 }
 
-float zernikeFunction(int n, int m, float rho)
-{
-	float sum = 0.0f;
-	int absM = abs(m);
-	int sMax = n - absM;
+void precalculateZernikeFactors(){
+	if( zernikeFactorsCalculated ) return;
 
-	for(int s = 0; s <= sMax; ++s)
-	{
-		float factor = factorial(2*n + 1 - s)/((float)( factorial(s) * factorial(n-absM-s) * factorial(n+absM+1-s) ));
-		factor *= pow(rho, n - s);
-		//Multiply with (-1)^s is the same as: if( s is odd ) apply minus sign
-		if( s & 1 ) sum -= factor;
-		else sum += factor;
+	//First we need to calculate how big the array needs to be
+	int floatCount = 0;
+	for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
+		for(int m = -n; m <= n; ++m){
+			floatCount += (n - abs(m)) + 1;
+		}
 	}
-	return sum;
+	//Allocate the array
+	zernikeFactors = malloc( sizeof(float) * floatCount );
+	//Fill the array
+	int arrayIndex = 0;
+	for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
+		for(int m = -n; m <= n; ++m){
+			int absM = abs(m);
+			int sMax = n - absM;
+			for(int s = 0; s <= sMax; ++s){
+				zernikeFactors[arrayIndex] = factorial(2*n+1-s)/((float)( factorial(s) * factorial(n-absM-s) * factorial(n+absM+1-s) ));
+				arrayIndex++;
+			}
+		}
+	}
+
+	zernikeFactorsCalculated = 1;
+}
+
+//outputArray is expected to be of size MAX_ZERNIKE_N_M_COMBINATIONS
+//this function calculates the contribution to the moment for a single pixel
+//for all possible values of n,m
+//This function should be called on all pixels, and it will keep adding to outputArray
+void zernikeValues(float rho, float theta, float* outputArray)
+{
+	if( !zernikeFactorsCalculated ) precalculateZernikeFactors();
+
+	//Since we need the first n powers of rho multiple times we save them
+	//Same goes for cosine and sine of m*theta
+	float rhoPowers[MAX_ZERNIKE_N];
+	float cosines[MAX_ZERNIKE_N+1];
+	float sines[MAX_ZERNIKE_N+1];
+	rhoPowers[0] = rho;
+	for(int n = 2; n <= MAX_ZERNIKE_N; ++n){
+		rhoPowers[n-1] = pow(rho, n);
+	}
+	cosines[0] = 1;
+	sines[0] = 0;
+	for(int m = 1; m <= MAX_ZERNIKE_N; ++m){
+		cosines[m] = cos(m*theta);
+		sines[m] = sin(m*theta);
+	}
+	//Now calculate the value of the zernike function for all n,m for this pixel
+	int index = 0;
+	for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
+		for(int m = -n; m <= n; ++m){
+			float sum = 0.0f;
+			int absM = abs(m);
+			int sMax = n - absM;
+			for( int s = 0; s <= sMax; ++s ){
+				float factor = zernikeFactors[index];
+				index++;
+				factor *= rhoPowers[n-s-1]; //pow(rho, n-s);
+				//Multiply with (-1)^s is the same as: if( s is odd ) apply minus sign
+				if( s & 1 ) sum -= factor;
+				else sum += factor;
+			}
+			outputArray[2*ZERNIKE_INDEX(n,m)+0] += sum*cosines[absM];
+			outputArray[2*ZERNIKE_INDEX(n,m)+1] += sum*sines[absM];
+		}
+	}
 }
 
 void image_moments(LImage* image, LFeatureSet* output)
@@ -54,10 +113,10 @@ void image_moments(LImage* image, LFeatureSet* output)
 
 	int n = image->size;
 	float mid = n/2;
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < n; ++j)
-        {
+	for(int i = 0; i < n; ++i)
+	{
+		for(int j = 0; j < n; ++j)
+		{
 			if(image->grid[i*n+j].enabled)
 			{
 				//We need to add this pixels coordinate to the sum
@@ -73,13 +132,7 @@ void image_moments(LImage* image, LFeatureSet* output)
 				// Pseudo-Zernike moments
 				float rho = sqrt(x*x + y*y);
 				float theta = atan2(y,x);
-				for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
-					for(int m = -n; m <= n; ++m){
-						float R = zernikeFunction(n, m, rho);
-						output->zernikeMoments[n-1][m+n][0] = R*cos(m*theta);
-						output->zernikeMoments[n-1][m+n][1] = R*sin(m*theta);
-					}
-				}
+				zernikeValues(rho, theta, &(output->zernikeMoments));
 			}
 		}
 	}
