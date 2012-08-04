@@ -219,6 +219,28 @@ void recognizer_showMoments(LRecognizer *recog)
 	}
 	
 	fclose(fp);
+
+	fp = fopen("zernikemoments.txt", "w+");
+
+	for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
+		for(int m = -n; m <= n; ++m){
+		for(int k = 0; k < 2; ++k){ //real and imaginary part
+			float average = 0.0f;
+			for(int i = 0; i < currentSample; ++i){
+				average += featuresetList[i]->zernikeMoments[ZERNIKE_INDEX(n,m)][k];
+			}
+			average /= (float)currentSample;
+			float standardDeviation = 0.0f;
+			for(int i = 0; i < currentSample; ++i){
+				standardDeviation += (featuresetList[i]->zernikeMoments[ZERNIKE_INDEX(n,m)][k] - average)*(featuresetList[i]->zernikeMoments[ZERNIKE_INDEX(n,m)][k] - average);
+			}
+			standardDeviation /= (float)currentSample;
+			standardDeviation = sqrt(standardDeviation);
+			fprintf(fp, "%f %f\n", average, standardDeviation);
+		}
+		}
+	}
+	fclose(fp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

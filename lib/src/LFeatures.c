@@ -65,7 +65,7 @@ void precalculateZernikeFactors(){
 //this function calculates the contribution to the moment for a single pixel
 //for all possible values of n,m
 //This function should be called on all pixels, and it will keep adding to outputArray
-void zernikeValues(float rho, float theta, float* outputArray)
+void zernikeValues(float rho, float theta, LFeatureSet* output)
 {
 	if( !zernikeFactorsCalculated ) precalculateZernikeFactors();
 
@@ -99,8 +99,9 @@ void zernikeValues(float rho, float theta, float* outputArray)
 				if( s & 1 ) sum -= factor;
 				else sum += factor;
 			}
-			outputArray[2*ZERNIKE_INDEX(n,m)+0] += sum*cosines[absM];
-			outputArray[2*ZERNIKE_INDEX(n,m)+1] += sum*sines[absM];
+			//Add it to the sum of all the pixels
+			output->zernikeMoments[ZERNIKE_INDEX(n,m)][0] += sum*cosines[absM];
+			output->zernikeMoments[ZERNIKE_INDEX(n,m)][1] += sum*sines[absM];
 		}
 	}
 }
@@ -132,7 +133,7 @@ void image_moments(LImage* image, LFeatureSet* output)
 				// Pseudo-Zernike moments
 				float rho = sqrt(x*x + y*y);
 				float theta = atan2(y,x);
-				zernikeValues(rho, theta, &(output->zernikeMoments));
+				zernikeValues(rho, theta, output);
 			}
 		}
 	}
