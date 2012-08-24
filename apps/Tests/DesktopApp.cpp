@@ -54,39 +54,42 @@ int main(){
 
 	drawing = false;
 	strokeList.clear();
-	timer->Reset();
-	while( window->IsOpened() ){
-		while(window->GetEvent(Event)) {
-			switch( Event.Type ){
+	timer->restart();
+	while( window->isOpen() ){
+		while(window->pollEvent(Event)) {
+			switch( Event.type ){
 			case sf::Event::KeyPressed: break;
 			case sf::Event::KeyReleased: 
-				if (Event.Key.Code == sf::Key::Escape){
-					if( strokeList.empty() ) window->Close();
+				if (Event.key.code == sf::Keyboard::Escape){
+					if( strokeList.empty() ) window->close();
 					else strokeList.clear();
-				}else if(Event.Key.Code == sf::Key::Return){
+				}else if(Event.key.code == sf::Keyboard::Return){
 					sendInput();
 					strokeList.clear();
 				}
 				break;
 			case sf::Event::MouseWheelMoved: break;
 			case sf::Event::MouseMoved:
-				mouseMoved( Event.MouseMove.X, Event.MouseMove.Y );
+				mouseMoved( Event.mouseMove.x, Event.mouseMove.y );
 				break;
 			case sf::Event::MouseButtonPressed:
-				mousePress( Event.MouseButton.Button, true, Event.MouseButton.X, Event.MouseButton.Y );
+				mousePress( Event.mouseButton.button, true, Event.mouseButton.x, Event.mouseButton.y );
 				break;
 			case sf::Event::MouseButtonReleased:
-				mousePress( Event.MouseButton.Button, false, Event.MouseButton.X, Event.MouseButton.Y );
+				mousePress( Event.mouseButton.button, false, Event.mouseButton.x, Event.mouseButton.y );
 				break;
 			case sf::Event::Closed:
-				window->Close();
+				window->close();
 				break;
 			default:
 				break;
 			}
 		}
-		window->Clear(sf::Color(170,220, 250));
-
+		window->clear(sf::Color(170,220, 250));
+				
+		// const sf::Shader* shader = sf::RenderStates::Default.shader;
+		// shader->setParameter("color", sf::Color(0, 0, 0, 255));	 
+		
 		if( strokeList.empty() == false ){
 			for( std::vector< std::vector<Touch> >::iterator lineIter = strokeList.begin(); lineIter != strokeList.end(); ++lineIter ){
 				if( lineIter->empty() ) continue;
@@ -96,19 +99,25 @@ int main(){
 				prevY = iter->y;
 				++iter;
 				while(iter != lineIter->end()){
-					window->Draw(sf::Shape::Line(prevX, prevY, iter->x, iter->y, 2.0f, sf::Color(0,0,0)));
+					sf::Vertex line[2] = { sf::Vector2<float>(prevX, prevY), sf::Vector2<float>(iter->x, iter->y) };
+					window->draw(line, 2, sf::Lines);
+					
 					prevX = iter->x;
 					prevY = iter->y;
 					++iter;
 				}
 			}
 		}
-		
 		if( result_image ){
 			int n = result_image->size;
 			
 			const int px = 5;
-			window->Draw(sf::Shape::Rectangle(10,10,px*n+30, px*n+30, sf::Color(255,255,255)));
+			sf::RectangleShape* rect = new sf::RectangleShape();
+			rect->setOrigin(sf::Vector2<float>(10, 10));
+			rect->setSize(sf::Vector2<float>(px*n+30, px*n+30));
+			rect->setFillColor(sf::Color(255,255,255));
+			window->draw(*rect);
+			delete rect;
 			sf::Color pixelColor;
 			for(int i = 0; i < n; ++i)
 			{
@@ -136,15 +145,20 @@ int main(){
 						else if(color == 1 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						else if(color == 2 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						else if(color == 3 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
-						window->Draw(sf::Shape::Rectangle(20+px*j,20+px*i, 20+px*j+px-1, 20+px*i+px-1, pixelColor));
+						sf::RectangleShape* rect = new sf::RectangleShape();
+						rect->setOrigin(sf::Vector2<float>(20+px*j,20+px*i));
+						rect->setSize(sf::Vector2<float>(20+px*j+px-1, 20+px*i+px-1));
+						rect->setFillColor(pixelColor);
+						window->draw(*rect);
+						delete rect;
 					} 
 				}
 			}
 		}
 		
 
-		window->Display();
-		sf::Sleep(0.020f);
+		window->display();
+		sf::sleep(sf::milliseconds(20));
 	}
 
 	delete window;
@@ -153,13 +167,13 @@ int main(){
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y){
 	if( down == true ){
-		if( strokeList.empty() ) timer->Reset();
+		if( strokeList.empty() ) timer->restart();
 		previousX = x; 
 		previousY = y;
 		drawing = true;
 		strokeList.push_back(std::vector<Touch>());
 	}else{
-		if( strokeList.empty() == false ) strokeList.back().push_back(Touch((float)x,(float)y,timer->GetElapsedTime()));
+		if( strokeList.empty() == false ) strokeList.back().push_back(Touch((float)x,(float)y,timer->getElapsedTime().asSeconds()));
 		drawing = false;
 	}
 }
@@ -167,7 +181,7 @@ void mousePress(sf::Mouse::Button button, bool down, int x, int y){
 void mouseMoved(int x, int y){
 	if( drawing ){
 		if( (x-previousX) > 2 || (x-previousX) < -2 || (y-previousY) > 2 || (y-previousY) < -2 ){
-			strokeList.back().push_back(Touch((float)x,(float)y,timer->GetElapsedTime()));
+			strokeList.back().push_back(Touch((float)x,(float)y,timer->getElapsedTime().asSeconds()));
 			previousX = x;
 			previousY = y;
 		}
