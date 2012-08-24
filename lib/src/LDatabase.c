@@ -1,3 +1,4 @@
+#include "../include/LDatabase.h"
 
 //
 // The application is supposed to load the files in memory and then pass a pointer to this memory
@@ -13,23 +14,9 @@ void database_freePointer(void* fileData){
 	return;
 }
 
-void database_resetScores(){
-	return;
-}
-
-int database_getFirst(){
-	return 0;
-}
-
-void* database_getFeatures(int handle, int type){
-	return 0;
-}
-
-void database_setScore(int handle, float score){
-	return;
-}
-
-int database_getNext(int handle){
-	return 0;
+void database_doScores(scoreCallback scoreFunc, struct LRecognizer* recog){
+	//while( symbols ){
+	//	symbol.score = scoreFunc(recog, symbol.features);
+	//}
 }
 
