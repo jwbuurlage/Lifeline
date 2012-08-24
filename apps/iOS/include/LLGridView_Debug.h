@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <LMatch.h>
 
-@interface _LLGridView : UIView
+@interface LLGridView : UIView
 {
     LImage* representedImage;
 }

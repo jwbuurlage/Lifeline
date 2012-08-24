@@ -16,6 +16,9 @@
 
 - (void)viewDidLoad
 {
+    float h = self.view.frame.size.height;
+    float w = self.view.frame.size.width;
+    
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
@@ -28,26 +31,32 @@
     [self.view addSubview:textView];
 
     // WritePad
-    CGRect padFrame = CGRectMake(0, 
-                                 self.view.frame.size.height / 2, 
-                                 self.view.frame.size.width, 
-                                 self.view.frame.size.height / 2);
+    CGRect padFrame = CGRectMake(0, h / 2, w, h / 2);
     LLWritepad* writepad = [[LLWritepad alloc] initWithFrame:padFrame
                                                     delegate:self];
     [self.view addSubview:writepad];
     
     // DEBUG, should make this a seperate view I think
-    gridView = [[_LLGridView alloc] initWithFrame:CGRectMake(300, 200, 200, 200)];
-    [self.view addSubview:gridView];
+    infoDebug = [[LLInfoVC alloc] initWithNibName:nil bundle:nil];
+    infoDebug.delegate = self;
     
-    
-    CGRect resultFrame = CGRectMake(500, 300, 200, 200);
+    UIButton* but = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [but setFrame:CGRectMake(w - 110, h/2 - 50, 100, 40)];
+    [but setTitle:@"Debug" forState:UIControlStateNormal];
+    [but addTarget:self action:@selector(showInfo) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:but];
+        
+    CGRect resultFrame = CGRectMake(10, 10, 500, 300);
     results = [[UITextView alloc] initWithFrame:resultFrame];
-    results.text = @"";
-    results.font = [UIFont boldSystemFontOfSize:12.0f];
+    results.text = @"Nothing to see here, move along.";
+    results.font = [UIFont boldSystemFontOfSize:14.0f];
     [self.view addSubview:results];
 }
 
+- (void)showInfo
+{
+    [self presentViewController:infoDebug animated:true completion:^{ [infoDebug setImage:_image]; }];
+}
 
 - (void)bestMatch:(char)character
 {
@@ -57,8 +66,13 @@
 
 - (void)sourceImage:(LImage*)src
 {
-    [gridView setImage:src];
-    [gridView setNeedsDisplay];
+    if(_image != 0) {
+        if(_image->grid != 0)
+            free(_image->grid);
+        free(_image);
+    }
+
+    _image = src;
 }
 
 - (void)resultSet:(LResultSet*)result

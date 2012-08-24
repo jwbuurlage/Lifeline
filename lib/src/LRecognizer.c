@@ -8,7 +8,10 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
+#define NEW_STROKE_OFFSET_T 0.1
+
 #include <stdio.h>
+#include <math.h>
 #include "../include/LRecognizer.h"
 
 /* Convenience methods */
@@ -17,7 +20,7 @@ LPoint* points_center(LPointData* pointData)
 {
     float x_min = 10000.0, x_max = 0.0, y_min = x_min, y_max = x_max;
     
-    ListElement* element = pointData->points.head;
+    ListElement* element = pointData->head;
     do
     {
         LPoint* point = (LPoint *)element->data;
@@ -29,10 +32,43 @@ LPoint* points_center(LPointData* pointData)
             y_min = point->y;
         if (point->y > y_max) 
             y_max = point->y;
-    } while((element = element->next));
+    element = element->next; } while(element);
     
     return LPointMake(x_min + (x_max - x_min) / 2, 
-                      y_min + (y_max - y_min) / 2);
+                      y_min + (y_max - y_min) / 2, 0);
+}
+
+// Loading data from files
+void recognizer_load_data(LRecognizer *recog)
+{
+/*
+	float average, standardDeviation;
+	FILE *fp;
+	fp=fopen("geomomentsO.txt", "r");
+	if( fp ){
+		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+				fscanf(fp, "%f %f\n", &average, &standardDeviation);
+				recog->loadedCharacters['O'].geometricMoments[p-1][q-1] = average;
+				recog->loadedCharacters['O'].geometricDeviations[p-1][q-1] = standardDeviation;
+				printf("O: p,q,avg,sigma = %d,%d,%f,%f\n",p,q,average,standardDeviation);
+			}
+		}
+		fclose(fp);
+	}
+	fp=fopen("geomomentsL.txt", "r");
+	if( fp ){
+		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+				fscanf(fp, "%f %f\n", &average, &standardDeviation);
+				recog->loadedCharacters['L'].geometricMoments[p-1][q-1] = average;
+				recog->loadedCharacters['L'].geometricDeviations[p-1][q-1] = standardDeviation;
+				printf("L: p,q,avg,sigma = %d,%d,%f,%f\n",p,q,average,standardDeviation);
+			}
+		}
+		fclose(fp);
+	}
+*/
 }
 
 // Incoming data
@@ -42,7 +78,7 @@ void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
     
     if(recog->source_points != 0)
     {
-        list_destroy(&(recog->source_points));
+        list_destroy(recog->source_points);
         free(recog->source_points);
     }
     
@@ -60,17 +96,18 @@ void recognizer_normalize_data(LRecognizer *recog)
     // calculate the center of the data
     LPoint* center = points_center(recog->source_points);
         
-    ListElement* element = recog->source_points.head;
+    ListElement* element = recog->source_points->head;
     do
     {
         LPoint* point = (LPoint *)element->data;
         point->x -= center->x;
         point->y -= center->y;        
-    } while((element = element->next));
+        element = element->next; 
+    } while(element);
     
     float x_min = 1.0, x_max = -1.0, y_min = 1.0, y_max = -1.0;
 
-    element = recog->source_points.head;
+    element = recog->source_points->head;
     do
     {
         LPoint* point = (LPoint *)element->data;
@@ -82,20 +119,22 @@ void recognizer_normalize_data(LRecognizer *recog)
             y_min = point->y;
         if (point->y > y_max) 
             y_max = point->y;
-    } while((element = element->next));
+        element = element->next; 
+    } while(element);
     
     
     float max = 0.0;
     if (x_max > y_max) { max = x_max; } 
     else { max = y_max; }
     
-    element = recog->source_points.head;
+    element = recog->source_points->head;
     do
     {
         LPoint* point = (LPoint *)element->data;
         point->x = point->x / max;
         point->y = point->y / max;
-    } while((element = element->next));
+        element = element->next; 
+    } while(element);
             
     free(center);
 }
@@ -107,28 +146,79 @@ void recognizer_connect_data(LRecognizer *recog)
     // to add points between the two points till it isn't.
     float b = 2.0f / (recog->image_size);
     
-    ListElement* element = recog->source_points.head;
+    ListElement* element = recog->source_points->head;
     do
     {
-        ListElement* point_element = element
+        if(element->next == NULL)
+            break;
+            
         LPoint* point = (LPoint *)element->data;
         LPoint* next_point = (LPoint *)element->next->data;
         
-        d = LPointDistance(point, next_point);
+        if((next_point->t - point->t) > NEW_STROKE_OFFSET_T)
+        {
+            element = element->next;
+            continue;
+        }
         
-        while (d > b)
+        float d = LPointDistance(point, next_point);
+        int steps = floorf(d/b) + 1;
+        float ival = b/d;
+        
+        for(int i = 0; i < steps; ++i)
         {
             // better to malloc in chunks
             LPoint* point_new = malloc(sizeof(LPoint));
-            LPoint* old_point = (LPoint *)element->data;
-            point->x = old_point->x;
-            point->y = old_point->y;
             
-            list_insert_next(recog->source_points, point_element, point_new);
-            point_element = point_element->next;
-            d -= b;
+            float t = i * ival;
+            point_new->x = t * point->x + (1 - t) * next_point->x;
+            point_new->y = t * point->y + (1 - t) * next_point->y;
+            
+            list_insert_next(recog->source_points, element, point_new);
+            element = element->next;
         }
-    } while((element = element->next));
+        element = element->next; 
+    } while(element);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+typedef LFeatureSet* PLFeatureSet;
+PLFeatureSet featuresetList[20];
+int currentSample = 0;
+
+void recognizer_show_moments(LRecognizer *recog)
+{
+	if( currentSample == 20 ){
+		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
+		currentSample = 0;
+	}
+	featuresetList[currentSample] = (PLFeatureSet)malloc(sizeof(LFeatureSet));
+	image_moments(recog->source_image, featuresetList[currentSample]);
+	++currentSample;
+
+	
+	FILE *fp;
+	fp=fopen("geomoments.txt", "w+");
+	
+	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+			float average = 0.0f;
+			for(int i = 0; i < currentSample; ++i){
+				average += featuresetList[i]->geometricMoments[p-1][q-1];
+			}
+			average /= (float)currentSample;
+			float standardDeviation = 0.0f;
+			for(int i = 0; i < currentSample; ++i){
+				standardDeviation += (featuresetList[i]->geometricMoments[p-1][q-1] - average)*(featuresetList[i]->geometricMoments[p-1][q-1] - average);
+			}
+			standardDeviation /= (float)currentSample;
+			standardDeviation = sqrt(standardDeviation);
+			fprintf(fp, "%f %f\n", average, standardDeviation);
+		}
+	}
+	
+	fclose(fp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,8 +231,8 @@ void recognizer_create_image(LRecognizer *recog)
     LImage* image = malloc(sizeof(LImage));
     
     image->size = n;
-    image->grid = malloc(sizeof(unsigned int) * n * n);
-    memset(image->grid, 0, sizeof(unsigned int) * n * n);
+    image->grid = malloc(sizeof(unsigned int) * (n * n + 1));
+    memset(image->grid, 0, sizeof(unsigned int) * (n * n + 1));
     
     float interval = 2 / (float)n;
 
@@ -152,7 +242,7 @@ void recognizer_create_image(LRecognizer *recog)
     {
         for(int j = 0; j < n; ++j)
         {
-            ListElement* element = recog->source_points.head;
+            ListElement* element = recog->source_points->head;
             do
             {
                 LPoint* point = (LPoint *)element->data;
@@ -165,57 +255,94 @@ void recognizer_create_image(LRecognizer *recog)
                 if(LPointInRect(*point, *rect))
                     image->grid[i*n + j] = 1;
                 
-                element = element->next;
+                        element = element->next; 
             } while(element);
         }
     }
     
     recog->source_image = image;
-    
+    image_thin(recog->source_image);
+    image_branch_points(recog->source_image);
+    image_end_points(recog->source_image);
+    //recognizer_show_moments(recog);
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
 }
 
 // Matching
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
-{    
-    LResultSet* result = malloc(sizeof(LResultSet));
-    list_init(&(result->matchData), free);
+{
+/*
+	float scoreO = 0.0f;
+	float scoreL = 0.0f;
+	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+			float avgO = recog->loadedCharacters['O'].geometricMoments[p-1][q-1];
+			float SDO = recog->loadedCharacters['O'].geometricDeviations[p-1][q-1];
+			float avgL = recog->loadedCharacters['L'].geometricMoments[p-1][q-1];
+			float SDL = recog->loadedCharacters['L'].geometricDeviations[p-1][q-1];
+			float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
+			scoreO += (measure - avgO)*(measure - avgO) / (SDO*SDO);
+			scoreL += (measure - avgL)*(measure - avgL) / (SDL*SDL);
+		}
+	}
+	
+	//printf("Score O = %f \t Score L = %f\n", scoreO, scoreL);
+	if( scoreO > scoreL ) printf("L");
+	else printf("O");
+	fflush(stdout);
+*/
 
-    charFeatures* feat = malloc(sizeof(List));
-    list_init(&feat, free);
+//    LResultSet* result = malloc(sizeof(LResultSet));
+//    list_init(result, free);
+//
+//    LCharacterFeatures* feat = malloc(sizeof(LCharacterFeatures));
+//    list_init(feat, free);
+//    
+//    switch (charSet) 
+//    {
+//        case CharacterSetSlashes:
+//            // fill features with certain characterFeature
+//            LCharacterFeature* feature = malloc(sizeof(LCharacterFeature));
+//            feature->feature_name = "moment";
+//            feature->score = 1.0;
+//            
+//            list_insert_next(feat, feat->tail, *feature);
+//            break;
+//            
+//        default:
+//            // fill features with certain characterFeature
+//            LCharacterFeature* feature = malloc(sizeof(LCharacterFeature));
+//            feature->feature_name = "moment";
+//            feature->score = 1.0;
+//            
+//            list_insert_next(feat, feat->tail, *feature);
+//            break;
+//    }
+//    
+//    ListElement* element = feat->head;
+//    do
+//    {
+//        charFeature= (LCharacterFeature *)element->data;
+//        
+//        LFeatureSet* featureSet = image_feature_set_make(LImage* image);
+//        float score = recognizer_compare(recog, featureSet, charFeature->features)
+//
+//        LMatchData* matchData = malloc(sizeof(LMatchData));
+//        matchData->score = score;
+//        matchData->character = charFeature->character;
+//
+//        // add score to result and set
+//        list_insert_next(result, result->tail, matchData);
+//        element = element->next; 
+//    } while(element);
+//       
+//    recog->results = result;
+//    
+//    free(feat);
     
-    switch (charSet) 
-    {
-        case CharacterSetSlashes:
-            // fill features with certain characterFeature
-            break;
-            
-        default:
-            // fill features with default characterFeature
-            break;
-    }
-    
-    ListElement* element = feat->head;
-    do
-    {
-        charFeature= (LCharacterFeature *)element->data;
-        
-        LFeatureSet* featureSet = image_feature_set_make(LImage* image);
-        float score = recognizer_compare(recog, featureSet, charFeature->features)
-
-        LMatchData* matchData = malloc(sizeof(LMatchData));
-        matchData->score = score;
-        matchData->character = charFeature->character;
-
-        // add score to result and set
-        list_insert_next(&(result->matchData), result->matchData.tail, matchData);
-    } while((element = element->next));
-       
-    recog->results = result;
-    recognizer_gather_results(recog);
-    
-    free(feat);
+    recog->results = (void*)0;
+    //recognizer_gather_results(recog);
 }
 
 float recognizer_compare(LRecognizer *recog, LFeatureSet* source, LFeatureSet* test)
@@ -231,6 +358,9 @@ void recognizer_gather_results(LRecognizer *recog)
     float best_score = 0.0;
     char best_char = '?';
     
+    if(!recog->results)
+        recognizer_report(recog);
+    
     ListElement* element = recog->results->head;
     do
     {
@@ -242,8 +372,8 @@ void recognizer_gather_results(LRecognizer *recog)
             best_char = matchData->character;
         }
                 
-        element = element->next;
-    } while(element);
+    element = element->next; 
+} while(element);
     
     recog->listener.char_found(best_char, recog->listener.obj); 
     recognizer_report(recog);
@@ -251,5 +381,8 @@ void recognizer_gather_results(LRecognizer *recog)
 
 void recognizer_report(LRecognizer *recog)
 {
+    if(!recog->results)
+        return;
+       
     recog->listener.result_set(recog->results, recog->listener.obj);
 }

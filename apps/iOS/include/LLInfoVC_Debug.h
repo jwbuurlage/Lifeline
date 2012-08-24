@@ -8,14 +8,16 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#include "../include/LMatch.h"
+#include "LLGridView_Debug.h"
 
-LImage* image_contour(LImage *image)
+@interface LLInfoVC : UIViewController
 {
-    return image;   
+    id delegate;
+    LLGridView* gridView;  
 }
 
-LImage* image_thin(LImage *image) 
-{
-    return image;
-}
+@property (readwrite) id delegate;
+
+- (void)setImage:(LImage*)image;
+
+@end
