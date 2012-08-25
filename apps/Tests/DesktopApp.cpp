@@ -89,6 +89,7 @@ int main(){
 				
 		// const sf::Shader* shader = sf::RenderStates::Default.shader;
 		// shader->setParameter("color", sf::Color(0, 0, 0, 255));	 
+		sf::RenderStates states;
 		
 		if( strokeList.empty() == false ){
 			for( std::vector< std::vector<Touch> >::iterator lineIter = strokeList.begin(); lineIter != strokeList.end(); ++lineIter ){
@@ -99,7 +100,9 @@ int main(){
 				prevY = iter->y;
 				++iter;
 				while(iter != lineIter->end()){
-					sf::Vertex line[2] = { sf::Vector2<float>(prevX, prevY), sf::Vector2<float>(iter->x, iter->y) };
+					
+					sf::Vertex line[2] = { sf::Vertex(sf::Vector2<float>(prevX, prevY), sf::Color::Black), 
+										   sf::Vertex(sf::Vector2<float>(iter->x, iter->y), sf::Color::Black) };
 					window->draw(line, 2, sf::Lines);
 					
 					prevX = iter->x;
@@ -117,12 +120,13 @@ int main(){
 			rect->setSize(sf::Vector2<float>(px*n+30, px*n+30));
 			rect->setFillColor(sf::Color(255,255,255));
 			window->draw(*rect);
-			delete rect;
+			
 			sf::Color pixelColor;
+						
 			for(int i = 0; i < n; ++i)
 			{
 				for(int j = 0; j < n; ++j)
-				{
+				{					
 					LGridPoint gridPoint = result_image->grid[i*n+j];
 					if( gridPoint.enabled ){
 						int color = gridPoint.type;
@@ -145,12 +149,11 @@ int main(){
 						else if(color == 1 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						else if(color == 2 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						else if(color == 3 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
-						sf::RectangleShape* rect = new sf::RectangleShape();
-						rect->setOrigin(sf::Vector2<float>(20+px*j,20+px*i));
-						rect->setSize(sf::Vector2<float>(20+px*j+px-1, 20+px*i+px-1));
+						
+						rect->setOrigin(sf::Vector2<float>(-(20 + px*j), -(20 + px*i)));
+						rect->setSize(sf::Vector2<float>(px, px));
 						rect->setFillColor(pixelColor);
 						window->draw(*rect);
-						delete rect;
 					} 
 				}
 			}
