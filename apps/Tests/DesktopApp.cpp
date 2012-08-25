@@ -2,9 +2,11 @@
 #include <SFML/Window.hpp>
 #include <vector>
 #include <iostream>
+#include <fstream>
 extern "C"{
 #include "LRecognizer.h"
 #include "LListener.h"
+#include "LDatabase.h"
 }
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y);
@@ -46,6 +48,24 @@ int main(){
 	recognizer.listener.result_set = callbackResult_set;
 	recognizer.listener.source_image = callbackSource_image;
 	recognizer_load_data(&recognizer);
+
+	char* symbolbuffer = 0;
+
+	std::ifstream file("symbols.data", std::ifstream::binary);
+	if( file.is_open() == false ){
+		std::cout << "Unable to open symbol database\n";
+	}else{
+		file.seekg(0, std::ios::end);
+		size_t length = file.tellg();
+		file.seekg(0, std::ios::beg);
+		symbolbuffer = new char[length];
+		file.read(symbolbuffer, length);
+		file.close();
+	}
+
+	if( symbolbuffer ){
+		database_add_pointer(symbolbuffer);
+	}
 
 	window = new sf::RenderWindow(sf::VideoMode(900, 400, 32), "Testing Station");
 	timer = new sf::Clock;
@@ -163,6 +183,8 @@ int main(){
 		window->display();
 		sf::sleep(sf::milliseconds(20));
 	}
+
+	if( symbolbuffer ) delete[] symbolbuffer;
 
 	delete window;
 	return 0;

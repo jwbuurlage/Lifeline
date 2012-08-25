@@ -301,16 +301,21 @@ void recognizer_create_image(LRecognizer *recog)
 
 // Matching
 
-float recognizer_score_symbol(LRecognizer *recog, LCalibratedFeatureSet* symbol)
+float recognizer_score_symbol(void* _recog, void* symbolhandle)
 {
+	LRecognizer* recog = (LRecognizer*)_recog;
+
 	//Geometric
 	float geometricScore = 0.0f;
-	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
-		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
-			float average = symbol->geometricMoments[p-1][q-1];
-			float SD = symbol->geometricDeviations[p-1][q-1];
-			float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
-			geometricScore += (measure - average)*(measure - average) / (SD * SD);
+	LCalibratedFeatureSet* featureset = database_get_symbol_feature(symbolhandle, FeatureTypeGeometric);
+	if( featureset ){	
+		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+				float average = featureset->geometricMoments[p-1][q-1];
+				float SD = featureset->geometricDeviations[p-1][q-1];
+				float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
+				geometricScore += (measure - average)*(measure - average) / (SD * SD);
+			}
 		}
 	}
 	//Zernike
@@ -324,7 +329,7 @@ float recognizer_score_symbol(LRecognizer *recog, LCalibratedFeatureSet* symbol)
 
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
 {
-	database_doScores(recognizer_score_symbol, recog);
+	database_do_scores(&recognizer_score_symbol, recog);
 
 //    LResultSet* result = malloc(sizeof(LResultSet));
 //    list_init(result, free);
