@@ -10,6 +10,7 @@ SET(
 	"src/DataStructures.c"
 	"src/LFeatures.c"
 	"src/LRecognizer.c"
+	"src/LDatabase.c"
 )
 
 SET(

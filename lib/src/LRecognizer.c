@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "../include/LRecognizer.h"
+#include "../include/LDatabase.h"
 
 /* Convenience methods */
 
@@ -299,28 +300,31 @@ void recognizer_create_image(LRecognizer *recog)
 }
 
 // Matching
-void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
+
+float recognizer_score_symbol(LRecognizer *recog, LCalibratedFeatureSet* symbol)
 {
-/*
-	float scoreO = 0.0f;
-	float scoreL = 0.0f;
+	//Geometric
+	float geometricScore = 0.0f;
 	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
 		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
-			float avgO = recog->loadedCharacters['O'].geometricMoments[p-1][q-1];
-			float SDO = recog->loadedCharacters['O'].geometricDeviations[p-1][q-1];
-			float avgL = recog->loadedCharacters['L'].geometricMoments[p-1][q-1];
-			float SDL = recog->loadedCharacters['L'].geometricDeviations[p-1][q-1];
+			float average = symbol->geometricMoments[p-1][q-1];
+			float SD = symbol->geometricDeviations[p-1][q-1];
 			float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
-			scoreO += (measure - avgO)*(measure - avgO) / (SDO*SDO);
-			scoreL += (measure - avgL)*(measure - avgL) / (SDL*SDL);
+			geometricScore += (measure - average)*(measure - average) / (SD * SD);
 		}
 	}
-	
-	//printf("Score O = %f \t Score L = %f\n", scoreO, scoreL);
-	if( scoreO > scoreL ) printf("L");
-	else printf("O");
-	fflush(stdout);
-*/
+	//Zernike
+	float zernikeScore = 0.0f;
+	for(int i = 0; i < 5; ++i){
+		zernikeScore += 0.01;
+	}
+	//Total score, some count more than others
+	return 0.7f*geometricScore + 1.0f*zernikeScore;
+}
+
+void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
+{
+	database_doScores(recognizer_score_symbol, recog);
 
 //    LResultSet* result = malloc(sizeof(LResultSet));
 //    list_init(result, free);

@@ -32,22 +32,12 @@ int database_addPointer(void* fileData);
 void database_freePointer(void* fileData);
 
 
-// The following functions are used by the library internally
+// The following is used by the library internally
 
-//Comparing scores:
-//  resetScores();
-//  int handle = getFirst();
-//  while( handle ){
-//  	void* data = getFeatures(handle, ZERNIKE);
-//  	//score against data
-//  	void* data2 = getFeatures(handle, GEOMETRIC);
-//  	//score against more data
-//  	setScore(handle, score);
-//  	handle = getNext(handle);
-//  }
+struct LRecognizer; //forward declarations
+struct LCalibratedFeatureSet;
 
-void database_resetScores();
-int database_getFirst();
-void* database_getFeatures(int handle, int type);
-void database_setScore(int handle, float score);
-int database_getNext(int handle);
+typedef float (*scoreCallback)(struct LRecognizer* recog, struct LCalibratedFeatureSet* features);
+
+void database_doScores(scoreCallback scoreFunc, struct LRecognizer* recog);
+
