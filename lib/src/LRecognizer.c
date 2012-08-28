@@ -39,39 +39,6 @@ LPoint* points_center(LPointData* pointData)
                       y_min + (y_max - y_min) / 2, 0);
 }
 
-// Loading data from files
-void recognizer_load_data(LRecognizer *recog)
-{
-/*
-	float average, standardDeviation;
-	FILE *fp;
-	fp=fopen("geomomentsO.txt", "r");
-	if( fp ){
-		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
-			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
-				fscanf(fp, "%f %f\n", &average, &standardDeviation);
-				recog->loadedCharacters['O'].geometricMoments[p-1][q-1] = average;
-				recog->loadedCharacters['O'].geometricDeviations[p-1][q-1] = standardDeviation;
-				printf("O: p,q,avg,sigma = %d,%d,%f,%f\n",p,q,average,standardDeviation);
-			}
-		}
-		fclose(fp);
-	}
-	fp=fopen("geomomentsL.txt", "r");
-	if( fp ){
-		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
-			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
-				fscanf(fp, "%f %f\n", &average, &standardDeviation);
-				recog->loadedCharacters['L'].geometricMoments[p-1][q-1] = average;
-				recog->loadedCharacters['L'].geometricDeviations[p-1][q-1] = standardDeviation;
-				printf("L: p,q,avg,sigma = %d,%d,%f,%f\n",p,q,average,standardDeviation);
-			}
-		}
-		fclose(fp);
-	}
-*/
-}
-
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 {
@@ -198,9 +165,8 @@ void recognizer_showMoments(LRecognizer *recog)
 	image_moments(recog->source_image, featuresetList[currentSample]);
 	++currentSample;
 
-	
-	FILE *fp;
-	fp=fopen("geomoments.txt", "w+");
+	LFeatureGeometric featureGeometric;
+	LFeatureZernike featureZernike;
 	
 	for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
 		for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
@@ -215,13 +181,11 @@ void recognizer_showMoments(LRecognizer *recog)
 			}
 			standardDeviation /= (float)currentSample;
 			standardDeviation = sqrt(standardDeviation);
-			fprintf(fp, "%f %f\n", average, standardDeviation);
+
+			featureGeometric.geometricMoments[p-1][q-1] = average;
+			featureGeometric.geometricDeviations[p-1][q-1] = standardDeviation;
 		}
 	}
-	
-	fclose(fp);
-
-	fp = fopen("zernikemoments.txt", "w+");
 
 	for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
 		for(int m = -n; m <= n; ++m){
@@ -237,11 +201,14 @@ void recognizer_showMoments(LRecognizer *recog)
 			}
 			standardDeviation /= (float)currentSample;
 			standardDeviation = sqrt(standardDeviation);
-			fprintf(fp, "%f %f\n", average, standardDeviation);
+			featureZernike.zernikeMoments[ZERNIKE_INDEX(n,m)][k] = average;
+			featureZernike.zernikeMoments[ZERNIKE_INDEX(n,m)][k] = standardDeviation;
 		}
 		}
 	}
-	fclose(fp);
+
+	//TODO
+	//database_save_feature(herp derp);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

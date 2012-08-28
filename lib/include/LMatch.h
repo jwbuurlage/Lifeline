@@ -115,7 +115,7 @@ typedef struct
 typedef struct
 {
 	float zernikeMoments[MAX_ZERNIKE_N_M_COMBINATIONS][2]; //Complex numbers so 2 components
-	float zernikeMomentsDeviations[MAX_ZERNIKE_N_M_COMBINATIONS][2]; //Complex numbers so 2 components
+	float zernikeDeviations[MAX_ZERNIKE_N_M_COMBINATIONS][2]; //Complex numbers so 2 components
 } LFeatureZernike;
 
 typedef struct

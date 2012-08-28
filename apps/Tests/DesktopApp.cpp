@@ -47,7 +47,6 @@ int main(){
 	recognizer.listener.char_found = callbackBest_match;
 	recognizer.listener.result_set = callbackResult_set;
 	recognizer.listener.source_image = callbackSource_image;
-	recognizer_load_data(&recognizer);
 
 	char* symbolbuffer = 0;
 	unsigned int symbolbuffersize = 0;
