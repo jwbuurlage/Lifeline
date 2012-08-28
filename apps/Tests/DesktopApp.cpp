@@ -50,21 +50,22 @@ int main(){
 	recognizer_load_data(&recognizer);
 
 	char* symbolbuffer = 0;
+	unsigned int symbolbuffersize = 0;
 
 	std::ifstream file("symbols.data", std::ifstream::binary);
 	if( file.is_open() == false ){
 		std::cout << "Unable to open symbol database\n";
 	}else{
 		file.seekg(0, std::ios::end);
-		size_t length = file.tellg();
+		symbolbuffersize = file.tellg();
 		file.seekg(0, std::ios::beg);
-		symbolbuffer = new char[length];
-		file.read(symbolbuffer, length);
+		symbolbuffer = new char[symbolbuffersize];
+		file.read(symbolbuffer, symbolbuffersize);
 		file.close();
 	}
 
 	if( symbolbuffer ){
-		database_add_pointer(symbolbuffer);
+		database_add_pointer(symbolbuffer, symbolbuffersize);
 	}
 
 	window = new sf::RenderWindow(sf::VideoMode(900, 400, 32), "Testing Station");
