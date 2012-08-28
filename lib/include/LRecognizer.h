@@ -27,8 +27,6 @@ typedef struct {
     
     LListener listener;
     LCharacterSet charSet;
-    
-    LCalibratedFeatureSet loadedCharacters[256];
 } LRecognizer;
 
 ///////////////////////////////////////////////////////////////////////////////

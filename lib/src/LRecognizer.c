@@ -307,12 +307,13 @@ float recognizer_score_symbol(void* _recog, void* symbolhandle)
 
 	//Geometric
 	float geometricScore = 0.0f;
-	LCalibratedFeatureSet* featureset = database_get_symbol_feature(symbolhandle, FeatureTypeGeometric);
+	LFeatureGeometric* featureset = database_get_symbol_feature(symbolhandle, FeatureTypeGeometric);
 	if( featureset ){	
 		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
 			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
 				float average = featureset->geometricMoments[p-1][q-1];
 				float SD = featureset->geometricDeviations[p-1][q-1];
+				if( SD == 0.0f ) continue; //Prevent divide by zero
 				float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
 				geometricScore += (measure - average)*(measure - average) / (SD * SD);
 			}

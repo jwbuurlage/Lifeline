@@ -185,6 +185,7 @@ int main(){
 		sf::sleep(sf::milliseconds(20));
 	}
 
+	database_free_pointer(symbolbuffer);
 	if( symbolbuffer ) delete[] symbolbuffer;
 
 	delete window;

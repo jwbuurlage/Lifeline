@@ -49,7 +49,8 @@ int database_add_pointer(void* fileData, unsigned int size){
 	char* data = fileData;
 	unsigned int headersize = *(unsigned int*)(data+4);
 	unsigned int blockcount = *(unsigned int*)(data+8);
-	LSymbolBlock* blocks = (LSymbolBlock*)malloc(sizeof(LSymbolBlock) * symbolbuffers[bufCount].blockcount);
+	LSymbolBlock* blocks = 0;
+	if( blockcount != 0 ) blocks = (LSymbolBlock*)malloc(sizeof(LSymbolBlock) * blockcount);
 
 	symbolbuffers[bufCount].buffer = data;
 	symbolbuffers[bufCount].size = size;
@@ -65,8 +66,7 @@ int database_add_pointer(void* fileData, unsigned int size){
 
 		char* nextblock = data + blocksize;
 		LFeatureBlock* features = 0;
-		if( featureCount != 0 )
-			features = (LFeatureBlock*)malloc(sizeof(LFeatureBlock) * featureCount);
+		if( featureCount != 0 ) features = (LFeatureBlock*)malloc(sizeof(LFeatureBlock) * featureCount);
 
 		blocks[i].data = data;
 		blocks[i].size = blocksize;

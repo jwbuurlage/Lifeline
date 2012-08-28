@@ -8,7 +8,7 @@
 //
 // File header:
 //
-// 04 magic int
+// 04 magic int - 0x4546494c this spells L I F E
 // 04 HEADERSIZE - header lenght including magic integer, so it is a file offset to the data
 // 04 BLOCKCOUNT - amount of symbol blocks in the data section
 // xx NAME - string with the display name of this symbol set
@@ -16,10 +16,10 @@
 // Data: starting at HEADERSIZE, offsets are relative
 // Each symbolblock can contain multiple feature blocks
 //
-// 04 BLOCKSIZE - size of this symbol block
+// 04 BLOCKSIZE - size of this symbol block, including this integer
 // 04 FEATURECOUNT - amount of feature blocks
 // xx SYMBOL - string that contains the symbol which can be a character but also a latex symbol
-//    04 SIZE - size of this feature block
+//    04 SIZE - size of this feature block, including this integer
 //    01 LFeatureType - geometric, zernike, etc
 //    xx Feature data - depends on FEATURETYPE
 //    repeat for each feature set
@@ -31,7 +31,7 @@ typedef enum
 	FeatureTypeGeometric,
 	FeatureTypeZernike,
 	FeatureTypeComponents, //amount of components, endpoints, etc
-	FeatureTypeCOUNT
+	FeatureTypeMAX
 } LFeatureType;
 
 
