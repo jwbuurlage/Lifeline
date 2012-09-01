@@ -150,7 +150,15 @@ void* database_get_symbol_feature(void* handle, LFeatureType featureType){
 	return 0;
 }
 
-int database_set_symbol_feature(void* symbol, LFeatureType featureType, void* buffer){
+int database_update_symbol_feature(void* handle, LFeatureType featureType, void* buffer){
+	if( handle == 0 ) return 0;
+	LSymbolBlock* symbol = (LSymbolBlock*)handle;
+	for(unsigned int i = 0; i < symbol->featureCount; ++i){
+		if( symbol->features[i].type == featureType ){
+			memcpy(symbol->features[i].data + 5, buffer, symbol->features[i].size - 5 );
+			return 1;
+		}
+	}
 	return 0;
 }
 

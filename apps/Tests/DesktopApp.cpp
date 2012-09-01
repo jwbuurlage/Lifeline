@@ -17,8 +17,16 @@ void sendInput();
 sf::RenderWindow* window;
 sf::Clock* timer;
 
-bool drawing;
+bool mouseDown;
 int previousX, previousY;
+
+char symbol;
+
+enum STATE {
+	StateNothing = 0,
+	StateRecording,
+	StateChoosingSymbol
+} State;
 
 struct Touch{
 	float x, y;
@@ -40,8 +48,9 @@ LImage* result_image;
 int main(){
 	std::cout << "---------------------------------\n";
 	std::cout << "----- Lifeline test station -----\n";
-	std::cout << "--- Press ESC to clear screen ---\n";
-	std::cout << "------ Press enter to send ------\n";
+	std::cout << "-- Press ESC to clear screen ----\n";
+	std::cout << "-- Press enter to send ----------\n";
+	std::cout << "-- Press R to record ------------\n";
 	std::cout << "---------------------------------\n";
 	
 	recognizer.listener.char_found = callbackBest_match;
@@ -72,7 +81,8 @@ int main(){
 
 	sf::Event Event;
 
-	drawing = false;
+	State = StateNothing;
+	mouseDown = false;
 	strokeList.clear();
 	timer->restart();
 	while( window->isOpen() ){
@@ -80,12 +90,60 @@ int main(){
 			switch( Event.type ){
 			case sf::Event::KeyPressed: break;
 			case sf::Event::KeyReleased: 
-				if (Event.key.code == sf::Keyboard::Escape){
-					if( strokeList.empty() ) window->close();
-					else strokeList.clear();
-				}else if(Event.key.code == sf::Keyboard::Return){
-					sendInput();
-					strokeList.clear();
+				switch( State ){
+					case StateNothing:
+						if( Event.key.code == sf::Keyboard::Escape ){
+							if( strokeList.empty() ) window->close();
+							else strokeList.clear();
+						}else if( Event.key.code == sf::Keyboard::Return ){
+							sendInput();
+							strokeList.clear();
+						}else if( Event.key.code == sf::Keyboard::R ){
+							State = StateChoosingSymbol;
+							std::cout << "Now press the key of the symbol you want to record features for. (A-Z)\n";
+						}
+						break;
+					case StateChoosingSymbol:
+						if( Event.key.code == sf::Keyboard::Escape ){
+							State = StateNothing;
+							std::cout << "Recording canceled.\n";
+						}else if( Event.key.code >= sf::Keyboard::A && Event.key.code <= sf::Keyboard::Z ){
+							symbol = 'A' + Event.key.code - sf::Keyboard::A;
+							State = StateRecording;
+							std::cout << "Recording symbol: " << symbol << "\n";
+							std::cout << "Press Enter after drawing each symbol. Press ESC when done.\n";
+						}else{
+							std::cout << "Invalid key, only A-Z supported\n";
+						}
+						break;
+					case StateRecording:
+						if( Event.key.code == sf::Keyboard::Escape ){
+							if( strokeList.empty() ){
+								State = StateNothing;
+								char symbolstring[2] = {symbol, 0};
+								recognizer_save_samples(&recognizer, symbolstring);
+								//The file buffer has been changed. Write it to the file
+								if( symbolbuffer ){
+									std::ofstream file("symbols.data", std::ifstream::binary);
+									if( file.is_open() == false ){
+										std::cout << "Unable to open symbol database\n";
+									}else{
+										file.write(symbolbuffer, symbolbuffersize);
+										file.close();
+										std::cout << "Symbol file has been updated.\n";
+									}
+								}
+								std::cout << "Recording finished.\n";
+							}else{
+								strokeList.clear();
+							}
+						}else if( Event.key.code == sf::Keyboard::Return ){
+							sendInput();
+							strokeList.clear();
+						}
+						break;
+					default:
+						break;
 				}
 				break;
 			case sf::Event::MouseWheelMoved: break;
@@ -135,11 +193,11 @@ int main(){
 			int n = result_image->size;
 			
 			const int px = 5;
-			sf::RectangleShape* rect = new sf::RectangleShape();
-			rect->setOrigin(sf::Vector2<float>(10, 10));
-			rect->setSize(sf::Vector2<float>(px*n+30, px*n+30));
-			rect->setFillColor(sf::Color(255,255,255));
-			window->draw(*rect);
+			sf::RectangleShape rect;
+			rect.setOrigin(sf::Vector2<float>(10, 10));
+			rect.setSize(sf::Vector2<float>(px*n+30, px*n+30));
+			rect.setFillColor(sf::Color(255,255,255));
+			window->draw(rect);
 			
 			sf::Color pixelColor;
 						
@@ -170,10 +228,10 @@ int main(){
 						else if(color == 2 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						else if(color == 3 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
 						
-						rect->setOrigin(sf::Vector2<float>(-(20 + px*j), -(20 + px*i)));
-						rect->setSize(sf::Vector2<float>(px, px));
-						rect->setFillColor(pixelColor);
-						window->draw(*rect);
+						rect.setOrigin(sf::Vector2<float>(-(20 + px*j), -(20 + px*i)));
+						rect.setSize(sf::Vector2<float>(px, px));
+						rect.setFillColor(pixelColor);
+						window->draw(rect);
 					} 
 				}
 			}
@@ -196,16 +254,16 @@ void mousePress(sf::Mouse::Button button, bool down, int x, int y){
 		if( strokeList.empty() ) timer->restart();
 		previousX = x; 
 		previousY = y;
-		drawing = true;
+		mouseDown = true;
 		strokeList.push_back(std::vector<Touch>());
 	}else{
 		if( strokeList.empty() == false ) strokeList.back().push_back(Touch((float)x,(float)y,timer->getElapsedTime().asSeconds()));
-		drawing = false;
+		mouseDown = false;
 	}
 }
 
 void mouseMoved(int x, int y){
-	if( drawing ){
+	if( mouseDown ){
 		if( (x-previousX) > 2 || (x-previousX) < -2 || (y-previousY) > 2 || (y-previousY) < -2 ){
 			strokeList.back().push_back(Touch((float)x,(float)y,timer->getElapsedTime().asSeconds()));
 			previousX = x;
@@ -232,6 +290,10 @@ void sendInput(){
 	
 	recognizer.source_points = 0;
 	recognizer_set_data(&recognizer, &point_data);
+	if( State == StateRecording ){
+		recognizer_take_sample(&recognizer);
+		std::cout << "Feature sample taken.\n";
+	}
 	list_destroy(&point_data);
 }
 

@@ -151,20 +151,30 @@ void recognizer_connect_data(LRecognizer *recog)
 
 ///////////////////////////////////////////////////////////////////////////////
 
+//This is for calculating averages and so on
 typedef LFeatureSet* PLFeatureSet;
 PLFeatureSet featuresetList[20];
 int currentSample = 0;
 
-void recognizer_showMoments(LRecognizer *recog)
+void recognizer_take_sample(LRecognizer *recog)
 {
 	if( currentSample == 20 ){
 		for(int i = 0; i < 20; ++i) free(featuresetList[i]);
 		currentSample = 0;
 	}
+	//Save the current sample
 	featuresetList[currentSample] = (PLFeatureSet)malloc(sizeof(LFeatureSet));
-	image_moments(recog->source_image, featuresetList[currentSample]);
+	memcpy(featuresetList[currentSample], &(recog->currentFeatures), sizeof(LFeatureSet));
 	++currentSample;
+	
+	return;
+}
 
+void recognizer_save_samples(LRecognizer *recog, char* symbol){
+	void* handle = database_get_symbol_handle(symbol);
+	if( handle == 0 ) return;
+
+	//Calculate averages
 	LFeatureGeometric featureGeometric;
 	LFeatureZernike featureZernike;
 	
@@ -206,9 +216,9 @@ void recognizer_showMoments(LRecognizer *recog)
 		}
 		}
 	}
-
-	//TODO
-	//database_save_feature(herp derp);
+	
+	database_update_symbol_feature(handle, FeatureTypeGeometric, &featureGeometric);
+	database_update_symbol_feature(handle, FeatureTypeZernike, &featureZernike);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -261,7 +271,7 @@ void recognizer_create_image(LRecognizer *recog)
 //    image_connected_components(recog->source_image);
 //    image_points_curvature(recog->source_image);
 //    image_line_type(recog->source_image);
-    recognizer_showMoments(recog);
+	image_moments(recog->source_image, &recog->currentFeatures);
     // Need to copy data and delete original stuff
     recog->listener.source_image(recog->source_image, recog->listener.obj);
 }
@@ -274,22 +284,33 @@ float recognizer_score_symbol(void* _recog, void* symbolhandle)
 
 	//Geometric
 	float geometricScore = 0.0f;
-	LFeatureGeometric* featureset = database_get_symbol_feature(symbolhandle, FeatureTypeGeometric);
-	if( featureset ){	
+	LFeatureGeometric* featuresGeo = database_get_symbol_feature(symbolhandle, FeatureTypeGeometric);
+	if( featuresGeo ){	
 		for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
 			for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
-				float average = featureset->geometricMoments[p-1][q-1];
-				float SD = featureset->geometricDeviations[p-1][q-1];
+				float average = featuresGeo->geometricMoments[p-1][q-1];
+				float SD = featuresGeo->geometricDeviations[p-1][q-1];
 				if( SD == 0.0f ) continue; //Prevent divide by zero
-				float measure = featuresetList[currentSample-1]->geometricMoments[p-1][q-1];
-				geometricScore += (measure - average)*(measure - average) / (SD * SD);
+				float samplevalue = recog->currentFeatures.geometricMoments[p-1][q-1];
+				geometricScore += (samplevalue - average)*(samplevalue - average) / (SD * SD);
 			}
 		}
 	}
 	//Zernike
 	float zernikeScore = 0.0f;
-	for(int i = 0; i < 5; ++i){
-		zernikeScore += 0.01;
+	LFeatureZernike* featuresZernike = database_get_symbol_feature(symbolhandle, FeatureTypeZernike);
+	if( featuresZernike ){
+		for(int n = 1; n <= MAX_ZERNIKE_N; ++n){
+			for(int m = -n; m <= n; ++m){
+				for(int k = 0; k < 2; ++k){ //real and imaginary part
+					float average = featuresZernike->zernikeMoments[ZERNIKE_INDEX(n,m)][k];
+					float SD = featuresZernike->zernikeDeviations[ZERNIKE_INDEX(n,m)][k];
+					if( SD == 0.0f ) continue;
+					float samplevalue = recog->currentFeatures.zernikeMoments[ZERNIKE_INDEX(n,m)][k];
+					zernikeScore += (samplevalue - average)*(samplevalue - average) / (SD * SD);
+				}
+			}
+		}
 	}
 	//Total score, some count more than others
 	return 0.7f*geometricScore + 1.0f*zernikeScore;
@@ -298,55 +319,7 @@ float recognizer_score_symbol(void* _recog, void* symbolhandle)
 void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet)
 {
 	database_do_scores(&recognizer_score_symbol, recog);
-
-//    LResultSet* result = malloc(sizeof(LResultSet));
-//    list_init(result, free);
-//
-//    LCharacterFeatures* feat = malloc(sizeof(LCharacterFeatures));
-//    list_init(feat, free);
-//    
-//    switch (charSet) 
-//    {
-//        case CharacterSetSlashes:
-//            // fill features with certain characterFeature
-//            LCharacterFeature* feature = malloc(sizeof(LCharacterFeature));
-//            feature->feature_name = "moment";
-//            feature->score = 1.0;
-//            
-//            list_insert_next(feat, feat->tail, *feature);
-//            break;
-//            
-//        default:
-//            // fill features with certain characterFeature
-//            LCharacterFeature* feature = malloc(sizeof(LCharacterFeature));
-//            feature->feature_name = "moment";
-//            feature->score = 1.0;
-//            
-//            list_insert_next(feat, feat->tail, *feature);
-//            break;
-//    }
-//    
-//    ListElement* element = feat->head;
-//    do
-//    {
-//        charFeature= (LCharacterFeature *)element->data;
-//        
-//        LFeatureSet* featureSet = image_feature_set_make(LImage* image);
-//        float score = recognizer_compare(recog, featureSet, charFeature->features)
-//
-//        LMatchData* matchData = malloc(sizeof(LMatchData));
-//        matchData->score = score;
-//        matchData->character = charFeature->character;
-//
-//        // add score to result and set
-//        list_insert_next(result, result->tail, matchData);
-//        element = element->next; 
-//    } while(element);
-//       
-//    recog->results = result;
-//    
-//    free(feat);
-    
+	
     recog->results = (void*)0;
     //recognizer_gather_results(recog);
 }

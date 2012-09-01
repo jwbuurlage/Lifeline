@@ -27,6 +27,8 @@ typedef struct {
     
     LListener listener;
     LCharacterSet charSet;
+    
+    LFeatureSet currentFeatures; //Calculated features of the current symbol
 } LRecognizer;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -41,6 +43,9 @@ void recognizer_load_data(LRecognizer *recog);
 
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData);
+
+void recognizer_take_sample(LRecognizer *recog);
+void recognizer_save_samples(LRecognizer *recog, char* symbol);
 
 // Preprocessing
 void recognizer_normalize_data(LRecognizer *recog);

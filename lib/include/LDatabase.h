@@ -47,13 +47,14 @@ void database_free_pointer(void* fileData);
 
 // The following is used by the library internally
 
-
-//The buffer should be big enough to hold featureType
 void* database_get_symbol_handle(char* symbol);
-void* database_add_symbol(char* symbol);
 
 //returns a (read-only) pointer to the symbol feature
-void* database_get_symbol_feature(void* symbol, LFeatureType featureType);
+void* database_get_symbol_feature(void* handle, LFeatureType featureType);
+
+int database_update_symbol_feature(void* handle, LFeatureType featureType, void* buffer);
+
+//The following is used by LRecognizer to iterate over all symbols and calculate scores
 
 //callbackData is used for LRecognizer*
 typedef float (*scoreCallback)(void* callbackData, void* symbolhandle);
