@@ -44,6 +44,7 @@ void recognizer_load_data(LRecognizer *recog);
 // Incoming data
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData);
 
+void recognizer_clear_samples(LRecognizer *recog);
 void recognizer_take_sample(LRecognizer *recog);
 void recognizer_save_samples(LRecognizer *recog, char* symbol);
 
@@ -51,14 +52,6 @@ void recognizer_save_samples(LRecognizer *recog, char* symbol);
 void recognizer_normalize_data(LRecognizer *recog);
 void recognizer_connect_data(LRecognizer *recog);
 void recognizer_create_image(LRecognizer *recog);
-
-// Matching
-void recognizer_score_against(LRecognizer *recog, LCharacterSet charSet);
-float recognizer_compare(LRecognizer *recog, LFeatureSet* source, LFeatureSet* test);
-
-// Postprocessing & reporting
-void recognizer_gather_results(LRecognizer *recog);
-void recognizer_report(LRecognizer *recog);
 
 ///////////////////////////////////////////////////////////////////////////////
 

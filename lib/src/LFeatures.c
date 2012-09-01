@@ -148,11 +148,6 @@ void image_moments(LImage* image, LFeatureSet* output)
 	return;
 }
 
-float image_zernike_moment(LImage* image)
-{
-	return 10.0f;
-}
-
 int get_neighbour(int i, int j, int neighbour, int n)
 {
 	neighbour = neighbour % 8;

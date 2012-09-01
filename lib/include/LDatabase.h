@@ -11,6 +11,7 @@
 // 04 magic int - 0x4546494c this spells L I F E
 // 04 HEADERSIZE - header lenght including magic integer, so it is a file offset to the data
 // 04 BLOCKCOUNT - amount of symbol blocks in the data section
+// 04 VERSION - version number of this file
 // xx NAME - string with the display name of this symbol set
 // 
 // Data: starting at HEADERSIZE, offsets are relative
@@ -59,5 +60,5 @@ int database_update_symbol_feature(void* handle, LFeatureType featureType, void*
 //callbackData is used for LRecognizer*
 typedef float (*scoreCallback)(void* callbackData, void* symbolhandle);
 
-void database_do_scores(scoreCallback scoreFunc, void* callbackData);
+char* database_do_scores(scoreCallback scoreFunc, void* callbackData);
 

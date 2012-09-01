@@ -109,6 +109,7 @@ int main(){
 							std::cout << "Recording canceled.\n";
 						}else if( Event.key.code >= sf::Keyboard::A && Event.key.code <= sf::Keyboard::Z ){
 							symbol = 'A' + Event.key.code - sf::Keyboard::A;
+							recognizer_clear_samples(&recognizer);
 							State = StateRecording;
 							std::cout << "Recording symbol: " << symbol << "\n";
 							std::cout << "Press Enter after drawing each symbol. Press ESC when done.\n";
@@ -299,7 +300,8 @@ void sendInput(){
 
 void callbackBest_match(char character, void* obj)
 {
-
+	if( State == StateNothing )
+		std::cout << "Best match: " << character << std::endl;
 }
 
 void callbackResult_set(LResultSet* result, void* obj)
