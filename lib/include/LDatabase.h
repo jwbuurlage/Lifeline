@@ -1,26 +1,40 @@
 //
 // File format
 //
-// Unless stated otherwise, all strings have the following format:
+// ! Unless stated otherwise, all strings have the following format:
 //  a byte with the string length, followed by the string, NOT zero-terminated
 // 
 // The number in front of each line is the size of the data in bytes
 //
 // File header:
 //
-// 04 magic int
+// 04 magic int - 0x4546494c this spells L I F E
 // 04 HEADERSIZE - header lenght including magic integer, so it is a file offset to the data
+// 04 BLOCKCOUNT - amount of symbol blocks in the data section
+// 04 VERSION - version number of this file
 // xx NAME - string with the display name of this symbol set
 // 
-// Data: starting at HEADERSIZE, offsets are relative, one data block per symbol
+// Data: starting at HEADERSIZE, offsets are relative
+// Each symbolblock can contain multiple feature blocks
 //
-// 04 BLOCKSIZE - size of this data block
+// 04 BLOCKSIZE - size of this symbol block, including this integer
+// 04 FEATURECOUNT - amount of feature blocks
 // xx SYMBOL - string that contains the symbol which can be a character but also a latex symbol
-//  04 SIZE - size of this feature block
-//  01 FEATURETYPE - geometric, zernike, etc
-//  xx Feature data - depends on FEATURETYPE
-//  repeat for each feature set
+//    04 SIZE - size of this feature block, including this integer
+//    01 LFeatureType - geometric, zernike, etc
+//    xx Feature data - depends on FEATURETYPE
+//    repeat for each feature set
 //
+
+typedef enum
+{
+	FeatureTypeUnkown = 0,
+	FeatureTypeGeometric,
+	FeatureTypeZernike,
+	FeatureTypeComponents, //amount of components, endpoints, etc
+	FeatureTypeMAX
+} LFeatureType;
+
 
 //
 // The application is supposed to load the files in memory and then pass a pointer to this memory
@@ -28,16 +42,23 @@
 // On success, this function returns non-zero and the memory block will be used by the library and may
 //   not be freed untill database_freePointer is called
 //
-int database_addPointer(void* fileData);
-void database_freePointer(void* fileData);
+int database_add_pointer(void* fileData, unsigned int size);
+void database_free_pointer(void* fileData);
 
 
 // The following is used by the library internally
 
-struct LRecognizer; //forward declarations
-struct LCalibratedFeatureSet;
+void* database_get_symbol_handle(char* symbol);
 
-typedef float (*scoreCallback)(struct LRecognizer* recog, struct LCalibratedFeatureSet* features);
+//returns a (read-only) pointer to the symbol feature
+void* database_get_symbol_feature(void* handle, LFeatureType featureType);
 
-void database_doScores(scoreCallback scoreFunc, struct LRecognizer* recog);
+int database_update_symbol_feature(void* handle, LFeatureType featureType, void* buffer);
+
+//The following is used by LRecognizer to iterate over all symbols and calculate scores
+
+//callbackData is used for LRecognizer*
+typedef float (*scoreCallback)(void* callbackData, void* symbolhandle);
+
+char* database_do_scores(scoreCallback scoreFunc, void* callbackData);
 

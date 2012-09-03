@@ -3,6 +3,7 @@
 build*
 project/*
 *.dat
+*~
 apps/Aa/.datc360.000
 bin/*
 CMakeFiles*

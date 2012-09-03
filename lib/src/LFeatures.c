@@ -126,9 +126,17 @@ void image_moments(LImage* image, LFeatureSet* output)
 				float y = ((float)i-mid)/mid;
 				
 				// Geometric moments
-				for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p)
-					for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q)
-						output->geometricMoments[p-1][q-1] += pow(x, p)*pow(y,q);
+				float powx[MAX_GEOMETRIC_ORDER];
+				float powy[MAX_GEOMETRIC_ORDER];
+				for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+					powx[p-1] = pow(x,p);
+					powy[p-1] = pow(y,p);
+				}
+				for(int p = 1; p <= MAX_GEOMETRIC_ORDER; ++p){
+					for(int q = 1; q <= MAX_GEOMETRIC_ORDER; ++q){
+						output->geometricMoments[p-1][q-1] += powx[p]*powy[q];
+					}
+				}
 
 				// Pseudo-Zernike moments
 				float rho = sqrt(x*x + y*y);
@@ -138,11 +146,6 @@ void image_moments(LImage* image, LFeatureSet* output)
 		}
 	}
 	return;
-}
-
-float image_zernike_moment(LImage* image)
-{
-	return 10.0f;
 }
 
 int get_neighbour(int i, int j, int neighbour, int n)
