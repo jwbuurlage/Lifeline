@@ -23,7 +23,7 @@ float recognizer_score_symbol(void* _recog, void* symbolhandle);
 LPoint* points_center(LPointData* pointData)
 {
     float x_min = 10000.0, x_max = 0.0, y_min = x_min, y_max = x_max;
-    
+
     ListElement* element = pointData->head;
     do
     {
@@ -37,7 +37,7 @@ LPoint* points_center(LPointData* pointData)
         if (point->y > y_max) 
             y_max = point->y;
     element = element->next; } while(element);
-    
+
     return LPointMake(x_min + (x_max - x_min) / 2, 
                       y_min + (y_max - y_min) / 2, 0);
 }
@@ -46,15 +46,15 @@ LPoint* points_center(LPointData* pointData)
 void recognizer_set_data(LRecognizer *recog, LPointData* pointData)
 {
     recog->image_size = 65;
-    
+
     if(recog->source_points != 0)
     {
         list_destroy(recog->source_points);
         free(recog->source_points);
     }
-    
+
     recog->source_points = pointData;
-    
+
     recognizer_normalize_data(recog);
     recognizer_connect_data(recog);
     recognizer_create_image(recog);
@@ -71,7 +71,7 @@ void recognizer_normalize_data(LRecognizer *recog)
 {
     // calculate the center of the data
     LPoint* center = points_center(recog->source_points);
-        
+
     ListElement* element = recog->source_points->head;
     do
     {

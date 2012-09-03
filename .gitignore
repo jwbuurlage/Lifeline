@@ -1,9 +1,9 @@
 *.bridgesupport
 .DS_Store
-build*
 project/*
 *.dat
 *~
+*.cmake
 apps/Aa/.datc360.000
 bin/*
 CMakeFiles*

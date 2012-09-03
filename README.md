@@ -28,9 +28,9 @@ following snippet
 
 ```C
 LPoint* point = (LPoint*)malloc(sizeof(LPoint));
-point->x = touchIter->x;
-point->y = touchIter->y;
-point->t = touchIter->time;
+point->x = 1.0;
+point->y = 1.0;
+point->t = 0.1;
 list_insert_next( &point_data, point_data.tail, point); 
 ```
 
@@ -40,11 +40,11 @@ To use the recognizer system you should first create a recognizer struct.
 LRecognizer recog
 ```
 
-Say you have your point data saved in `points` of type `LPointData`.
+Say you have your point data saved in `point_data` of type `LPointData`.
 Then you can make your recognizer use this data by using
 
 ```C
-recognizer_set_data(recog, points)
+recognizer_set_data(recog, point_data)
 ```
 
 ### Listening 
