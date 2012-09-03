@@ -8,51 +8,33 @@
 // iting. Tailored for touchscreens.
 // ----------------------------------------------------------------------------
 
-#ifndef RECOGNIZER_H 
-#define RECOGNIZER_H
+#ifndef LRECOGNIZER_H 
+#define LRECOGNIZER_H
 
-#include <stdlib.h>
-#include <string.h>
+#include "LTypes.h"
+#include <vector>
 
-#include "LListener.h"
-#include "LMatch.h"
-#include "LFeatures.h"
+namespace Lifeline
+{
+  class Recognizer
+  {
+    Recognizer(int _imageSize = 65);
+    ~Recognizer();
 
-typedef struct {
-    int image_size; // has to be odd
-
-    LPointData* source_points;
-    LImage* source_image;
-    LResultSet* results;
-
-    LListener listener;
-    LCharacterSet charSet;
-
-    LFeatureSet currentFeatures; //Calculated features of the current symbol
-} LRecognizer;
-
-///////////////////////////////////////////////////////////////////////////////
-
-void insert_char_into_list(List* list, char character, unsigned int* grid);
-LPoint* points_center(LPointData* pointData);
-
-///////////////////////////////////////////////////////////////////////////////
-
-// Initialize character data from files
-void recognizer_load_data(LRecognizer *recog);
-
-// Incoming data
-void recognizer_set_data(LRecognizer *recog, LPointData* pointData);
-
-void recognizer_clear_samples(LRecognizer *recog);
-void recognizer_take_sample(LRecognizer *recog);
-void recognizer_save_samples(LRecognizer *recog, char* symbol);
-
-// Preprocessing
-void recognizer_normalize_data(LRecognizer *recog);
-void recognizer_connect_data(LRecognizer *recog);
-void recognizer_create_image(LRecognizer *recog);
-
-///////////////////////////////////////////////////////////////////////////////
+    /*!
+     * Loads a database from file with characters to match against.
+     * The client needs to load the data and provide the function with a 
+     * pointer.
+     */
+    void loadSymbolsWithData(char* data);
+    
+    /*!
+     * Sets the point data to use, and processes and prepares it for
+     * feature extraction and matching. Returns a ResultSet with the
+     * matching characters.
+     */
+    ResultSet resultsWithPointData(PointData *data);
+  };
+}
 
 #endif
