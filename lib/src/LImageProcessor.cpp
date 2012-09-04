@@ -24,17 +24,14 @@ namespace Lifeline
   {
     PointData data(inputData); //copy the input data because we normalize it
 
-    memset(grid, 0, dimension*dimension+1);
+    memset(grid, 0, sizeof(GridPoint)*(dimension*dimension+1));
 
     normalize(&data);
     connect(&data);
     createImage(&data);
     thinImage();
 
-    features->getMoments(grid, dimension, output);
-
-    //branch points
-    //end pointd
+//  features->getMoments(grid, dimension, output);
 
     return 1;
   }
@@ -77,29 +74,26 @@ namespace Lifeline
     //We will insert points at the end of the vector
     //We only need to iterate over the current contents
     //So we save the amount of points since it changes
-    unsigned int count = data->size();
-    PointData::iterator point, next_point;
-    point = data->begin();
-    for(unsigned int i = 0; i < count; ++i, ++point)
+    unsigned int count = data->size() - 1; //the last point has no next point to be connected to
+    Touch point, next_point, newPoint;
+    for(unsigned int i = 0; i < count; ++i)
     {
-      next_point = ++point;
-      if( next_point == data->end() ) break;
+      point = data->at(i);
+      next_point = data->at(i+1);
 
-      if( (next_point->t - point->t) > NEW_STROKE_OFFSET_T ) continue;
+      if( (next_point.t - point.t) > NEW_STROKE_OFFSET_T ) continue;
 
-      float dx = next_point->x - point->x;
-      float dy = next_point->y - point->y;
+      float dx = next_point.x - point.x;
+      float dy = next_point.y - point.y;
       float d = sqrt(dx*dx+dy*dy);
       int steps = floorf(d/b) + 1;
       float ival = b/d;
 
-      Touch newPoint;
-      newPoint.t = 0;
-      for(int i = 0; i < steps; ++i)
+      for(int j = 1; j < steps; ++j)
       {
-        float t = i * ival;
-        newPoint.x = t * point->x + (1-t) * next_point->x;
-        newPoint.y = t * point->y + (1-t) * next_point->y;
+        float t = j * ival;
+        newPoint.x = t * point.x + (1-t) * next_point.x;
+        newPoint.y = t * point.y + (1-t) * next_point.y;
         data->push_back(newPoint);
       }
     }
@@ -112,6 +106,8 @@ namespace Lifeline
       //Calculate the place on the grid for this point
       int j = (int)( 0.5f*(point->x + 1) * (float)dimension );
       int i = (int)( 0.5f*(point->y + 1) * (float)dimension );
+      if( i == dimension ) --i; //When y is exactly 1.0f
+      if( j == dimension ) --j; //When x is exactly 1.0f
       grid[i*dimension + j].enabled = 1;
     }
   }

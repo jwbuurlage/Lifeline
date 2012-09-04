@@ -249,7 +249,7 @@ void mousePress(sf::Mouse::Button button, bool down, int x, int y){
 }
 
 void mouseMoved(int x, int y){
-	if( mouseDown ){
+	if( mouseDown && !strokeList.empty() ){
 		if( (x-previousX) > 2 || (x-previousX) < -2 || (y-previousY) > 2 || (y-previousY) < -2 ){
 			strokeList.back().push_back(Touch((float)x,(float)y,timer->getElapsedTime().asSeconds()));
 			previousX = x;

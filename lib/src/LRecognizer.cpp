@@ -31,15 +31,13 @@ namespace Lifeline
 
   void Recognizer::loadSymbolsWithData(char* filedata)
   {
-    
   }
 
   void Recognizer::processPoints(const PointData &data, ResultSet &results)
   {
     FeatureVector features;
-
     imageProcessor->processData(data, features);
-
+    //classifier->processFeatures(features, results);
     return;
   }
 
