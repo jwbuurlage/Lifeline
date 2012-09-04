@@ -1,5 +1,5 @@
 #include "../include/LDatabase.h"
-#include "../include/LMatch.h"
+#include "../include/LTypes.h"
 #include <stdlib.h> //for malloc
 #include <string.h> //for memcpy
 #include <stdio.h> //for printf
@@ -54,7 +54,7 @@ int database_add_pointer(void* fileData, unsigned int size){
 		return 0;
 	}
 
-	char* data = fileData;
+	char* data = (char*)fileData;
 	unsigned int headersize = *(unsigned int*)(data+4);
 	unsigned int blockcount = *(unsigned int*)(data+8);
 	LSymbolBlock* blocks = 0;
@@ -97,8 +97,8 @@ int database_add_pointer(void* fileData, unsigned int size){
 			//A check if the size is correct:
 			unsigned int expected = 0;
 			switch(features[j].type){
-				case FeatureTypeGeometric: expected = sizeof(LFeatureGeometric)+5; break;
-				case FeatureTypeZernike: expected = sizeof(LFeatureZernike)+5; break;
+        case FeatureTypeGeometric: expected = sizeof(Lifeline::FeatureGeometric)+5; break;
+        case FeatureTypeZernike: expected = sizeof(Lifeline::FeatureZernike)+5; break;
 				default: break;
 			}
 			if( expected ){

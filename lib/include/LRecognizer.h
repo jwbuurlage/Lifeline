@@ -14,6 +14,10 @@
 #include "LPublicTypes.h"
 #include <vector>
 
+#ifdef LDEBUG
+#include "LTypes.h"
+#endif
+
 namespace Lifeline
 {
   class ImageProcessor;
@@ -37,6 +41,11 @@ namespace Lifeline
        * matching characters.
        */
       void processPoints(const PointData &data, ResultSet &results);
+
+#ifdef LDEBUG
+      int getImageDimension();
+      GridPoint* getImageGrid();
+#endif
 
     private:
       ImageProcessor* imageProcessor;

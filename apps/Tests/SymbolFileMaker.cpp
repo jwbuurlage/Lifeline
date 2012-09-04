@@ -1,9 +1,8 @@
 #include <fstream>
 #include <iostream>
-extern "C"{
+#include <cstring> //memset
 #include "../../lib/include/LDatabase.h"
-#include "../../lib/include/LMatch.h"
-}
+#include "../../lib/include/LTypes.h"
 
 using namespace std;
 
@@ -28,7 +27,7 @@ int main(){
 
 	int HeaderSize = 12; //magic + headersize + blockcount
 	int SymbolCount = 26;	
-	int BlockSize = 10 + (sizeof(LFeatureGeometric)+5) + (sizeof(LFeatureZernike)+5); //block header plus two features
+	int BlockSize = 10 + (sizeof(Lifeline::FeatureGeometric)+5) + (sizeof(Lifeline::FeatureZernike)+5); //block header plus two features
 	int TotalBufferSize = HeaderSize + SymbolCount*BlockSize;
 
 	char* buffer = new char[TotalBufferSize];
@@ -44,13 +43,13 @@ int main(){
 		*(char*)pointer = 1; pointer += 1; //string length
 		*(char*)pointer = 'A' + i; pointer += 1; //the character (string)
 		//Geometric
-		*(int*)pointer = sizeof(LFeatureGeometric)+5; pointer += 4;
+		*(int*)pointer = sizeof(Lifeline::FeatureGeometric)+5; pointer += 4;
 		*(char*)pointer = (char)FeatureTypeGeometric; pointer += 1;
-		memset(pointer, 0, sizeof(LFeatureGeometric)); pointer += sizeof(LFeatureGeometric);
+		memset(pointer, 0, sizeof(Lifeline::FeatureGeometric)); pointer += sizeof(Lifeline::FeatureGeometric);
 		//Zernike
-		*(int*)pointer = sizeof(LFeatureZernike)+5; pointer += 4;
+		*(int*)pointer = sizeof(Lifeline::FeatureZernike)+5; pointer += 4;
 		*(char*)pointer = (char)FeatureTypeZernike; pointer += 1;
-		memset(pointer, 0, sizeof(LFeatureZernike)); pointer += sizeof(LFeatureZernike);
+		memset(pointer, 0, sizeof(Lifeline::FeatureZernike)); pointer += sizeof(Lifeline::FeatureZernike);
 	}
 
 	file.write(buffer, TotalBufferSize);

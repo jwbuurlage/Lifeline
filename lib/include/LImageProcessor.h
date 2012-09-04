@@ -23,6 +23,10 @@ namespace Lifeline
        */
       int processData(const PointData &inputData, FeatureVector &output);
 
+#ifdef LDEBUG
+      GridPoint* getGrid(){ return grid; }
+#endif
+
     private:
       int dimension; //n
       GridPoint* grid; //array of  n x n + 1  gridpoints

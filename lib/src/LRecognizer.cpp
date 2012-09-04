@@ -42,6 +42,18 @@ namespace Lifeline
 
     return;
   }
+
+#ifdef LDEBUG
+  int Recognizer::getImageDimension()
+  {
+    return imageSize;
+  }
+
+  GridPoint* Recognizer::getImageGrid()
+  {
+    return imageProcessor->getGrid();
+  }
+#endif
 }
 
 #ifdef OLDCODE__OLDCODE__OLDCODE

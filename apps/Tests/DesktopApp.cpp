@@ -3,10 +3,9 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+
 #include "LRecognizer.h"
-extern "C"{
 #include "LDatabase.h"
-}
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y);
 void mouseMoved(int x, int y);
@@ -175,54 +174,55 @@ int main(){
 			}
 		}
 
-//		if( result_image ){
-//			int n = result_image->size;
-//			
-//			const int px = 5;
-//			sf::RectangleShape rect;
-//			rect.setOrigin(sf::Vector2<float>(10, 10));
-//			rect.setSize(sf::Vector2<float>(px*n+30, px*n+30));
-//			rect.setFillColor(sf::Color(255,255,255));
-//			window->draw(rect);
-//			
-//			sf::Color pixelColor;
-//						
-//			for(int i = 0; i < n; ++i)
-//			{
-//				for(int j = 0; j < n; ++j)
-//				{					
-//					LGridPoint gridPoint = result_image->grid[i*n+j];
-//					if( gridPoint.enabled ){
-//						int color = gridPoint.type;
-//						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 0) pixelColor = sf::Color(120,120,120);
-//						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 1) pixelColor = sf::Color(255, 255, 0);
-//						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 2) pixelColor = sf::Color(255, 165, 0);
-//						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 3) pixelColor = sf::Color(255, 69, 0);
-//						else if( color == 1 && gridPoint.dummy == 0) pixelColor = sf::Color(255,0,0);
-//						else if( color == 2 && gridPoint.dummy == 0) pixelColor = sf::Color(0,0,255);
-//						else if( color == 3 && gridPoint.dummy == 0) pixelColor = sf::Color(0,255,0);
-//						else if(color == 0 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
-//						else if(color == 1 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
-//						else if(color == 2 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
-//						else if(color == 3 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
-//						else if(color == 0 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
-//						else if(color == 1 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
-//						else if(color == 2 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
-//						else if(color == 3 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
-//						else if(color == 0 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
-//						else if(color == 1 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
-//						else if(color == 2 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
-//						else if(color == 3 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
-//						
-//						rect.setOrigin(sf::Vector2<float>(-(20 + px*j), -(20 + px*i)));
-//						rect.setSize(sf::Vector2<float>(px, px));
-//						rect.setFillColor(pixelColor);
-//						window->draw(rect);
-//					}
-//				}
-//			}
-//		}
-		
+#ifdef LDEBUG
+    int n = recognizer.getImageDimension();
+    Lifeline::GridPoint *grid = recognizer.getImageGrid();
+    if( grid ){
+			const int px = 5;
+			sf::RectangleShape rect;
+			rect.setOrigin(sf::Vector2<float>(10, 10));
+			rect.setSize(sf::Vector2<float>(px*n+30, px*n+30));
+			rect.setFillColor(sf::Color(255,255,255));
+			window->draw(rect);
+			
+			sf::Color pixelColor;
+						
+			for(int i = 0; i < n; ++i)
+			{
+				for(int j = 0; j < n; ++j)
+				{					
+          Lifeline::GridPoint& gridPoint = grid[i*n+j];
+					if( gridPoint.enabled ){
+						int color = gridPoint.type;
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 0) pixelColor = sf::Color(120,120,120);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 1) pixelColor = sf::Color(255, 255, 0);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 2) pixelColor = sf::Color(255, 165, 0);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 3) pixelColor = sf::Color(255, 69, 0);
+						if( color == 1 && gridPoint.dummy == 0) pixelColor = sf::Color(255,0,0);
+						else if( color == 2 && gridPoint.dummy == 0) pixelColor = sf::Color(0,0,255);
+						else if( color == 3 && gridPoint.dummy == 0) pixelColor = sf::Color(0,255,0);
+						else if(color == 0 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 1 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 2 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 3 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
+						else if(color == 0 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 1 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 2 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 3 && gridPoint.dummy == 2) pixelColor = sf::Color(255,255,0);
+						else if(color == 0 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						else if(color == 1 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						else if(color == 2 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						else if(color == 3 && gridPoint.dummy == 3) pixelColor = sf::Color(40,79,79);
+						
+						rect.setOrigin(sf::Vector2<float>(-(20 + px*j), -(20 + px*i)));
+						rect.setSize(sf::Vector2<float>(px, px));
+						rect.setFillColor(pixelColor);
+						window->draw(rect);
+					}
+				}
+			}
+		}
+#endif
 
 		window->display();
 		sf::sleep(sf::milliseconds(20));
