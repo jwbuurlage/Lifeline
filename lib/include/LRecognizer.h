@@ -11,29 +11,36 @@
 #ifndef LRECOGNIZER_H 
 #define LRECOGNIZER_H
 
-#include "LTypes.h"
+#include "LPublicTypes.h"
 #include <vector>
 
 namespace Lifeline
 {
+  class ImageProcessor;
+
   class Recognizer
   {
-    Recognizer(int _imageSize = 65);
-    ~Recognizer();
+    public:
+      Recognizer(int _imageSize = 65);
+      ~Recognizer();
 
-    /*!
-     * Loads a database from file with characters to match against.
-     * The client needs to load the data and provide the function with a 
-     * pointer.
-     */
-    void loadSymbolsWithData(char* data);
-    
-    /*!
-     * Sets the point data to use, and processes and prepares it for
-     * feature extraction and matching. Returns a ResultSet with the
-     * matching characters.
-     */
-    ResultSet resultsWithPointData(PointData *data);
+      /*!
+       * Loads a database from file with characters to match against.
+       * The client needs to load the data and provide the function with a 
+       * pointer.
+       */
+      void loadSymbolsWithData(char* filedata);
+
+      /*!
+       * Sets the point data to use, and processes and prepares it for
+       * feature extraction and matching. Outputs a ResultSet with the
+       * matching characters.
+       */
+      void processPoints(const PointData &data, ResultSet &results);
+
+    private:
+      ImageProcessor* imageProcessor;
+      int imageSize;
   };
 }
 

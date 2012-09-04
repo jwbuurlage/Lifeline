@@ -7,9 +7,9 @@ SET(
 
 SET(
 	PROJECT_SOURCES
-	"../src/DataStructures.c"
-	"../src/LFeatures.c"
-	"../src/LRecognizer.c"
+	"../src/LFeatures.cpp"
+  "../src/LImageProcessor.cpp"
+	"../src/LRecognizer.cpp"
 	"../src/LDatabase.c"
 )
 
