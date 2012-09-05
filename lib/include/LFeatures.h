@@ -11,18 +11,31 @@
 #ifndef LFEATURES_H
 #define LFEATURES_H
 
-#include "DataStructures.h"
-#include "LMatch.h"
+#include "LTypes.h"
 
-///////////////////////////////////////////////////////////////////////////////
+namespace Lifeline
+{
+  class Features
+  {
+    public:
+      Features();
+      ~Features();
 
-void image_histogram(LImage* image);
-void image_moments(LImage* image, LFeatureSet* output);
-int image_branch_points(LImage* image);
-int image_end_points(LImage* image);
-int image_cross_points(LImage* image);
-int image_thin(LImage* image);
+      /*!
+       * Calculates geometric and zernike moments of the image
+       * stored in grid and stores results in output.
+       * When called for the first time it will initialize
+       * an array with pre-calculated zernike factors.
+       */
+      void getMoments(GridPoint* grid, int n, FeatureVector& output);
+    private:
+      //Pre-calculated factors
+      float* zernikeFactors;
 
-///////////////////////////////////////////////////////////////////////////////
+      void precalculateZernikeFactors();
+
+      void zernikeValues(float rho, float theta, FeatureVector& output);
+  };
+}
 
 #endif

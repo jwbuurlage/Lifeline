@@ -3,11 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-extern "C"{
+
 #include "LRecognizer.h"
-#include "LListener.h"
-#include "LDatabase.h"
-}
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y);
 void mouseMoved(int x, int y);
@@ -28,22 +25,11 @@ enum STATE {
 	StateChoosingSymbol
 } State;
 
-struct Touch{
-	float x, y;
-	float time;
-	Touch(float _x, float _y, float _time) : x(_x), y(_y), time(_time) {};
-	~Touch(){};
-};
+typedef Lifeline::Touch Touch;
 
 std::vector< std::vector<Touch> > strokeList; //each element contains a list of points which is a stroke
 
-void callbackBest_match(char character, void* obj);
-void callbackResult_set(LResultSet* result, void* obj);
-void callbackSource_image(LImage* src, void* obj);
-
-LRecognizer recognizer;
-
-LImage* result_image;
+Lifeline::Recognizer recognizer;
 
 int main(){
 	std::cout << "---------------------------------\n";
@@ -53,10 +39,6 @@ int main(){
 	std::cout << "-- Press R to record ------------\n";
 	std::cout << "---------------------------------\n";
 	
-	recognizer.listener.char_found = callbackBest_match;
-	recognizer.listener.result_set = callbackResult_set;
-	recognizer.listener.source_image = callbackSource_image;
-
 	char* symbolbuffer = 0;
 	unsigned int symbolbuffersize = 0;
 
@@ -73,7 +55,7 @@ int main(){
 	}
 
 	if( symbolbuffer ){
-		database_add_pointer(symbolbuffer, symbolbuffersize);
+    recognizer.loadSymbolsFromMemory(symbolbuffer, symbolbuffersize);
 	}
 
 	window = new sf::RenderWindow(sf::VideoMode(900, 400, 32), "Testing Station");
@@ -109,7 +91,7 @@ int main(){
 							std::cout << "Recording canceled.\n";
 						}else if( Event.key.code >= sf::Keyboard::A && Event.key.code <= sf::Keyboard::Z ){
 							symbol = 'A' + Event.key.code - sf::Keyboard::A;
-							recognizer_clear_samples(&recognizer);
+							//recognizer_clear_samples(&recognizer);
 							State = StateRecording;
 							std::cout << "Recording symbol: " << symbol << "\n";
 							std::cout << "Press Enter after drawing each symbol. Press ESC when done.\n";
@@ -122,7 +104,7 @@ int main(){
 							if( strokeList.empty() ){
 								State = StateNothing;
 								char symbolstring[2] = {symbol, 0};
-								recognizer_save_samples(&recognizer, symbolstring);
+								//recognizer_save_samples(&recognizer, symbolstring);
 								//The file buffer has been changed. Write it to the file
 								if( symbolbuffer ){
 									std::ofstream file("symbols.data", std::ifstream::binary);
@@ -190,9 +172,11 @@ int main(){
 				}
 			}
 		}
-		if( result_image ){
-			int n = result_image->size;
-			
+
+#ifdef LDEBUG
+    int n = recognizer.getImageDimension();
+    Lifeline::GridPoint *grid = recognizer.getImageGrid();
+    if( grid ){
 			const int px = 5;
 			sf::RectangleShape rect;
 			rect.setOrigin(sf::Vector2<float>(10, 10));
@@ -206,14 +190,14 @@ int main(){
 			{
 				for(int j = 0; j < n; ++j)
 				{					
-					LGridPoint gridPoint = result_image->grid[i*n+j];
+          Lifeline::GridPoint& gridPoint = grid[i*n+j];
 					if( gridPoint.enabled ){
 						int color = gridPoint.type;
-						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 0) pixelColor = sf::Color(120,120,120);
-						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 1) pixelColor = sf::Color(255, 255, 0);
-						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 2) pixelColor = sf::Color(255, 165, 0);
-						if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 3) pixelColor = sf::Color(255, 69, 0);
-						else if( color == 1 && gridPoint.dummy == 0) pixelColor = sf::Color(255,0,0);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 0) pixelColor = sf::Color(120,120,120);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 1) pixelColor = sf::Color(255, 255, 0);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 2) pixelColor = sf::Color(255, 165, 0);
+						//if( color == 0 && gridPoint.dummy == 0 && gridPoint.curvature == 3) pixelColor = sf::Color(255, 69, 0);
+						if( color == 1 && gridPoint.dummy == 0) pixelColor = sf::Color(255,0,0);
 						else if( color == 2 && gridPoint.dummy == 0) pixelColor = sf::Color(0,0,255);
 						else if( color == 3 && gridPoint.dummy == 0) pixelColor = sf::Color(0,255,0);
 						else if(color == 0 && gridPoint.dummy == 1) pixelColor = sf::Color(124, 252, 0);
@@ -233,18 +217,21 @@ int main(){
 						rect.setSize(sf::Vector2<float>(px, px));
 						rect.setFillColor(pixelColor);
 						window->draw(rect);
-					} 
+					}
 				}
 			}
 		}
-		
+#endif
 
 		window->display();
 		sf::sleep(sf::milliseconds(20));
 	}
 
-	database_free_pointer(symbolbuffer);
-	if( symbolbuffer ) delete[] symbolbuffer;
+	if( symbolbuffer )
+  {
+    recognizer.freeSymbols(symbolbuffer);
+    delete[] symbolbuffer;
+  }
 
 	delete window;
 	return 0;
@@ -264,7 +251,7 @@ void mousePress(sf::Mouse::Button button, bool down, int x, int y){
 }
 
 void mouseMoved(int x, int y){
-	if( mouseDown ){
+	if( mouseDown && !strokeList.empty() ){
 		if( (x-previousX) > 2 || (x-previousX) < -2 || (y-previousY) > 2 || (y-previousY) < -2 ){
 			strokeList.back().push_back(Touch((float)x,(float)y,timer->getElapsedTime().asSeconds()));
 			previousX = x;
@@ -276,45 +263,13 @@ void mouseMoved(int x, int y){
 void sendInput(){
 	if( strokeList.empty() ) return;
 	
-	LPointData point_data;
-	list_init(&point_data, free);
+  std::vector<Touch> allInput;
 	
 	for( std::vector< std::vector<Touch> >::iterator lineIter = strokeList.begin(); lineIter != strokeList.end(); ++lineIter ){
-		for( std::vector<Touch>::iterator touchIter = lineIter->begin(); touchIter != lineIter->end(); ++touchIter ){
-			LPoint* point = (LPoint*)malloc(sizeof(LPoint));
-			point->x = touchIter->x;
-			point->y = touchIter->y;
-			point->t = touchIter->time;
-			list_insert_next( &point_data, point_data.tail, point);
-		}
+    allInput.insert(allInput.end(), lineIter->begin(), lineIter->end());
 	}
-	
-	recognizer.source_points = 0;
-	recognizer_set_data(&recognizer, &point_data);
-	if( State == StateRecording ){
-		recognizer_take_sample(&recognizer);
-		std::cout << "Feature sample taken.\n";
-	}
-	list_destroy(&point_data);
-}
 
-void callbackBest_match(char character, void* obj)
-{
-	if( State == StateNothing )
-		std::cout << "Best match: " << character << std::endl;
-}
-
-void callbackResult_set(LResultSet* result, void* obj)
-{
-
-}
-
-void callbackSource_image(LImage* src, void* obj)
-{
-	if( result_image ){
-		free(result_image->grid);
-		free(result_image);
-	}
-	result_image = src;
+  Lifeline::ResultSet results;
+  recognizer.processPoints(allInput, results);
 }
 
