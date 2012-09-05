@@ -22,15 +22,23 @@ namespace Lifeline
   {
     imageSize = _imageSize;
     imageProcessor = new ImageProcessor(imageSize);
+    database = new Database();
   }
 
   Recognizer::~Recognizer()
   {
+    delete database;
     delete imageProcessor;
   }
 
-  void Recognizer::loadSymbolsWithData(char* filedata)
+  int Recognizer::loadSymbolsFromMemory(char* fileData, int size)
   {
+    return database->addPointer(fileData, size);
+  }
+
+  void Recognizer::freeSymbols(char* fileData)
+  {
+    database->freePointer(fileData);
   }
 
   void Recognizer::processPoints(const PointData &data, ResultSet &results)

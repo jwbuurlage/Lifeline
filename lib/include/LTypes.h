@@ -14,7 +14,7 @@ namespace Lifeline
   } GridPoint;
 
 #define MAX_GEOMETRIC_ORDER	5
-#define MAX_ZERNIKE_N		5
+#define MAX_ZERNIKE_N		10
 #define MAX_ZERNIKE_N_M_COMBINATIONS	((MAX_ZERNIKE_N + 1)*(MAX_ZERNIKE_N + 1) - 1)
 #define ZERNIKE_INDEX(n,m)	(n*n + m + n - 1)
 

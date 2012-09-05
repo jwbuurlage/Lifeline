@@ -21,6 +21,7 @@
 namespace Lifeline
 {
   class ImageProcessor;
+  class Database;
 
   class Recognizer
   {
@@ -29,11 +30,13 @@ namespace Lifeline
       ~Recognizer();
 
       /*!
-       * Loads a database from file with characters to match against.
-       * The client needs to load the data and provide the function with a 
-       * pointer.
+       * The client should load the symbol file into memory
+       * and then pass a pointer to the file buffer.
+       * This buffer needs to stay in memory untill freeSymbols
+       * has been called as the file buffer is used internally.
        */
-      void loadSymbolsWithData(char* filedata);
+      int loadSymbolsFromMemory(char* fileData, int size);
+      void freeSymbols(char* fileData);
 
       /*!
        * Sets the point data to use, and processes and prepares it for
@@ -49,6 +52,7 @@ namespace Lifeline
 
     private:
       ImageProcessor* imageProcessor;
+      Database* database;
       int imageSize;
   };
 }

@@ -31,7 +31,7 @@ namespace Lifeline
     createImage(&data);
     thinImage();
 
-//  features->getMoments(grid, dimension, output);
+    features->getMoments(grid, dimension, output);
 
     return 1;
   }

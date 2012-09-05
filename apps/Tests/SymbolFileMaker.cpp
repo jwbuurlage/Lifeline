@@ -44,11 +44,11 @@ int main(){
 		*(char*)pointer = 'A' + i; pointer += 1; //the character (string)
 		//Geometric
 		*(int*)pointer = sizeof(Lifeline::FeatureGeometric)+5; pointer += 4;
-		*(char*)pointer = (char)FeatureTypeGeometric; pointer += 1;
+		*(char*)pointer = (char)Lifeline::FeatureTypeGeometric; pointer += 1;
 		memset(pointer, 0, sizeof(Lifeline::FeatureGeometric)); pointer += sizeof(Lifeline::FeatureGeometric);
 		//Zernike
 		*(int*)pointer = sizeof(Lifeline::FeatureZernike)+5; pointer += 4;
-		*(char*)pointer = (char)FeatureTypeZernike; pointer += 1;
+		*(char*)pointer = (char)Lifeline::FeatureTypeZernike; pointer += 1;
 		memset(pointer, 0, sizeof(Lifeline::FeatureZernike)); pointer += sizeof(Lifeline::FeatureZernike);
 	}
 

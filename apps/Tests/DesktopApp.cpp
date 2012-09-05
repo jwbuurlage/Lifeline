@@ -5,7 +5,6 @@
 #include <fstream>
 
 #include "LRecognizer.h"
-#include "LDatabase.h"
 
 void mousePress(sf::Mouse::Button button, bool down, int x, int y);
 void mouseMoved(int x, int y);
@@ -56,7 +55,7 @@ int main(){
 	}
 
 	if( symbolbuffer ){
-		database_add_pointer(symbolbuffer, symbolbuffersize);
+    recognizer.loadSymbolsFromMemory(symbolbuffer, symbolbuffersize);
 	}
 
 	window = new sf::RenderWindow(sf::VideoMode(900, 400, 32), "Testing Station");
@@ -228,8 +227,11 @@ int main(){
 		sf::sleep(sf::milliseconds(20));
 	}
 
-	database_free_pointer(symbolbuffer);
-	if( symbolbuffer ) delete[] symbolbuffer;
+	if( symbolbuffer )
+  {
+    recognizer.freeSymbols(symbolbuffer);
+    delete[] symbolbuffer;
+  }
 
 	delete window;
 	return 0;
