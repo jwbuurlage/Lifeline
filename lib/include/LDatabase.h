@@ -26,39 +26,65 @@
 //    repeat for each feature set
 //
 
-typedef enum
+#ifndef LDATABASE_H
+#define LDATABASE_H
+
+namespace Lifeline
 {
-	FeatureTypeUnkown = 0,
-	FeatureTypeGeometric,
-	FeatureTypeZernike,
-	FeatureTypeComponents, //amount of components, endpoints, etc
-	FeatureTypeMAX
-} LFeatureType;
+  typedef enum
+  {
+    FeatureTypeUnkown = 0,
+    FeatureTypeGeometric,
+    FeatureTypeZernike,
+    FeatureTypeComponents, //amount of components, endpoints, etc
+    FeatureTypeMAX
+  } FeatureType;
 
+  //Because I do not want to include all the std headers
+  //and declare the structures that are used internally
+  //by the Database I put this in a DatabaseContainer
+  //class and use forward-declarations here.
+  class DatabaseContainer;
 
-//
-// The application is supposed to load the files in memory and then pass a pointer to this memory
-// On failure, this function returns zero and the memory should be freed by the caller
-// On success, this function returns non-zero and the memory block will be used by the library and may
-//   not be freed untill database_freePointer is called
-//
-int database_add_pointer(void* fileData, unsigned int size);
-void database_free_pointer(void* fileData);
+  class Database
+  {
+    public:
+      Database();
+      ~Database();
 
+      /*!
+       * The application is supposed to load files into memory and then pass the file pointer
+       * to Database. On success this function returns non-zero and the memory block will be used
+       * by Database and therefore should NOT be freed by the application untill
+       * Database::freePointer has been called.
+       * On failure this returns zero and the memory can be freed immediately.
+       *
+       * Note that adding a new symbol file invalidates all symbol handles
+       */
+      int addPointer(char* fileData, unsigned int size);
+      void freePointer(char* fileData);
 
-// The following is used by the library internally
+      /*!
+       * getSymbolHandle returns a handle of the symbol (internal pointer)
+       * Returns zero when not found.
+       * Currently this method is really slow
+       * After a handle has been obtained it can be used with
+       * getSymbolFeature to obtain feature data. This function
+       * return zero when the feature was not found.
+       */
+      void* getSymbolHandle(char* symbol);
+      void* getSymbolFeature(void* handle, FeatureType featuretype);
 
-void* database_get_symbol_handle(char* symbol);
+      /*!
+       * The following is used by Classifier to iterate
+       * over all symbols. The return value of getSymbolHandle
+       * is always valid if index is smaller than getSymbolCount.
+       */
+      unsigned int getSymbolCount() const;
+      void* getSymbolHandle(unsigned int index);
+    private:
+      DatabaseContainer* base;
+  };
+}
 
-//returns a (read-only) pointer to the symbol feature
-void* database_get_symbol_feature(void* handle, LFeatureType featureType);
-
-int database_update_symbol_feature(void* handle, LFeatureType featureType, void* buffer);
-
-//The following is used by LRecognizer to iterate over all symbols and calculate scores
-
-//callbackData is used for LRecognizer*
-typedef float (*scoreCallback)(void* callbackData, void* symbolhandle);
-
-char* database_do_scores(scoreCallback scoreFunc, void* callbackData);
-
+#endif
